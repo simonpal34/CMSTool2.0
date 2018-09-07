@@ -1,0 +1,15 @@
+
+<div class="header-row" style="padding-left:20px">
+  <h2>Staging</h2>
+</div>
+
+<div>
+  <mat-form-field [floatLabel]="search.value.floatLabel" style="padding-left:35px">
+    <mat-label>Search Metric</mat-label>
+    <input matInput name="search" [(ngModel)]="SearchID">
+  </mat-form-field>
+  <button mat-raised-button color="warn" style=" font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> clear</button>
+</div>
+<mission-table *ngIf="svc.stagingMissions[0].id != -1"></mission-table>
+<reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != -1"></reporting-unit-table>
+

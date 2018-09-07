@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked> 
+   <PostBuildEvent>ng build</PostBuildEvent> 
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion> 
+    <StartupObject>CMSTool.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="src\app\components\Login\login.component.ts" />
+    <None Remove="src\app\components\MissionTable\missionTable.component.ts" />
+    <None Remove="src\app\components\Profile\profile.component.ts" />
+    <None Remove="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
+    <None Remove="src\app\components\Staging\staging.component.ts" />
+    <None Remove="src\app\Models\Mission.ts" />
+    <None Remove="src\app\Models\Profile.ts" />
+    <None Remove="src\app\Models\ReportingUnit.ts" />
+    <None Remove="src\app\Models\Topic.ts" />
+    <None Remove="src\app\services\login-guard.service.ts" />
+    <None Remove="src\app\services\LoginService.ts" />
+    <None Remove="src\app\services\missionService.ts" />
+    <None Remove="src\app\services\serviceMaster.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app\components\Login\login.component.ts" />
+    <TypeScriptCompile Include="src\app\components\MissionTable\missionTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\Profile\profile.component.ts" />
+    <TypeScriptCompile Include="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\Staging\staging.component.ts" />
+    <TypeScriptCompile Include="src\app\Models\Mission.ts" />
+    <TypeScriptCompile Include="src\app\Models\Profile.ts" />
+    <TypeScriptCompile Include="src\app\Models\ReportingUnit.ts" />
+    <TypeScriptCompile Include="src\app\Models\Topic.ts" />
+    <TypeScriptCompile Include="src\app\services\missionService.ts" />
+    <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />
+    <TypeScriptCompile Include="src\app\services\LoginService.ts" />
+    <TypeScriptCompile Include="src\app\services\serviceMaster.ts" />
+  </ItemGroup>
+
+</Project>
