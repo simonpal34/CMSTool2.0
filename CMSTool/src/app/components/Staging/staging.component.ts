@@ -21,4 +21,9 @@ export class StagingComponent {
   clear() {
     this.svc.getMissions();
   }
+goToMission()
+{
+  this.svc.stagingMissions = [this.svc.missionBreadCrumb];
+  this.svc.getReportingUnits();
+}
 }

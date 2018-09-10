@@ -16,6 +16,8 @@ import { StagingComponent } from './components/Staging/staging.component';
 import { ProfileComponent } from './components/Profile/profile.component'
 import { MissionTableComponent } from './components/MissionTable/missionTable.component'
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
+import { TopicTableComponent } from './components/TopicTable/topicTable.component'
+import { MetricTableComponent } from './components/MetricTable/metricTable.component'
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { ReportingUnitTableComponent } from './components/ReportingUnitTable/rep
     StagingComponent,
     ProfileComponent,
     MissionTableComponent,
-    ReportingUnitTableComponent
+    ReportingUnitTableComponent,
+    TopicTableComponent,
+    MetricTableComponent
   ],
   imports: [
     BrowserModule,

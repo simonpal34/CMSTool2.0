@@ -23,6 +23,63 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/Models/Metric.ts":
+/*!**********************************!*\
+  !*** ./src/app/Models/Metric.ts ***!
+  \**********************************/
+/*! exports provided: Metric, Adjustment, Meta, Data, chartData, Ancestry */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Metric", function() { return Metric; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Adjustment", function() { return Adjustment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Meta", function() { return Meta; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Data", function() { return Data; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chartData", function() { return chartData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ancestry", function() { return Ancestry; });
+var Metric = /** @class */ (function () {
+    function Metric() {
+    }
+    return Metric;
+}());
+
+var Adjustment = /** @class */ (function () {
+    function Adjustment() {
+    }
+    return Adjustment;
+}());
+
+var Meta = /** @class */ (function () {
+    function Meta(fields) {
+        if (fields)
+            Object.assign(this, fields);
+    }
+    return Meta;
+}());
+
+var Data = /** @class */ (function () {
+    function Data() {
+    }
+    return Data;
+}());
+
+var chartData = /** @class */ (function () {
+    function chartData() {
+    }
+    return chartData;
+}());
+
+var Ancestry = /** @class */ (function () {
+    function Ancestry() {
+    }
+    return Ancestry;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/Models/Mission.ts":
 /*!***********************************!*\
   !*** ./src/app/Models/Mission.ts ***!
@@ -208,12 +265,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Profile_profile_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/Profile/profile.component */ "./src/app/components/Profile/profile.component.ts");
 /* harmony import */ var _components_MissionTable_missionTable_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/MissionTable/missionTable.component */ "./src/app/components/MissionTable/missionTable.component.ts");
 /* harmony import */ var _components_ReportingUnitTable_reportingUnitTable_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/ReportingUnitTable/reportingUnitTable.component */ "./src/app/components/ReportingUnitTable/reportingUnitTable.component.ts");
+/* harmony import */ var _components_TopicTable_topicTable_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/TopicTable/topicTable.component */ "./src/app/components/TopicTable/topicTable.component.ts");
+/* harmony import */ var _components_MetricTable_metricTable_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/MetricTable/metricTable.component */ "./src/app/components/MetricTable/metricTable.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -240,7 +301,9 @@ var AppModule = /** @class */ (function () {
                 _components_Staging_staging_component__WEBPACK_IMPORTED_MODULE_11__["StagingComponent"],
                 _components_Profile_profile_component__WEBPACK_IMPORTED_MODULE_12__["ProfileComponent"],
                 _components_MissionTable_missionTable_component__WEBPACK_IMPORTED_MODULE_13__["MissionTableComponent"],
-                _components_ReportingUnitTable_reportingUnitTable_component__WEBPACK_IMPORTED_MODULE_14__["ReportingUnitTableComponent"]
+                _components_ReportingUnitTable_reportingUnitTable_component__WEBPACK_IMPORTED_MODULE_14__["ReportingUnitTableComponent"],
+                _components_TopicTable_topicTable_component__WEBPACK_IMPORTED_MODULE_15__["TopicTableComponent"],
+                _components_MetricTable_metricTable_component__WEBPACK_IMPORTED_MODULE_16__["MetricTableComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"],
@@ -390,6 +453,59 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/MetricTable/metricTable.component.html":
+/*!*******************************************************************!*\
+  !*** ./src/app/components/MetricTable/metricTable.component.html ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Metrics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingMetrics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let metric\"> {{metric.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let metric\">\r\n        <button  matTooltip=\"{{metric.id}}\" type=\"button\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/components/MetricTable/metricTable.component.ts":
+/*!*****************************************************************!*\
+  !*** ./src/app/components/MetricTable/metricTable.component.ts ***!
+  \*****************************************************************/
+/*! exports provided: MetricTableComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MetricTableComponent", function() { return MetricTableComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_serviceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/serviceMaster */ "./src/app/services/serviceMaster.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MetricTableComponent = /** @class */ (function () {
+    function MetricTableComponent(svc) {
+        this.svc = svc;
+        this.displayedColumns = ['child', 'name'];
+    }
+    MetricTableComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'metric-table',
+            template: __webpack_require__(/*! ./metricTable.component.html */ "./src/app/components/MetricTable/metricTable.component.html"),
+        }),
+        __metadata("design:paramtypes", [_services_serviceMaster__WEBPACK_IMPORTED_MODULE_1__["ServiceMaster"]])
+    ], MetricTableComponent);
+    return MetricTableComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/MissionTable/missionTable.component.html":
 /*!*********************************************************************!*\
   !*** ./src/app/components/MissionTable/missionTable.component.html ***!
@@ -397,7 +513,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding-left:35px\">\r\n  <caption  style=\"padding-left:35px\"><b>Missions</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingMissions\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let misison\"> {{misison.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let mission\">\r\n        <button type=\"button\" (click)=\"selectMission(mission)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption  style=\"padding-left:35px\"><b>Missions</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingMissions\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let misison\"> {{misison.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let mission\">\r\n        <button *ngIf=\"svc.stagingMissions.length > 1\" matTooltip=\"{{mission.id}}\" type=\"button\" (click)=\"selectMission(mission)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -511,7 +627,7 @@ var ProfileComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Reporting Units</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingReportingUnits\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\"> {{reportingUnit.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\">\r\n        <button type=\"button\" (click)=\"selectReportingUnit(reportingUnit)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Reporting Units</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingReportingUnits\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\"> {{reportingUnit.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\">\r\n        <button matTooltip=\"{{reportingUnit.id}}\" type=\"button\" (click)=\"selectReportingUnit(reportingUnit)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -568,7 +684,7 @@ var ReportingUnitTableComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<div class=\"header-row\" style=\"padding-left:20px\">\r\n  <h2>Staging</h2>\r\n</div>\r\n\r\n<div>\r\n  <mat-form-field [floatLabel]=\"search.value.floatLabel\" style=\"padding-left:35px\">\r\n    <mat-label>Search Metric</mat-label>\r\n    <input matInput name=\"search\" [(ngModel)]=\"SearchID\">\r\n  </mat-form-field>\r\n  <button mat-raised-button color=\"warn\" style=\" font-size:10pt; height:35px; width:25px; margin-left:15px;\" (click)=\"clear()\"><mat-icon style=\" font-size:10pt; margin-top:10px\">backspace</mat-icon> clear</button>\r\n</div>\r\n<mission-table *ngIf=\"svc.stagingMissions[0].id != -1\"></mission-table>\r\n<reporting-unit-table *ngIf=\"svc.stagingReportingUnits[0].id != -1\"></reporting-unit-table>\r\n\r\n"
+module.exports = "\r\n<div class=\"header-row\" style=\"padding-left:20px\">\r\n  <h2>Staging</h2>\r\n</div>\r\n\r\n<div>\r\n  <mat-form-field [floatLabel]=\"search.value.floatLabel\" style=\"padding-left:35px\">\r\n    <mat-label>Search Metric</mat-label>\r\n    <input matInput name=\"search\" [(ngModel)]=\"SearchID\">\r\n  </mat-form-field>\r\n  <button mat-raised-button color=\"warn\" style=\" font-size:10pt; height:35px; width:25px; margin-left:15px;\" (click)=\"clear()\"><mat-icon style=\" font-size:10pt; margin-top:10px\">backspace</mat-icon> clear</button>\r\n</div>\r\n<ul >\r\n  <li *ngIf=\"svc.missionBreadCrumb.id != -1\" style=\"display:inline\">\r\n    /<a (click)=\"goToMission()\" style=\"cursor:pointer\" >{{svc.missionBreadCrumb.name}}</a></li>\r\n</ul>\r\n<mission-table *ngIf=\"svc.stagingMissions[0].id != -1\"></mission-table>\r\n<reporting-unit-table *ngIf=\"svc.stagingReportingUnits[0].id != -1\"></reporting-unit-table>\r\n<topic-table *ngIf=\"svc.stagingTopics[0].id != -1\"></topic-table>\r\n<metric-table *ngIf=\"svc.stagingMetrics[0].id != -1\"></metric-table>\r\n\r\n"
 
 /***/ }),
 
@@ -609,6 +725,10 @@ var StagingComponent = /** @class */ (function () {
     StagingComponent.prototype.clear = function () {
         this.svc.getMissions();
     };
+    StagingComponent.prototype.goToMission = function () {
+        this.svc.stagingMissions = [this.svc.missionBreadCrumb];
+        this.svc.getReportingUnits();
+    };
     StagingComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'staging',
@@ -617,6 +737,63 @@ var StagingComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _services_serviceMaster__WEBPACK_IMPORTED_MODULE_2__["ServiceMaster"]])
     ], StagingComponent);
     return StagingComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/components/TopicTable/topicTable.component.html":
+/*!*****************************************************************!*\
+  !*** ./src/app/components/TopicTable/topicTable.component.html ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Topics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingTopics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let topic\"> {{topic.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let topic\">\r\n        <button  matTooltip=\"{{topic.id}}\" (click)=\"selectTopic(topic)\" type=\"button\"  mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/components/TopicTable/topicTable.component.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/components/TopicTable/topicTable.component.ts ***!
+  \***************************************************************/
+/*! exports provided: TopicTableComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TopicTableComponent", function() { return TopicTableComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_serviceMaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/serviceMaster */ "./src/app/services/serviceMaster.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TopicTableComponent = /** @class */ (function () {
+    function TopicTableComponent(svc) {
+        this.svc = svc;
+        this.displayedColumns = ['child', 'name'];
+    }
+    TopicTableComponent.prototype.selectTopic = function (topic) {
+        this.svc.stagingTopics = [topic];
+        this.svc.trendToMetrics();
+    };
+    TopicTableComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'topic-table',
+            template: __webpack_require__(/*! ./topicTable.component.html */ "./src/app/components/TopicTable/topicTable.component.html"),
+        }),
+        __metadata("design:paramtypes", [_services_serviceMaster__WEBPACK_IMPORTED_MODULE_1__["ServiceMaster"]])
+    ], TopicTableComponent);
+    return TopicTableComponent;
 }());
 
 
@@ -865,6 +1042,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Models_Mission__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Models/Mission */ "./src/app/Models/Mission.ts");
 /* harmony import */ var _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Models/ReportingUnit */ "./src/app/Models/ReportingUnit.ts");
 /* harmony import */ var _Models_Topic__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Models/Topic */ "./src/app/Models/Topic.ts");
+/* harmony import */ var _Models_Metric__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Models/Metric */ "./src/app/Models/Metric.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -881,6 +1059,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ServiceMaster = /** @class */ (function () {
     function ServiceMaster(http) {
         this.http = http;
@@ -889,9 +1068,17 @@ var ServiceMaster = /** @class */ (function () {
         var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__["ReportingUnit"]();
         r.id = -1;
         this.stagingReportingUnits = [r];
+        this.reportingUnitBreadCrumb = r;
         var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
+        var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
+        miss.id = -1;
+        this.stagingMissions = [miss];
+        this.missionBreadCrumb = miss;
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        met.id = -1;
+        this.stagingMetrics = [met];
     }
     ServiceMaster.prototype.getAuthCode = function () {
         this.authCode = 'Basic ' + this.loginService.profile.SessionId;
@@ -906,6 +1093,11 @@ var ServiceMaster = /** @class */ (function () {
         var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        met.id = -1;
+        this.stagingMetrics = [met];
+        this.missionBreadCrumb.id = -1;
+        this.reportingUnitBreadCrumb.id = -1;
         this.missionService.getStagingMissions().then(function (response) {
             response.forEach(function (r) {
                 r.applicationType = 1;
@@ -923,6 +1115,12 @@ var ServiceMaster = /** @class */ (function () {
         var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
+        var m = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
+        m.id = -1;
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        met.id = -1;
+        this.stagingMetrics = [met];
+        this.missionBreadCrumb = m;
         if (this.stagingMissions.length == 1) {
             if (this.stagingMissions[0].applicationType == 1) {
                 this.stagingReportingUnits = this.stagingMissions[0].reporting_units;
@@ -935,6 +1133,19 @@ var ServiceMaster = /** @class */ (function () {
     ServiceMaster.prototype.getTopics = function () {
         var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
         miss.id = -1;
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        met.id = -1;
+        this.stagingMetrics = [met];
+        this.missionBreadCrumb = this.stagingMissions[0];
+        this.stagingMissions = [miss];
+        this.stagingTopics = this.stagingReportingUnits[0].topics;
+    };
+    ServiceMaster.prototype.trendToMetrics = function () {
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__["ReportingUnit"]();
+        r.id = -1;
+        this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
+        this.stagingReportingUnits = [r];
+        this.stagingMetrics = this.stagingTopics[0].metrics;
     };
     ServiceMaster = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),

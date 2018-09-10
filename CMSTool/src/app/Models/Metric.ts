@@ -1,0 +1,65 @@
+
+export class Metric {
+  public id: number;
+  public name: string;
+  public lexicon_name: string;
+  public is_featured: boolean;
+  public is_displayed: boolean;
+  public rounding_units: number;
+  public sig_figs: number;
+  public x: number[];
+  public x_type: string;
+  public y: number[];
+  public y_type: string;
+  public y_label: string;
+  public slideID: number;
+  public slideTitle: string;
+  public children: number[];
+  public hasChildren: boolean;
+  public meta: Meta[];
+  public sources: string[];
+  public checked: boolean;
+  public sequence: number;
+  public ancestry: Ancestry;
+  public data: Data[];
+  public available_adjustments: Adjustment[];
+  public modified_by: string;
+  public modified_on: Date;
+  public LastUpdatedFromScraper: Date;
+  public LastPushedIntoProduction: Date;
+  public application_type: number;
+}
+export class Adjustment {
+  public id: string;
+  public name: string
+}
+
+export class Meta {
+  public type: string;
+  public data: string;
+
+  public constructor(
+    fields?: {
+      type?: string,
+      data?: string
+    }) {
+    if (fields) Object.assign(this, fields);
+  }
+}
+export class Data
+{
+    public x: string;
+    public y: number;
+}
+
+export class chartData
+{
+    data: number[];
+    label: string;
+}
+export class Ancestry {
+  ancestor_metrics: number[];
+  mission: number;
+  reporting_unit: number;
+  topic: number;
+}

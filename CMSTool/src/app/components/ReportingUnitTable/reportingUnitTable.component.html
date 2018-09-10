@@ -9,7 +9,7 @@
     <ng-container matColumnDef="child" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let reportingUnit">
-        <button type="button" (click)="selectReportingUnit(reportingUnit)" mat-icon-button color="primary">
+        <button matTooltip="{{reportingUnit.id}}" type="button" (click)="selectReportingUnit(reportingUnit)" mat-icon-button color="primary">
           <mat-icon>people</mat-icon>
         </button>
       </td>

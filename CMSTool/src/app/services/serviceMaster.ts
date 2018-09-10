@@ -9,6 +9,7 @@ import { MissionService } from './missionService';
 import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
+import { Metric } from '../Models/Metric';
 
 @Injectable()
 export class ServiceMaster {
@@ -20,14 +21,24 @@ export class ServiceMaster {
   stagingReportingUnits: ReportingUnit[];
   stagingTopics: Topic[];
   missionBreadCrumb: Mission;
+  reportingUnitBreadCrumb: ReportingUnit;
+  stagingMetrics: Metric[];
   constructor(protected http: HttpClient) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
     r.id = -1;
     this.stagingReportingUnits = [r];
+    this.reportingUnitBreadCrumb = r;
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    var miss = new Mission();
+    miss.id = -1;
+    this.stagingMissions = [miss];
+    this.missionBreadCrumb = miss;
+    var met = new Metric;
+    met.id = -1;
+    this.stagingMetrics = [met];
   }
 
   getAuthCode() {
@@ -45,6 +56,11 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    var met = new Metric;
+    met.id = -1;
+    this.stagingMetrics = [met];
+    this.missionBreadCrumb.id = -1
+    this.reportingUnitBreadCrumb.id = -1;
     this.missionService.getStagingMissions().then(response => {
       response.forEach(r => {
         r.applicationType = 1;
@@ -63,6 +79,12 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    var m = new Mission()
+    m.id = -1;
+    var met = new Metric;
+    met.id = -1;
+    this.stagingMetrics = [met];
+    this.missionBreadCrumb = m;
     if (this.stagingMissions.length == 1) {
       if (this.stagingMissions[0].applicationType == 1) {
         
@@ -78,6 +100,20 @@ export class ServiceMaster {
   getTopics() {
     var miss = new Mission();
     miss.id = -1;
+    var met = new Metric;
+    met.id = -1;
+    this.stagingMetrics = [met];
+    this.missionBreadCrumb = this.stagingMissions[0];
+    this.stagingMissions = [miss];
+    this.stagingTopics = this.stagingReportingUnits[0].topics;
+  }
+
+  trendToMetrics() {
+    var r = new ReportingUnit();
+    r.id = -1;
+    this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
+    this.stagingReportingUnits = [r];
+    this.stagingMetrics = this.stagingTopics[0].metrics;
   }
 
 }
