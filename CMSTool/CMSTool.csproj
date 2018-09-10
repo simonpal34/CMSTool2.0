@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="src\app\components\Login\login.component.ts" />
+    <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <None Remove="src\app\components\MetricTable\metricTable.component.ts" />
     <None Remove="src\app\components\MissionTable\missionTable.component.ts" />
     <None Remove="src\app\components\Profile\profile.component.ts" />
@@ -23,7 +24,7 @@
     <None Remove="src\app\Models\Topic.ts" />
     <None Remove="src\app\services\login-guard.service.ts" />
     <None Remove="src\app\services\LoginService.ts" />
-    <None Remove="src\app\services\metricsService.ts" />
+    <None Remove="src\app\services\metricService.ts" />
     <None Remove="src\app\services\missionService.ts" />
     <None Remove="src\app\services\serviceMaster.ts" />
   </ItemGroup>
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="src\app\components\Login\login.component.ts" />
+    <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\metricTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MissionTable\missionTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\Profile\profile.component.ts" />
@@ -49,7 +51,7 @@
     <TypeScriptCompile Include="src\app\Models\Profile.ts" />
     <TypeScriptCompile Include="src\app\Models\ReportingUnit.ts" />
     <TypeScriptCompile Include="src\app\Models\Topic.ts" />
-    <TypeScriptCompile Include="src\app\services\metricsService.ts" />
+    <TypeScriptCompile Include="src\app\services\metricService.ts" />
     <TypeScriptCompile Include="src\app\services\missionService.ts" />
     <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />
     <TypeScriptCompile Include="src\app\services\LoginService.ts" />

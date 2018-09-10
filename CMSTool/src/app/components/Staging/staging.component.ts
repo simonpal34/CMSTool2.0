@@ -25,5 +25,11 @@ goToMission()
 {
   this.svc.stagingMissions = [this.svc.missionBreadCrumb];
   this.svc.getReportingUnits();
-}
+  }
+
+  goToReportingUnit()
+  {
+    this.svc.stagingReportingUnits = [this.svc.reportingUnitBreadCrumb];
+    this.svc.getTopics();
+    }
 }

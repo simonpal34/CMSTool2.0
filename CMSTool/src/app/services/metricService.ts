@@ -5,15 +5,15 @@ import { map } from 'rxjs/operators';
 import { Metric } from '../Models/Metric';
 
 @Injectable()
-export class MissionService {
+export class MetricService {
 
 
   constructor(protected http: HttpClient, private key: string, private url : string) {
   }
-  getStagingMissions(): Promise<Metric[]> {
+  getStagingEdit(id: string): Promise<Metric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
-    return this.http.get<Metric[]>(this.url + '/missions', { headers: header }).toPromise();
+    return this.http.get<Metric>(this.url + '/metrics/' + id + '/verbose', { headers: header }).toPromise();
   }
   
 

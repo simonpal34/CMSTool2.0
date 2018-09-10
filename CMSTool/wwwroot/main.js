@@ -267,12 +267,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ReportingUnitTable_reportingUnitTable_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/ReportingUnitTable/reportingUnitTable.component */ "./src/app/components/ReportingUnitTable/reportingUnitTable.component.ts");
 /* harmony import */ var _components_TopicTable_topicTable_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/TopicTable/topicTable.component */ "./src/app/components/TopicTable/topicTable.component.ts");
 /* harmony import */ var _components_MetricTable_metricTable_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/MetricTable/metricTable.component */ "./src/app/components/MetricTable/metricTable.component.ts");
+/* harmony import */ var _components_MetricTable_edit_metric_dialog_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/MetricTable/edit-metric-dialog.component */ "./src/app/components/MetricTable/edit-metric-dialog.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -303,7 +305,8 @@ var AppModule = /** @class */ (function () {
                 _components_MissionTable_missionTable_component__WEBPACK_IMPORTED_MODULE_13__["MissionTableComponent"],
                 _components_ReportingUnitTable_reportingUnitTable_component__WEBPACK_IMPORTED_MODULE_14__["ReportingUnitTableComponent"],
                 _components_TopicTable_topicTable_component__WEBPACK_IMPORTED_MODULE_15__["TopicTableComponent"],
-                _components_MetricTable_metricTable_component__WEBPACK_IMPORTED_MODULE_16__["MetricTableComponent"]
+                _components_MetricTable_metricTable_component__WEBPACK_IMPORTED_MODULE_16__["MetricTableComponent"],
+                _components_MetricTable_edit_metric_dialog_component__WEBPACK_IMPORTED_MODULE_17__["EditMetricDialogComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"],
@@ -322,6 +325,9 @@ var AppModule = /** @class */ (function () {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
                 _services_serviceMaster__WEBPACK_IMPORTED_MODULE_9__["ServiceMaster"],
                 _services_login_guard_service__WEBPACK_IMPORTED_MODULE_10__["LoginGuard"]
+            ],
+            entryComponents: [
+                _components_MetricTable_edit_metric_dialog_component__WEBPACK_IMPORTED_MODULE_17__["EditMetricDialogComponent"]
             ],
             bootstrap: [_components_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]]
         })
@@ -453,6 +459,68 @@ var LoginComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/MetricTable/edit-metric-dialog.component.html":
+/*!**************************************************************************!*\
+  !*** ./src/app/components/MetricTable/edit-metric-dialog.component.html ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Edit</h1>\r\n<div mat-dialog-content>\r\n  <form >\r\n\r\n    <mat-form-field [floatLabel]=\"metricForm.value.floatLabel\">\r\n      <mat-label>name</mat-label>\r\n      <input matInput name=\"user\" >\r\n\r\n    </mat-form-field>\r\n    </form>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/components/MetricTable/edit-metric-dialog.component.ts":
+/*!************************************************************************!*\
+  !*** ./src/app/components/MetricTable/edit-metric-dialog.component.ts ***!
+  \************************************************************************/
+/*! exports provided: EditMetricDialogComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditMetricDialogComponent", function() { return EditMetricDialogComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var EditMetricDialogComponent = /** @class */ (function () {
+    function EditMetricDialogComponent(fb, dialogRef) {
+        this.fb = fb;
+        this.dialogRef = dialogRef;
+        this.metricForm = fb.group({
+            hideRequired: false,
+            floatLabel: 'auto',
+        });
+    }
+    EditMetricDialogComponent.prototype.save = function () {
+        //this.dialogRef.close(null);
+    };
+    EditMetricDialogComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'edit-metric-dialog',
+            template: __webpack_require__(/*! ./edit-metric-dialog.component.html */ "./src/app/components/MetricTable/edit-metric-dialog.component.html"),
+        }),
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"]])
+    ], EditMetricDialogComponent);
+    return EditMetricDialogComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/MetricTable/metricTable.component.html":
 /*!*******************************************************************!*\
   !*** ./src/app/components/MetricTable/metricTable.component.html ***!
@@ -460,7 +528,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Metrics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingMetrics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let metric\"> {{metric.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let metric\">\r\n        <button  matTooltip=\"{{metric.id}}\" type=\"button\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Metrics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingMetrics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let metric\"> {{metric.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let metric\">\r\n        <button matTooltip=\"{{metric.id}}\" type=\"button\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"edit\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let metric\">\r\n        <button (click)=\"openEdit(metric)\" matTooltip=\"Edit {{metric.name}}\" type=\"button\" mat-icon-button style=\"color:#ffae42 \">\r\n          <mat-icon>edit</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -490,8 +558,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var MetricTableComponent = /** @class */ (function () {
     function MetricTableComponent(svc) {
         this.svc = svc;
-        this.displayedColumns = ['child', 'name'];
+        this.displayedColumns = ['child', 'name', 'edit'];
     }
+    MetricTableComponent.prototype.openEdit = function (metric) {
+        this.svc.getMetricEdit(metric);
+    };
     MetricTableComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'metric-table',
@@ -627,7 +698,7 @@ var ProfileComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Reporting Units</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingReportingUnits\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\"> {{reportingUnit.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\">\r\n        <button matTooltip=\"{{reportingUnit.id}}\" type=\"button\" (click)=\"selectReportingUnit(reportingUnit)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Reporting Units</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingReportingUnits\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\"> {{reportingUnit.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let reportingUnit\">\r\n        <button *ngIf=\"svc.stagingReportingUnits.length > 1\" matTooltip=\"{{reportingUnit.id}}\" type=\"button\" (click)=\"selectReportingUnit(reportingUnit)\" mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -684,7 +755,7 @@ var ReportingUnitTableComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<div class=\"header-row\" style=\"padding-left:20px\">\r\n  <h2>Staging</h2>\r\n</div>\r\n\r\n<div>\r\n  <mat-form-field [floatLabel]=\"search.value.floatLabel\" style=\"padding-left:35px\">\r\n    <mat-label>Search Metric</mat-label>\r\n    <input matInput name=\"search\" [(ngModel)]=\"SearchID\">\r\n  </mat-form-field>\r\n  <button mat-raised-button color=\"warn\" style=\" font-size:10pt; height:35px; width:25px; margin-left:15px;\" (click)=\"clear()\"><mat-icon style=\" font-size:10pt; margin-top:10px\">backspace</mat-icon> clear</button>\r\n</div>\r\n<ul >\r\n  <li *ngIf=\"svc.missionBreadCrumb.id != -1\" style=\"display:inline\">\r\n    /<a (click)=\"goToMission()\" style=\"cursor:pointer\" >{{svc.missionBreadCrumb.name}}</a></li>\r\n</ul>\r\n<mission-table *ngIf=\"svc.stagingMissions[0].id != -1\"></mission-table>\r\n<reporting-unit-table *ngIf=\"svc.stagingReportingUnits[0].id != -1\"></reporting-unit-table>\r\n<topic-table *ngIf=\"svc.stagingTopics[0].id != -1\"></topic-table>\r\n<metric-table *ngIf=\"svc.stagingMetrics[0].id != -1\"></metric-table>\r\n\r\n"
+module.exports = "\r\n<div class=\"header-row\" style=\"padding-left:20px\">\r\n  <h2>Staging</h2>\r\n</div>\r\n\r\n<div>\r\n  <mat-form-field [floatLabel]=\"search.value.floatLabel\" style=\"padding-left:35px\">\r\n    <mat-label>Search Metric</mat-label>\r\n    <input matInput name=\"search\" [(ngModel)]=\"SearchID\">\r\n  </mat-form-field>\r\n  <button mat-raised-button color=\"warn\" style=\" font-size:10pt; height:35px; width:25px; margin-left:15px;\" (click)=\"clear()\"><mat-icon style=\" font-size:10pt; margin-top:10px\">backspace</mat-icon> clear</button>\r\n</div>\r\n<ul>\r\n  <li *ngIf=\"svc.missionBreadCrumb.id != -1\" style=\"display:inline\">\r\n    /<a (click)=\"goToMission()\" style=\"cursor:pointer\">{{svc.missionBreadCrumb.name}}</a>\r\n  </li>\r\n  <li *ngIf=\"svc.reportingUnitBreadCrumb.id != -1\" style=\"display:inline\">\r\n    /<a (click)=\"goToReportingUnit()\" style=\"cursor:pointer\">{{svc.reportingUnitBreadCrumb.name}}</a>\r\n  </li>\r\n\r\n</ul>\r\n<mission-table *ngIf=\"svc.stagingMissions[0].id != -1\"></mission-table>\r\n<reporting-unit-table *ngIf=\"svc.stagingReportingUnits[0].id != -1\"></reporting-unit-table>\r\n<topic-table *ngIf=\"svc.stagingTopics[0].id != -1\"></topic-table>\r\n<metric-table *ngIf=\"svc.stagingMetrics[0].id != -1\"></metric-table>\r\n\r\n"
 
 /***/ }),
 
@@ -729,6 +800,10 @@ var StagingComponent = /** @class */ (function () {
         this.svc.stagingMissions = [this.svc.missionBreadCrumb];
         this.svc.getReportingUnits();
     };
+    StagingComponent.prototype.goToReportingUnit = function () {
+        this.svc.stagingReportingUnits = [this.svc.reportingUnitBreadCrumb];
+        this.svc.getTopics();
+    };
     StagingComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'staging',
@@ -750,7 +825,7 @@ var StagingComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Topics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingTopics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let topic\"> {{topic.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let topic\">\r\n        <button  matTooltip=\"{{topic.id}}\" (click)=\"selectTopic(topic)\" type=\"button\"  mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div style=\"padding-left:35px\">\r\n  <caption style=\"padding-left:35px\"><b>Topics</b></caption>\r\n  <table mat-table [dataSource]=\"svc.stagingTopics\" class=\"mat-elevation-z8\" style=\"width:60%\">\r\n\r\n    <ng-container matColumnDef=\"name\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef> name </th>\r\n      <td mat-cell *matCellDef=\"let topic\"> {{topic.name}} </td>\r\n    </ng-container>\r\n    <ng-container matColumnDef=\"child\" style=\"padding-left:35px\">\r\n      <th mat-header-cell *matHeaderCellDef></th>\r\n      <td mat-cell *matCellDef=\"let topic\">\r\n        <button *ngIf=\"svc.stagingTopics.length > 1\"  matTooltip=\"{{topic.id}}\" (click)=\"selectTopic(topic)\" type=\"button\"  mat-icon-button color=\"primary\">\r\n          <mat-icon>people</mat-icon>\r\n        </button>\r\n      </td>\r\n    </ng-container>\r\n    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\r\n    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -977,6 +1052,50 @@ var LoginGuard = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/services/metricService.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/metricService.ts ***!
+  \*******************************************/
+/*! exports provided: MetricService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MetricService", function() { return MetricService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MetricService = /** @class */ (function () {
+    function MetricService(http, key, url) {
+        this.http = http;
+        this.key = key;
+        this.url = url;
+    }
+    MetricService.prototype.getStagingEdit = function (id) {
+        var header = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        return this.http.get(this.url + '/metrics/' + id + '/verbose', { headers: header }).toPromise();
+    };
+    MetricService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"], String, String])
+    ], MetricService);
+    return MetricService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/services/missionService.ts":
 /*!********************************************!*\
   !*** ./src/app/services/missionService.ts ***!
@@ -1036,13 +1155,16 @@ var MissionService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceMaster", function() { return ServiceMaster; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _LoginService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LoginService */ "./src/app/services/LoginService.ts");
-/* harmony import */ var _missionService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./missionService */ "./src/app/services/missionService.ts");
-/* harmony import */ var _Models_Mission__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Models/Mission */ "./src/app/Models/Mission.ts");
-/* harmony import */ var _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Models/ReportingUnit */ "./src/app/Models/ReportingUnit.ts");
-/* harmony import */ var _Models_Topic__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Models/Topic */ "./src/app/Models/Topic.ts");
-/* harmony import */ var _Models_Metric__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Models/Metric */ "./src/app/Models/Metric.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _LoginService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoginService */ "./src/app/services/LoginService.ts");
+/* harmony import */ var _missionService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./missionService */ "./src/app/services/missionService.ts");
+/* harmony import */ var _Models_Mission__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Models/Mission */ "./src/app/Models/Mission.ts");
+/* harmony import */ var _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Models/ReportingUnit */ "./src/app/Models/ReportingUnit.ts");
+/* harmony import */ var _Models_Topic__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Models/Topic */ "./src/app/Models/Topic.ts");
+/* harmony import */ var _Models_Metric__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Models/Metric */ "./src/app/Models/Metric.ts");
+/* harmony import */ var _metricService__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./metricService */ "./src/app/services/metricService.ts");
+/* harmony import */ var _components_MetricTable_edit_metric_dialog_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/MetricTable/edit-metric-dialog.component */ "./src/app/components/MetricTable/edit-metric-dialog.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1060,40 +1182,45 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var ServiceMaster = /** @class */ (function () {
-    function ServiceMaster(http) {
+    function ServiceMaster(http, dialog) {
         this.http = http;
+        this.dialog = dialog;
         this.stagingUrl = 'http://usafacts-api-staging.azurewebsites.net/api/v2';
-        this.loginService = new _LoginService__WEBPACK_IMPORTED_MODULE_2__["LoginService"](http);
-        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__["ReportingUnit"]();
+        this.loginService = new _LoginService__WEBPACK_IMPORTED_MODULE_3__["LoginService"](http);
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__["ReportingUnit"]();
         r.id = -1;
         this.stagingReportingUnits = [r];
         this.reportingUnitBreadCrumb = r;
-        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
+        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_7__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
-        var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
+        var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_5__["Mission"]();
         miss.id = -1;
         this.stagingMissions = [miss];
         this.missionBreadCrumb = miss;
-        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_8__["Metric"];
         met.id = -1;
         this.stagingMetrics = [met];
     }
     ServiceMaster.prototype.getAuthCode = function () {
         this.authCode = 'Basic ' + this.loginService.profile.SessionId;
-        this.missionService = new _missionService__WEBPACK_IMPORTED_MODULE_3__["MissionService"](this.http, this.authCode, this.stagingUrl);
+        this.missionService = new _missionService__WEBPACK_IMPORTED_MODULE_4__["MissionService"](this.http, this.authCode, this.stagingUrl);
+        this.metricService = new _metricService__WEBPACK_IMPORTED_MODULE_9__["MetricService"](this.http, this.authCode, this.stagingUrl);
         this.getMissions();
     };
     ServiceMaster.prototype.getMissions = function () {
         var _this = this;
-        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__["ReportingUnit"]();
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__["ReportingUnit"]();
         r.id = -1;
         this.stagingReportingUnits = [r];
-        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
+        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_7__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
-        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_8__["Metric"];
         met.id = -1;
         this.stagingMetrics = [met];
         this.missionBreadCrumb.id = -1;
@@ -1112,15 +1239,18 @@ var ServiceMaster = /** @class */ (function () {
         });
     };
     ServiceMaster.prototype.getReportingUnits = function () {
-        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_6__["Topic"]();
+        var t = new _Models_Topic__WEBPACK_IMPORTED_MODULE_7__["Topic"]();
         t.id = -1;
         this.stagingTopics = [t];
-        var m = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
+        var m = new _Models_Mission__WEBPACK_IMPORTED_MODULE_5__["Mission"]();
         m.id = -1;
-        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_8__["Metric"];
         met.id = -1;
         this.stagingMetrics = [met];
         this.missionBreadCrumb = m;
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__["ReportingUnit"]();
+        r.id = -1;
+        this.reportingUnitBreadCrumb = r;
         if (this.stagingMissions.length == 1) {
             if (this.stagingMissions[0].applicationType == 1) {
                 this.stagingReportingUnits = this.stagingMissions[0].reporting_units;
@@ -1131,25 +1261,39 @@ var ServiceMaster = /** @class */ (function () {
         }
     };
     ServiceMaster.prototype.getTopics = function () {
-        var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_4__["Mission"]();
+        var miss = new _Models_Mission__WEBPACK_IMPORTED_MODULE_5__["Mission"]();
         miss.id = -1;
-        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_7__["Metric"];
+        var met = new _Models_Metric__WEBPACK_IMPORTED_MODULE_8__["Metric"];
         met.id = -1;
         this.stagingMetrics = [met];
-        this.missionBreadCrumb = this.stagingMissions[0];
+        if (this.missionBreadCrumb.id == -1) {
+            this.missionBreadCrumb = this.stagingMissions[0];
+        }
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__["ReportingUnit"]();
+        r.id = -1;
+        this.reportingUnitBreadCrumb = r;
         this.stagingMissions = [miss];
         this.stagingTopics = this.stagingReportingUnits[0].topics;
     };
     ServiceMaster.prototype.trendToMetrics = function () {
-        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_5__["ReportingUnit"]();
+        var r = new _Models_ReportingUnit__WEBPACK_IMPORTED_MODULE_6__["ReportingUnit"]();
         r.id = -1;
         this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
         this.stagingReportingUnits = [r];
         this.stagingMetrics = this.stagingTopics[0].metrics;
     };
+    ServiceMaster.prototype.getMetricEdit = function (metric) {
+        var _this = this;
+        this.metricService.getStagingEdit(metric.id.toString()).then(function (response) {
+            _this.metricEdit = response;
+        });
+        var dialogRef = this.dialog.open(_components_MetricTable_edit_metric_dialog_component__WEBPACK_IMPORTED_MODULE_10__["EditMetricDialogComponent"], {
+            panelClass: 'mat-dialog-sm',
+        });
+    };
     ServiceMaster = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialog"]])
     ], ServiceMaster);
     return ServiceMaster;
 }());

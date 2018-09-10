@@ -10,9 +10,14 @@
   </mat-form-field>
   <button mat-raised-button color="warn" style=" font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> clear</button>
 </div>
-<ul >
+<ul>
   <li *ngIf="svc.missionBreadCrumb.id != -1" style="display:inline">
-    /<a (click)="goToMission()" style="cursor:pointer" >{{svc.missionBreadCrumb.name}}</a></li>
+    /<a (click)="goToMission()" style="cursor:pointer">{{svc.missionBreadCrumb.name}}</a>
+  </li>
+  <li *ngIf="svc.reportingUnitBreadCrumb.id != -1" style="display:inline">
+    /<a (click)="goToReportingUnit()" style="cursor:pointer">{{svc.reportingUnitBreadCrumb.name}}</a>
+  </li>
+
 </ul>
 <mission-table *ngIf="svc.stagingMissions[0].id != -1"></mission-table>
 <reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != -1"></reporting-unit-table>

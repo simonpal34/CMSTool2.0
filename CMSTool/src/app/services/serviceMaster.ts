@@ -1,5 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,6 +12,9 @@ import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
 import { Metric } from '../Models/Metric';
+import { MetricService } from './metricService';
+import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
+
 
 @Injectable()
 export class ServiceMaster {
@@ -23,7 +28,9 @@ export class ServiceMaster {
   missionBreadCrumb: Mission;
   reportingUnitBreadCrumb: ReportingUnit;
   stagingMetrics: Metric[];
-  constructor(protected http: HttpClient) {
+  metricService: MetricService;
+  metricEdit: Metric;
+  constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
     r.id = -1;
@@ -44,6 +51,7 @@ export class ServiceMaster {
   getAuthCode() {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
+    this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
     this.getMissions();
     
 
@@ -85,6 +93,9 @@ export class ServiceMaster {
     met.id = -1;
     this.stagingMetrics = [met];
     this.missionBreadCrumb = m;
+    var r = new ReportingUnit();
+    r.id = -1;
+    this.reportingUnitBreadCrumb = r;
     if (this.stagingMissions.length == 1) {
       if (this.stagingMissions[0].applicationType == 1) {
         
@@ -103,7 +114,12 @@ export class ServiceMaster {
     var met = new Metric;
     met.id = -1;
     this.stagingMetrics = [met];
-    this.missionBreadCrumb = this.stagingMissions[0];
+    if (this.missionBreadCrumb.id == -1) {
+      this.missionBreadCrumb = this.stagingMissions[0];
+    }
+    var r = new ReportingUnit();
+    r.id = -1;
+    this.reportingUnitBreadCrumb = r;
     this.stagingMissions = [miss];
     this.stagingTopics = this.stagingReportingUnits[0].topics;
   }
@@ -114,6 +130,16 @@ export class ServiceMaster {
     this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
     this.stagingReportingUnits = [r];
     this.stagingMetrics = this.stagingTopics[0].metrics;
+  }
+
+  getMetricEdit(metric: Metric) {
+    this.metricService.getStagingEdit(metric.id.toString()).then(response => {
+      this.metricEdit = response;
+    });
+    let dialogRef = this.dialog.open(EditMetricDialogComponent,
+      {
+        panelClass: 'mat-dialog-sm',
+      });
   }
 
 }

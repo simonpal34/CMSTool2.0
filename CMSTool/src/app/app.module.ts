@@ -17,7 +17,8 @@ import { ProfileComponent } from './components/Profile/profile.component'
 import { MissionTableComponent } from './components/MissionTable/missionTable.component'
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
-import { MetricTableComponent } from './components/MetricTable/metricTable.component'
+import { MetricTableComponent } from './components/MetricTable/metricTable.component';
+import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { MetricTableComponent } from './components/MetricTable/metricTable.compo
     MissionTableComponent,
     ReportingUnitTableComponent,
     TopicTableComponent,
-    MetricTableComponent
+    MetricTableComponent,
+    EditMetricDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +52,9 @@ import { MetricTableComponent } from './components/MetricTable/metricTable.compo
     FormBuilder,
     ServiceMaster,
     LoginGuard
+  ],
+  entryComponents: [
+    EditMetricDialogComponent
   ],
   bootstrap: [AppComponent]
 })
