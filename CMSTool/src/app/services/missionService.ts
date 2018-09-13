@@ -20,4 +20,9 @@ export class MissionService {
     return this.http.get<Mission[]>(this.url + '/population', { headers: header }).toPromise();
   }
 
+  public getStagingMissionBreadcrumb(id: string): Promise<Mission> {
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+
+    return this.http.get<Mission>(this.url + '/missions/' + id, { headers: header }).toPromise();
+  }
 }

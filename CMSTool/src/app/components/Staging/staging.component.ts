@@ -9,7 +9,7 @@ import { ServiceMaster } from '../../services/serviceMaster'
 })
 export class StagingComponent {
   search: FormGroup;
-  SearchID: String
+  SearchID: string
   constructor(fb: FormBuilder, private svc: ServiceMaster ) {
     this.search = fb.group({
       hideRequired: false,
@@ -20,16 +20,24 @@ export class StagingComponent {
 
   clear() {
     this.svc.getMissions();
+    this.SearchID = "";
   }
 goToMission()
 {
   this.svc.stagingMissions = [this.svc.missionBreadCrumb];
+  this.svc.stagingMissions[0].applicationType = 1;
   this.svc.getReportingUnits();
+  this.SearchID = "";
   }
 
   goToReportingUnit()
   {
     this.svc.stagingReportingUnits = [this.svc.reportingUnitBreadCrumb];
     this.svc.getTopics();
-    }
+    this.SearchID = "";
+  }
+
+  getSearch() {
+    this.svc.searchStaging(this.SearchID);
+  }
 }

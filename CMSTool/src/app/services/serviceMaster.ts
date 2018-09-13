@@ -11,8 +11,9 @@ import { MissionService } from './missionService';
 import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
-import { Metric } from '../Models/Metric';
+import { Metric, ScrapedMetric, ChartData } from '../Models/Metric';
 import { MetricService } from './metricService';
+import { ReportingUnitService } from './reportingUnitService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 
 
@@ -30,6 +31,9 @@ export class ServiceMaster {
   stagingMetrics: Metric[];
   metricService: MetricService;
   metricEdit: Metric;
+  reportingUnitService: ReportingUnitService;
+  scrapedMetric: ScrapedMetric;
+  data: ChartData;
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -52,6 +56,7 @@ export class ServiceMaster {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
+    this.reportingUnitService = new ReportingUnitService(this.http, this.authCode, this.stagingUrl);
     this.getMissions();
     
 
@@ -101,6 +106,12 @@ export class ServiceMaster {
         
         this.stagingReportingUnits = this.stagingMissions[0].reporting_units;
       }
+      if (this.stagingMissions[0].applicationType == 4) {
+        var m = this.stagingMissions[0];
+        this.searchStaging(this.stagingMissions[0].metrics.toString());
+        this.stagingMissions[0] = m;
+        
+      }
     }
     else {
       console.log("Error getting reporting units");
@@ -135,11 +146,57 @@ export class ServiceMaster {
   getMetricEdit(metric: Metric) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
+      this.metricService.getScraped(response).then(r => {
+        this.scrapedMetric = r
+      })
+      this.data = { metric : this.metricEdit, scraped : this.scrapedMetric}
+      let dialogRef = this.dialog.open(EditMetricDialogComponent,
+        {
+          panelClass: 'mat-dialog-lg',
+          data: this.data,
+          width: '75%',
+          height: '75%',
+          
+        });
     });
-    let dialogRef = this.dialog.open(EditMetricDialogComponent,
-      {
-        panelClass: 'mat-dialog-sm',
-      });
+    
+  
+  }
+
+  searchStaging(id: string) {
+    var t = new Topic();
+    t.id = -1;
+    this.stagingTopics = [t];
+    var m = new Mission()
+    m.id = -1;
+    this.stagingMissions = [m];
+    var r = new ReportingUnit();
+    r.id = -1;
+    this.stagingReportingUnits = [r];
+    this.missionBreadCrumb = m;
+    this.reportingUnitBreadCrumb = r;
+    this.metricService.getStagingMetricSearch(id).then(response => {
+      if (response.length == 0) {
+        var m = new Metric();
+        m.id = -2;
+        m.name = "No Metrics Found"
+        this.stagingMetrics = [m]
+      }
+      else {
+        this.stagingMetrics = response
+        if (response.length == 1) {
+        this.missionService.getStagingMissionBreadcrumb(this.stagingMetrics[0].ancestry.mission.toString()).then(m => {
+          this.missionBreadCrumb = m
+          this.reportingUnitBreadCrumb = this.missionBreadCrumb.reporting_units.find(r => r.id == this.stagingMetrics[0].ancestry.reporting_unit);
+        })
+
+      
+      }
+      }
+      
+ 
+    });
+   
   }
 
 }

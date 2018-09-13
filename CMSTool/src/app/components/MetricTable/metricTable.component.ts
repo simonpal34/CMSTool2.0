@@ -7,7 +7,7 @@ import { Metric } from '../../Models/Metric';
   templateUrl: './metricTable.component.html',
 })
 export class MetricTableComponent {
-  displayedColumns: string[] = ['child', 'name', 'edit'];
+  displayedColumns: string[] = ['child', 'name', 'last_modified','last_published', 'edit', 'publish'];
   constructor(private svc: ServiceMaster) {
 
   }

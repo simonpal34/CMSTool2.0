@@ -52,14 +52,25 @@ export class Data
     public y: number;
 }
 
-export class chartData
-{
-    data: number[];
-    label: string;
-}
 export class Ancestry {
   ancestor_metrics: number[];
   mission: number;
   reporting_unit: number;
   topic: number;
+}
+
+export class ScrapedMetric {
+  public Data: ScrapedData[];
+  public UnitPower: number;
+  public Name: string;
+
+}
+export class ScrapedData {
+  public Key: string;
+  public Value: number;
+}
+
+export class ChartData {
+  public metric: Metric;
+  public scraped: ScrapedMetric;
 }

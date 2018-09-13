@@ -4,6 +4,7 @@ import { FormsModule, FormBuilder } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { IgxCategoryChartModule } from "igniteui-angular-charts/ES5/igx-category-chart-module";
 
 
 
@@ -19,6 +20,7 @@ import { ReportingUnitTableComponent } from './components/ReportingUnitTable/rep
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
 import { MetricTableComponent } from './components/MetricTable/metricTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
+import { MAT_DIALOG_DATA } from "@angular/material";
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-
     HttpClientModule,
     FormsModule,
     MaterialModule,
+    IgxCategoryChartModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
@@ -51,7 +54,11 @@ import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-
   providers: [
     FormBuilder,
     ServiceMaster,
-    LoginGuard
+    LoginGuard,
+    {
+      provide: MAT_DIALOG_DATA,
+      useValue: {} // Add any data you wish to test if it is passed/used correctly
+    }
   ],
   entryComponents: [
     EditMetricDialogComponent

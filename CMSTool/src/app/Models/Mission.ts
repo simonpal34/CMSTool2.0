@@ -5,5 +5,5 @@ export class Mission {
     public name: string;
     public metrics: number[];
     public applicationType: number;
-    public reporting_units: ReportingUnit[];
+  public reporting_units: ReportingUnit[];
 }

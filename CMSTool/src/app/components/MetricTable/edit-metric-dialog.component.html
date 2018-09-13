@@ -1,11 +1,126 @@
-<h1 mat-dialog-title>Edit</h1>
-<div mat-dialog-content>
-  <form >
+<h1 mat-dialog-title>Edit {{metric.name}}</h1>
+<div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
+  <mat-tab-group style="width:100%; height:87%; overflow:visible  ">
+    <mat-tab label="Main" style="width:100%; height:100%;overflow:visible ">
+      <br />
+      <form style="width:100%; height:100%;overflow:visible ">
+        <div style="width:100%">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:65%">
+            <mat-label>Name</mat-label>
+            <input matInput name="name" [(ngModel)]="metric.name" value="{{metric.name}}">
+          </mat-form-field>
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="padding-left:15px;width:30%">
+            <mat-label>ID</mat-label>
+            <input matInput name="id" [(ngModel)]="metric.id" value="{{metric.id}}" readonly>
+          </mat-form-field>
+        </div>
 
-    <mat-form-field [floatLabel]="metricForm.value.floatLabel">
-      <mat-label>name</mat-label>
-      <input matInput name="user" >
+        <div style="width:100%">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:50%">
+            <mat-label>X Axis</mat-label>
+            <mat-select matInput name="x-type" [(ngModel)]="metric.x_type" value="{{metric.x_type}}">
+              <mat-option *ngFor="let s of axisLabels" [value]="s">
+                {{s}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="padding-left:15px; width:50%">
+            <mat-label>Y Axis</mat-label>
+            <mat-select matInput name="y_type" [(ngModel)]="metric.y_type" value="{{metric.y_type}}">
+              <mat-option *ngFor="let s of axisLabels" [value]="s">
+                {{s}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width:100%">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:50%">
+            <mat-label>Units</mat-label>
+            <input matInput name="units" [(ngModel)]="metric.rounding_unit" value="{{metric.rounding_unit}}">
+          </mat-form-field>
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="padding-left:15px; width:50%">
+            <mat-label>Sig Figs</mat-label>
+            <input matInput name="sig_figs" [(ngModel)]="metric.sig_figs" value="{{metric.sig_figs}}">
+          </mat-form-field>
+        </div>
+        <div style="width:100%">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:50%">
+            <mat-label>Edited By</mat-label>
+            <input matInput name="edited_by" [(ngModel)]="metric.modified_by" value="{{metric.modified_by}}" readonly>
+          </mat-form-field>
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="padding-left:15px; width:50%">
+            <mat-label>Sequence</mat-label>
+            <input matInput name="sequence" [(ngModel)]="metric.sequence" value="{{metric.sequence}}">
+          </mat-form-field>
+        </div>
+        <div style="width:100%" *ngIf="metric.LastUpdatedFromScraper">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:50%">
+            <mat-label>Database Source</mat-label>
+            <input matInput name="database_scraped" value="Scraped" readonly>
+          </mat-form-field>
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="padding-left:15px; width:50%">
+            <mat-label>Last Scraped</mat-label>
+            <input matInput name="lastUpdatedFromScraper" [(ngModel)]="metric.LastUpdatedFromScraper" value="{{metric.LastUpdatedFromScraper | date: 'fullDate'}}">
+          </mat-form-field>
+        </div>
+        <div style="width:100%" *ngIf="!metric.LastUpdatedFromScraper">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style=" width:50%">
+            <mat-label>Databse Dource:</mat-label>
+            <input matInput name="database_sheet" value="Spreadsheet">
+          </mat-form-field>
+        </div>
+        <div style="width:100%">
+          <mat-checkbox name="is_featured" [(ngModel)]="metric.is_featured" value="{{metric.is_featured}}" style="width:50%; padding-left:15px" color="primary">Is Featured</mat-checkbox>
+          <mat-checkbox name="is_visible" [(ngModel)]="metric.is_displayed" value="{{metric.is_displayed}}" style="width:50%; padding-left:15px" color="primary">Is Displayed</mat-checkbox>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="Meta Data">
+      <br />
+      <div *ngFor="let m of metric.meta">
+        <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:100%; height:40%">
+          <mat-label>{{m.type}}</mat-label>
+          <textarea matInput name="{{m.type}}" rows="3" [(ngModel)]="m.data" value="{{m.data}}"></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-flat-button color="warn" (click)="removeMeta(m)">Remove {{m.type}}</button>
+        </div>
+      </div>
+      <div class="pull-left" style="margin-top: 10px">
+        <button mat-flat-button *ngIf="!hasDef" color="primary" (click)="addDef()">Add Definition</button>
+        <button mat-flat-button *ngIf="!hasFootnotes" color="primary" (click)="addFoot()" style="margin-left:15px">Add Footnote</button>
+      </div>
 
-    </mat-form-field>
-    </form>
+    </mat-tab>
+    <mat-tab label="Sources"> Sources </mat-tab>
+    <mat-tab label="Adjustments"> Adjustments </mat-tab>
+    <mat-tab label="Data Points">
+      <div style="position:center; width: 100%; height: 100%; padding-left: 10px">
+        <igx-category-chart  style="position:center; height:200px; width:400px"
+                            [dataSource]="data"
+                            thickness="1"
+                            brushes="#4286f4, #e8b220, #11c111"
+                            markerBrushes="#4286f4, #e8b220, #11c111"
+                            chartTitle="{{metric.name}}"
+                            [chartType]="SplineAread"
+                            markerTypes="Circle"
+                            [tooltipTemplate]="valueTooltip">
+        </igx-category-chart>
+      </div>
+      <ng-template let-series="series" let-item="item" #valueTooltip>
+        <div>
+          <span [style.color]="series.actualBrush">{{metric.name}}:  {{item.y}}<br /></span>
+          <span *ngIf="scraped" [style.color]="series.actualBrush">{{scraped.Name}}: {{item.y}}<br /></span>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  <mat-dialog-actions style="overflow:visible">
+    <div>
+      <button mat-flat-button color="primary" (click)="save()" >Save</button>
+    </div>
+    <div style="padding-left:15px;">
+      <button mat-flat-button color="warn" (click)="cancel()" >Cancel</button>
+    </div>
+  </mat-dialog-actions>
 </div>
