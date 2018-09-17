@@ -18,6 +18,7 @@ export class EditMetricDialogComponent {
   hasFootnotes: boolean = false;
   data: any[];
   scraped: ScrapedMetric;
+  hasData: boolean;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ChartData) {
     
@@ -40,12 +41,20 @@ export class EditMetricDialogComponent {
         }
       }
     }
-    this.data = [this.metric.data]
-    if (this.scraped) {
-      if (this.scraped.Data && this.scraped.Data.length != 0) {
-        this.scraped.Name = this.scraped.Name + "-- scraped"
-        this.data.push(this.scraped);
+    if (this.metric.data) {
+      this.hasData = true;
+      this.data = [this.metric.data];
+      if (this.scraped) {
+        if (this.scraped.Data && this.scraped.Data.length != 0) {
+          this.scraped.Name = this.scraped.Name + "-- scraped"
+          this.data.push(this.scraped);
+        }
       }
+
+
+    }
+    else {
+      this.hasData = false;
     }
     
     

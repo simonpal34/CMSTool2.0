@@ -190,6 +190,12 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
+              if (m.children && m.children.length > 0) {
+                m.hasChildren = true;
+              }
+              else {
+                m.hasChildren = false;
+              }
               var i = temp.findIndex(met => met.id == m.id);
               temp[i] = m;
               console.log(m.name + " " + i);
@@ -202,6 +208,45 @@ export class ServiceMaster {
     });
     
   
+  }
+
+  getChildMetricEdit(metric: Metric) {
+    this.metricService.getStagingEdit(metric.id.toString()).then(response => {
+      this.metricEdit = response;
+      this.metricService.getScraped(response).then(r => {
+        this.scrapedMetric = r;
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric }
+        let dialogRef = this.dialog.open(EditMetricDialogComponent,
+          {
+            panelClass: 'mat-dialog-lg',
+            data: this.data,
+            width: '75%',
+            height: '75%',
+
+          });
+        var temp = Object.assign([], this.stagingChildren);
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.metricService.stagingPost(result).then(m => {
+              if (m.children && m.children.length > 0) {
+                m.hasChildren = true;
+              }
+              else {
+                m.hasChildren = false;
+              }
+              var i = temp.findIndex(met => met.id == m.id);
+              temp[i] = m;
+              console.log(m.name + " " + i);
+              this.stagingChildren = Object.assign([], temp)
+            });
+          }
+        });
+      });
+
+    });
+
+
   }
 
   searchStaging(id: string) {
@@ -254,13 +299,6 @@ export class ServiceMaster {
   }
 
   trendToChildren(m: Metric) {
-    if (this.stagingTopics[0].id != -1) {
-      this.topicBreadCrumb = this.stagingTopics[0];
-      var t = new Topic();
-      t.id = -1;
-      this.stagingTopics = [t];
-    }
-    this.stagingMetrics = [m];
     this.metricService.getStagingMetricSearch(m.children.toString()).then(response => {
       this.stagingChildren = response;
       for (var i = 0; i < response.length; i++) {

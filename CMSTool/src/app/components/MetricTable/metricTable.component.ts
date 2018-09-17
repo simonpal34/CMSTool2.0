@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric } from '../../Models/Metric';
+import { Topic } from '../../Models/Topic';
 
 @Component({
   selector: 'metric-table',
@@ -16,6 +17,13 @@ export class MetricTableComponent {
   }
 
   trendToChildren(m: Metric) {
+    if (this.svc.stagingTopics[0].id != -1) {
+      this.svc.topicBreadCrumb = this.svc.stagingTopics[0];
+      var t = new Topic();
+      t.id = -1;
+      this.svc.stagingTopics = [t];
+    }
+    this.svc.stagingMetrics = [m];
     this.svc.trendToChildren(m);
   }
 

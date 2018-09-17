@@ -12,11 +12,12 @@ export class ChildrenTableComponent {
 
   }
   openEdit(metric: Metric) {
- 
+    this.svc.getChildMetricEdit(metric)
   }
 
   trendToChildren(m: Metric) {
-    
+    this.svc.stagingMetrics = [m];
+    this.svc.trendToChildren(m);
   }
 
 }
