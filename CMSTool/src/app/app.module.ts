@@ -19,6 +19,7 @@ import { MissionTableComponent } from './components/MissionTable/missionTable.co
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
 import { MetricTableComponent } from './components/MetricTable/metricTable.component';
+import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
 
@@ -33,7 +34,8 @@ import { MAT_DIALOG_DATA } from "@angular/material";
     ReportingUnitTableComponent,
     TopicTableComponent,
     MetricTableComponent,
-    EditMetricDialogComponent
+    EditMetricDialogComponent,
+    ChildrenTableComponent
   ],
   imports: [
     BrowserModule,

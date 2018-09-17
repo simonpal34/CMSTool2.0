@@ -36,6 +36,11 @@ goToMission()
     this.svc.getTopics();
     this.SearchID = "";
   }
+  goToTopic() {
+    this.svc.stagingTopics = [this.svc.topicBreadCrumb];
+    this.svc.trendToMetrics();
+    this.SearchID = "";
+  }
 
   getSearch() {
     this.svc.searchStaging(this.SearchID);

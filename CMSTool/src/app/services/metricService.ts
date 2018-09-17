@@ -25,6 +25,14 @@ export class MetricService {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     return this.http.get<ScrapedMetric>('http://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise();
   }
+
+  stagingPost(m: Metric): Promise<Metric> {
+    m.lexicon_name = m.name;
+    var body = JSON.stringify(m);
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+
+    return this.http.put<Metric>(this.url + '/metrics/update/verbose',body, { headers: header }).toPromise();
+  }
   
 
 }

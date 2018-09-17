@@ -65,8 +65,8 @@
         </div>
         <div style="width:100%" *ngIf="!metric.LastUpdatedFromScraper">
           <mat-form-field [floatLabel]="metricForm.value.floatLabel" style=" width:50%">
-            <mat-label>Databse Dource:</mat-label>
-            <input matInput name="database_sheet" value="Spreadsheet">
+            <mat-label>Databse Source:</mat-label>
+            <input matInput name="database_sheet" value="Spreadsheet" readonly>
           </mat-form-field>
         </div>
         <div style="width:100%">

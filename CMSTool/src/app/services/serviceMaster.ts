@@ -13,7 +13,6 @@ import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
 import { Metric, ScrapedMetric, ChartData } from '../Models/Metric';
 import { MetricService } from './metricService';
-import { ReportingUnitService } from './reportingUnitService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 
 
@@ -31,9 +30,10 @@ export class ServiceMaster {
   stagingMetrics: Metric[];
   metricService: MetricService;
   metricEdit: Metric;
-  reportingUnitService: ReportingUnitService;
   scrapedMetric: ScrapedMetric;
   data: ChartData;
+  stagingChildren: Metric[];
+  topicBreadCrumb: Topic;
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -43,6 +43,7 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    this.topicBreadCrumb = t;
     var miss = new Mission();
     miss.id = -1;
     this.stagingMissions = [miss];
@@ -50,13 +51,13 @@ export class ServiceMaster {
     var met = new Metric;
     met.id = -1;
     this.stagingMetrics = [met];
+    this.stagingChildren = [met];
   }
 
   getAuthCode() {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
-    this.reportingUnitService = new ReportingUnitService(this.http, this.authCode, this.stagingUrl);
     this.getMissions();
     
 
@@ -69,9 +70,11 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    this.topicBreadCrumb = t;
     var met = new Metric;
     met.id = -1;
     this.stagingMetrics = [met];
+    this.stagingChildren = [met];
     this.missionBreadCrumb.id = -1
     this.reportingUnitBreadCrumb.id = -1;
     this.missionService.getStagingMissions().then(response => {
@@ -92,11 +95,13 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    this.topicBreadCrumb = t;
     var m = new Mission()
     m.id = -1;
     var met = new Metric;
     met.id = -1;
     this.stagingMetrics = [met];
+    this.stagingChildren = [met];
     this.missionBreadCrumb = m;
     var r = new ReportingUnit();
     r.id = -1;
@@ -125,6 +130,10 @@ export class ServiceMaster {
     var met = new Metric;
     met.id = -1;
     this.stagingMetrics = [met];
+    this.stagingChildren = [met];
+    var t = new Topic();
+    t.id = -1;
+    this.topicBreadCrumb = t;
     if (this.missionBreadCrumb.id == -1) {
       this.missionBreadCrumb = this.stagingMissions[0];
     }
@@ -136,28 +145,58 @@ export class ServiceMaster {
   }
 
   trendToMetrics() {
+    var met = new Metric;
+    met.id = -1;
+    this.stagingChildren = [met];
     var r = new ReportingUnit();
     r.id = -1;
-    this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
+    if (this.stagingReportingUnits[0].id != -1)
+    {
+         this.reportingUnitBreadCrumb = this.stagingReportingUnits[0];
+    }
+ 
     this.stagingReportingUnits = [r];
+    var t = new Topic();
+    t.id = -1;
+    this.topicBreadCrumb = t;
+    for (var i = 0; i < this.stagingTopics[0].metrics.length; i++) {
+      if (this.stagingTopics[0].metrics[i].children && this.stagingTopics[0].metrics[i].children.length != 0) {
+        this.stagingTopics[0].metrics[i].hasChildren = true;
+      }
+      else {
+        this.stagingTopics[0].metrics[i].hasChildren = false;
+      }
+    }
     this.stagingMetrics = this.stagingTopics[0].metrics;
+    
   }
 
-  getMetricEdit(metric: Metric) {
+  getParentMetricEdit(metric: Metric) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(r => {
-        this.scrapedMetric = r
-      })
-      this.data = { metric : this.metricEdit, scraped : this.scrapedMetric}
-      let dialogRef = this.dialog.open(EditMetricDialogComponent,
-        {
-          panelClass: 'mat-dialog-lg',
-          data: this.data,
-          width: '75%',
-          height: '75%',
-          
+        this.scrapedMetric = r;
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric }
+        let dialogRef = this.dialog.open(EditMetricDialogComponent,
+          {
+            panelClass: 'mat-dialog-lg',
+            data: this.data,
+            width: '75%',
+            height: '75%',
+
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.metricService.stagingPost(result).then(m => {
+              
+              var i = this.stagingMetrics.findIndex(met => met.id == m.id);
+              console.log(i);
+              this.stagingMetrics[i] = m;
+            });
+          }
         });
+      });
+      
     });
     
   
@@ -167,29 +206,42 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.stagingTopics = [t];
+    this.topicBreadCrumb = t;
     var m = new Mission()
     m.id = -1;
     this.stagingMissions = [m];
     var r = new ReportingUnit();
     r.id = -1;
     this.stagingReportingUnits = [r];
+    var met = new Metric;
+    met.id = -1;
+    this.stagingChildren = [met];
     this.missionBreadCrumb = m;
     this.reportingUnitBreadCrumb = r;
+
     this.metricService.getStagingMetricSearch(id).then(response => {
       if (response.length == 0) {
         var m = new Metric();
         m.id = -2;
-        m.name = "No Metrics Found"
-        this.stagingMetrics = [m]
+        m.name = "No Metrics Found";
+        this.stagingMetrics = [m];
       }
       else {
-        this.stagingMetrics = response
+        this.stagingMetrics = response;
         if (response.length == 1) {
-        this.missionService.getStagingMissionBreadcrumb(this.stagingMetrics[0].ancestry.mission.toString()).then(m => {
-          this.missionBreadCrumb = m
-          this.reportingUnitBreadCrumb = this.missionBreadCrumb.reporting_units.find(r => r.id == this.stagingMetrics[0].ancestry.reporting_unit);
-        })
-
+          this.missionService.getStagingMissionBreadcrumb(this.stagingMetrics[0].ancestry.mission.toString()).then(m => {
+            this.missionBreadCrumb = m;
+            this.reportingUnitBreadCrumb = this.missionBreadCrumb.reporting_units.find(r => r.id == this.stagingMetrics[0].ancestry.reporting_unit);
+            this.topicBreadCrumb = this.reportingUnitBreadCrumb.topics.find(t => t.id == this.stagingMetrics[0].ancestry.topic);
+          });
+          for (var i = 0; i < response.length; i++) {
+            if (this.stagingMetrics[i].children && this.stagingMetrics[i].children.length != 0) {
+              this.stagingMetrics[i].hasChildren = true;
+            }
+            else {
+              this.stagingMetrics[i].hasChildren = false;
+            }
+          }
       
       }
       }
@@ -198,5 +250,28 @@ export class ServiceMaster {
     });
    
   }
+
+  trendToChildren(m: Metric) {
+    if (this.stagingTopics[0].id != -1) {
+      this.topicBreadCrumb = this.stagingTopics[0];
+      var t = new Topic();
+      t.id = -1;
+      this.stagingTopics = [t];
+    }
+    this.stagingMetrics = [m];
+    this.metricService.getStagingMetricSearch(m.children.toString()).then(response => {
+      this.stagingChildren = response;
+      for (var i = 0; i < response.length; i++) {
+        if (this.stagingChildren[i].children && this.stagingChildren[i].children.length != 0) {
+          this.stagingChildren[i].hasChildren = true;
+        }
+        else {
+          this.stagingChildren[i].hasChildren = false;
+        }
+      }
+    })
+  }
+
+
 
 }

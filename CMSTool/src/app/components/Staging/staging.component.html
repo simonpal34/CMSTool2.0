@@ -18,10 +18,14 @@
   <li *ngIf="svc.reportingUnitBreadCrumb.id != -1" style="display:inline">
     /<a (click)="goToReportingUnit()" style="cursor:pointer">{{svc.reportingUnitBreadCrumb.name}}</a>
   </li>
+  <li *ngIf="svc.topicBreadCrumb.id != -1" style="display:inline">
+    /<a (click)="goToTopic()" style="cursor:pointer">{{svc.topicBreadCrumb.name}}</a>
+  </li>
 
 </ul>
 <mission-table *ngIf="svc.stagingMissions[0].id != -1"></mission-table>
 <reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != -1"></reporting-unit-table>
 <topic-table *ngIf="svc.stagingTopics[0].id != -1"></topic-table>
 <metric-table *ngIf="svc.stagingMetrics[0].id != -1"></metric-table>
+<children-table *ngIf="svc.stagingChildren[0].id != -1"></children-table>
 

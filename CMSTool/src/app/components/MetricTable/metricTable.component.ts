@@ -12,7 +12,11 @@ export class MetricTableComponent {
 
   }
   openEdit(metric: Metric) {
-    this.svc.getMetricEdit(metric);
+    this.svc.getParentMetricEdit(metric);
+  }
+
+  trendToChildren(m: Metric) {
+    this.svc.trendToChildren(m);
   }
 
 }
