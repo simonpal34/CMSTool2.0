@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from "@angular/core";
+import { NgModule, ErrorHandler, ChangeDetectorRef  } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { FormsModule, FormBuilder } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';

@@ -185,13 +185,15 @@ export class ServiceMaster {
             height: '75%',
 
           });
+        var temp = Object.assign([], this.stagingMetrics);
+      
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
-              
-              var i = this.stagingMetrics.findIndex(met => met.id == m.id);
-              console.log(i);
-              this.stagingMetrics[i] = m;
+              var i = temp.findIndex(met => met.id == m.id);
+              temp[i] = m;
+              console.log(m.name + " " + i);
+              this.stagingMetrics = Object.assign([], temp)
             });
           }
         });
