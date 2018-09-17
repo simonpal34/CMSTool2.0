@@ -275,20 +275,21 @@ export class ServiceMaster {
       }
       else {
         this.stagingMetrics = response;
+        for (var i = 0; i < response.length; i++) {
+          if (this.stagingMetrics[i].children && this.stagingMetrics[i].children.length != 0) {
+            this.stagingMetrics[i].hasChildren = true;
+          }
+          else {
+            this.stagingMetrics[i].hasChildren = false;
+          }
+        }
         if (response.length == 1) {
           this.missionService.getStagingMissionBreadcrumb(this.stagingMetrics[0].ancestry.mission.toString()).then(m => {
             this.missionBreadCrumb = m;
             this.reportingUnitBreadCrumb = this.missionBreadCrumb.reporting_units.find(r => r.id == this.stagingMetrics[0].ancestry.reporting_unit);
             this.topicBreadCrumb = this.reportingUnitBreadCrumb.topics.find(t => t.id == this.stagingMetrics[0].ancestry.topic);
           });
-          for (var i = 0; i < response.length; i++) {
-            if (this.stagingMetrics[i].children && this.stagingMetrics[i].children.length != 0) {
-              this.stagingMetrics[i].hasChildren = true;
-            }
-            else {
-              this.stagingMetrics[i].hasChildren = false;
-            }
-          }
+          
       
       }
       }

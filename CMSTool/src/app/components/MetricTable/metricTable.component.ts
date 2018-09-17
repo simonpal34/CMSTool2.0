@@ -23,6 +23,13 @@ export class MetricTableComponent {
       t.id = -1;
       this.svc.stagingTopics = [t];
     }
+    if (this.svc.missionBreadCrumb.id == -1) {
+      this.svc.missionService.getStagingMissionBreadcrumb(m.ancestry.mission.toString()).then(result => {
+        this.svc.missionBreadCrumb = result;
+        this.svc.reportingUnitBreadCrumb = this.svc.missionBreadCrumb.reporting_units.find(r => r.id == m.ancestry.reporting_unit);
+        this.svc.topicBreadCrumb = this.svc.reportingUnitBreadCrumb.topics.find(t => t.id == m.ancestry.topic)
+      })
+    }
     this.svc.stagingMetrics = [m];
     this.svc.trendToChildren(m);
   }
