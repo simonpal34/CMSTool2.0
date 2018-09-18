@@ -1,5 +1,5 @@
 <h2>Hi, {{svc.loginService.profile.FirstName}}</h2>
-<mat-form-field [floatLabel]="options.value.floatLabel">
+<mat-form-field [floatLabel]="options.value.floatLabel" style="padding-left:15px">
   <mat-label>First Name</mat-label>
   <input matInput [(ngModel)]="svc.loginService.profile.FirstName"  value="{{svc.loginService.profile.FirstName}}">
 </mat-form-field>
@@ -8,12 +8,12 @@
   <input matInput [(ngModel)]="svc.loginService.profile.LastName" value="{{svc.loginService.profile.LastName}}">
 </mat-form-field>
 <br />
-<mat-form-field [floatLabel]="options.value.floatLabel" style="width:20%">
+<mat-form-field [floatLabel]="options.value.floatLabel" style="width:20%; padding-left:15px">
   <mat-label>Email</mat-label>
   <input matInput [(ngModel)]="svc.loginService.profile.Email" value="{{svc.loginService.profile.Email}}">
 </mat-form-field>
 <br />
-<mat-form-field [floatLabel]="options.value.floatLabel" >
+<mat-form-field [floatLabel]="options.value.floatLabel" style="padding-left:15px">
   <mat-label>Password</mat-label>
   <input matInput [(ngModel)]="svc.loginService.profile.Password" value="{{svc.loginService.profile.Password}}">
 </mat-form-field>

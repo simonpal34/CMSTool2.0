@@ -94,9 +94,8 @@
     </mat-tab>
     <mat-tab label="Sources"> Sources </mat-tab>
     <mat-tab label="Adjustments"> Adjustments </mat-tab>
-    <mat-tab label="Data Points" *ngIf="hasData">
-      <div style="position:center; width: 100%; height: 100%; padding-left: 10px">
-        <igx-category-chart  style="position:center; height:200px; width:400px"
+    <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
+        <igx-category-chart  style="position:center; height:400px; overflow:hidden; padding:40px "
                             [dataSource]="data"
                             thickness="1"
                             brushes="#4286f4, #e8b220, #11c111"
@@ -106,12 +105,9 @@
                             markerTypes="Circle"
                             [tooltipTemplate]="valueTooltip">
         </igx-category-chart>
-      </div>
-      <ng-template let-series="series" let-item="item" #valueTooltip>
-        <div>
-          <span [style.color]="series.actualBrush">{{metric.name}}:  {{item.y}}<br /></span>
-          <span *ngIf="scraped" [style.color]="series.actualBrush">{{scraped.Name}}: {{item.y}}<br /></span>
-        </div>
+      <ng-template let-series="series" let-item="item" style="overflow:visible;" #valueTooltip>
+          <span [style.color]="series.actualBrush" style="font-size:10px">{{metric.name}}:  {{item.y}}<br /></span>
+          <span *ngIf="scraped" [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.value}}<br /></span>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

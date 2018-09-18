@@ -10,7 +10,7 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let topic">
         <button *ngIf="svc.stagingTopics.length > 1"  matTooltip="{{topic.id}}" (click)="selectTopic(topic)" type="button"  mat-icon-button color="primary">
-          <mat-icon>people</mat-icon>
+          <mat-icon style="color:#002c77">people</mat-icon>
         </button>
       </td>
     </ng-container>
