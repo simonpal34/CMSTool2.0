@@ -4,7 +4,7 @@
     <ng-container matColumnDef="child" style="padding-left:35px" >
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let metric">
-        <button *ngIf="svc.stagingMetrics[0].id != -2 && metric.hasChildren" (click)="trendToChildren(metric)" matTooltip="{{metric.id}}" type="button" mat-icon-button style="color:#002c77">
+        <button *ngIf="svc.stagingMetrics[0].id != -2 && metric.hasChildren && svc.stagingChildren[0].id == -1" (click)="trendToChildren(metric)" matTooltip="{{metric.id}}" type="button" mat-icon-button style="color:#002c77">
           <mat-icon style="color:#002c77">people</mat-icon>
         </button>
       </td>

@@ -30,6 +30,7 @@ export class MetricTableComponent {
         this.svc.topicBreadCrumb = this.svc.reportingUnitBreadCrumb.topics.find(t => t.id == m.ancestry.topic)
       })
     }
+
     this.svc.stagingMetrics = [m];
     this.svc.trendToChildren(m);
   }

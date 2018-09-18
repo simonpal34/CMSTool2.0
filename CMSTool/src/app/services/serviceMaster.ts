@@ -34,6 +34,7 @@ export class ServiceMaster {
   data: ModalData;
   stagingChildren: Metric[];
   topicBreadCrumb: Topic;
+  metricsBreadCrumbs: Metric[]
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -52,6 +53,7 @@ export class ServiceMaster {
     met.id = -1;
     this.stagingMetrics = [met];
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
   }
 
   getAuthCode() {
@@ -75,6 +77,7 @@ export class ServiceMaster {
     met.id = -1;
     this.stagingMetrics = [met];
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
     this.missionBreadCrumb.id = -1
     this.reportingUnitBreadCrumb.id = -1;
     this.missionService.getStagingMissions().then(response => {
@@ -102,6 +105,7 @@ export class ServiceMaster {
     met.id = -1;
     this.stagingMetrics = [met];
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
     this.missionBreadCrumb = m;
     var r = new ReportingUnit();
     r.id = -1;
@@ -131,6 +135,7 @@ export class ServiceMaster {
     met.id = -1;
     this.stagingMetrics = [met];
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
     var t = new Topic();
     t.id = -1;
     this.topicBreadCrumb = t;
@@ -148,6 +153,7 @@ export class ServiceMaster {
     var met = new Metric;
     met.id = -1;
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
     var r = new ReportingUnit();
     r.id = -1;
     if (this.stagingReportingUnits[0].id != -1)
@@ -263,6 +269,7 @@ export class ServiceMaster {
     var met = new Metric;
     met.id = -1;
     this.stagingChildren = [met];
+    this.metricsBreadCrumbs = [met];
     this.missionBreadCrumb = m;
     this.reportingUnitBreadCrumb = r;
 
@@ -289,6 +296,25 @@ export class ServiceMaster {
             this.reportingUnitBreadCrumb = this.missionBreadCrumb.reporting_units.find(r => r.id == this.stagingMetrics[0].ancestry.reporting_unit);
             this.topicBreadCrumb = this.reportingUnitBreadCrumb.topics.find(t => t.id == this.stagingMetrics[0].ancestry.topic);
           });
+          if (this.stagingMetrics[0].ancestry.ancestor_metrics) {
+            this.metricService.getStagingMetricSearch(this.stagingMetrics[0].ancestry.ancestor_metrics.toString()).then(r => {
+              this.metricsBreadCrumbs = r;
+              this.metricsBreadCrumbs.push(response[0]);
+            });
+          }
+          if (this.stagingMetrics[0].hasChildren) {
+            this.metricService.getStagingMetricSearch(this.stagingMetrics[0].children.toString()).then(response => {
+              this.stagingChildren = response;
+              for (var i = 0; i < response.length; i++) {
+                if (this.stagingChildren[i].children && this.stagingChildren[i].children.length != 0) {
+                  this.stagingChildren[i].hasChildren = true;
+                }
+                else {
+                  this.stagingChildren[i].hasChildren = false;
+                }
+              }
+            })
+          }
           
       
       }
@@ -300,6 +326,7 @@ export class ServiceMaster {
   }
 
   trendToChildren(m: Metric) {
+    this.metricsBreadCrumbs.push(m);
     this.metricService.getStagingMetricSearch(m.children.toString()).then(response => {
       this.stagingChildren = response;
       for (var i = 0; i < response.length; i++) {

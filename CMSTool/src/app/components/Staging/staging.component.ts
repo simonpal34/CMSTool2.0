@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceMaster } from '../../services/serviceMaster'
+import { Metric } from '../../Models/Metric';
 
 
 @Component({
@@ -44,5 +45,9 @@ goToMission()
 
   getSearch() {
     this.svc.searchStaging(this.SearchID);
+  }
+
+  goToMetric(m: Metric) {
+    this.svc.searchStaging(m.id.toString());
   }
 }

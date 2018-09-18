@@ -13,7 +13,7 @@
 </div>
 <ul>
   <li *ngIf="svc.missionBreadCrumb.id != -1" style="display:inline">
-    /<a (click)="goToMission()" style="cursor:pointer">{{svc.missionBreadCrumb.name}}</a>
+    <a (click)="goToMission()" style="cursor:pointer">{{svc.missionBreadCrumb.name}}</a>
   </li>
   <li *ngIf="svc.reportingUnitBreadCrumb.id != -1" style="display:inline">
     /<a (click)="goToReportingUnit()" style="cursor:pointer">{{svc.reportingUnitBreadCrumb.name}}</a>
@@ -21,7 +21,10 @@
   <li *ngIf="svc.topicBreadCrumb.id != -1" style="display:inline">
     /<a (click)="goToTopic()" style="cursor:pointer">{{svc.topicBreadCrumb.name}}</a>
   </li>
-
+  <li  *ngFor="let metric of svc.metricsBreadCrumbs" style="display:inline">
+    <p style="display:inline;" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= -1">/</p><a style="cursor:pointer" (click)="goToMetric(metric)" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= -1">{{metric.name}}</a>
+    <p style="display:inline;" *ngIf="metric.id == svc.stagingMetrics[0].id && metric.id!= -1">/{{metric.name}}</p>
+  </li>
 </ul>
 <mission-table *ngIf="svc.stagingMissions[0].id != -1"></mission-table>
 <reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != -1"></reporting-unit-table>
