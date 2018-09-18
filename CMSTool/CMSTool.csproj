@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\app\components\Export\export.component.ts" />
     <None Remove="src\app\components\Login\login.component.ts" />
     <None Remove="src\app\components\MetricTable\childrenTable.component.ts" />
     <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
@@ -41,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="src\app\components\Export\export.component.ts" />
     <TypeScriptCompile Include="src\app\components\Login\login.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\childrenTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />

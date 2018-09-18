@@ -11,7 +11,7 @@ export class AppComponent {
   title: string
   isUserLoggedIn: boolean;
   constructor(private svc: ServiceMaster, private router: Router) {
-    this.title = 'USA Facts Data Tool';
+    this.title = 'USA Facts CMS';
     
   }
 

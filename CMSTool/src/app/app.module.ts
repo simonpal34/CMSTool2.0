@@ -14,6 +14,7 @@ import { MaterialModule } from './Modules/material.module';
 import { ServiceMaster } from './services/serviceMaster';
 import { LoginGuard } from './services/login-guard.service';
 import { StagingComponent } from './components/Staging/staging.component';
+import { ExportComponent } from './components/Export/export.component';
 import { ProfileComponent } from './components/Profile/profile.component'
 import { MissionTableComponent } from './components/MissionTable/missionTable.component'
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
@@ -29,6 +30,7 @@ import { MAT_DIALOG_DATA } from "@angular/material";
     AppComponent,
     LoginComponent,
     StagingComponent,
+    ExportComponent,
     ProfileComponent,
     MissionTableComponent,
     ReportingUnitTableComponent,
@@ -48,6 +50,7 @@ import { MAT_DIALOG_DATA } from "@angular/material";
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
       { path: "staging", component: StagingComponent, canActivate: [LoginGuard], data: { title: "Staging" } },
+      { path: "export", component: ExportComponent, canActivate: [LoginGuard], data: { title: "Export" } },
       { path: "profile", component: ProfileComponent, canActivate: [LoginGuard], data: { title: "Profile" } }
 
     ])

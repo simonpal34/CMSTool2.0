@@ -1,2 +1,5 @@
 /CMSTool/bin
 /.vs
+/CMSTool/obj
+/CMSTool/Properties/PublishProfiles
+/CMSTool/wwwroot

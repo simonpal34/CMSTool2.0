@@ -4,6 +4,7 @@ export class Profile {
     public Email: string;
     public Password: string;
     public SessionId: string;
+    public Role: string;
     public id: string;
     public key: string;
 
