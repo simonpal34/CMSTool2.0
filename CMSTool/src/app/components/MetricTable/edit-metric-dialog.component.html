@@ -94,8 +94,14 @@
     </mat-tab>
     <mat-tab label="Sources"> Sources </mat-tab>
     <mat-tab label="Adjustments"> Adjustments </mat-tab>
+<<<<<<< HEAD
     <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
         <igx-category-chart  style="position:center; height:400px; overflow:hidden; padding:40px "
+=======
+    <mat-tab label="Data Points" *ngIf="hasData">
+      <div style="position:center; width: 100%; height: 100%; padding-left: 10px">
+        <igx-category-chart  style="position:center; height:400px; margin-right:25px; margin-bottom:15px"
+>>>>>>> f489d809638c60d03f9914738a997d1985c3e0a2
                             [dataSource]="data"
                             thickness="1"
                             brushes="#4286f4, #e8b220, #11c111"
