@@ -2,7 +2,7 @@ import { Component, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ServiceMaster } from '../../services/serviceMaster';
-import { Metric, Meta, ChartData, ScrapedMetric } from '../../Models/Metric';
+import { Metric, Meta, ModalData, ChartData, ScrapedMetric } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 
 
@@ -16,11 +16,11 @@ export class EditMetricDialogComponent {
   axisLabels: string[];
   hasDef: boolean = false;
   hasFootnotes: boolean = false;
-  data: any[];
+  data: ChartData[][];
   scraped: ScrapedMetric;
   hasData: boolean;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ChartData) {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     
     this.metricForm = fb.group({
       hideRequired: false,
@@ -43,16 +43,30 @@ export class EditMetricDialogComponent {
     }
     if (this.metric.data) {
       this.hasData = true;
-      this.data = [this.metric.data];
+      this.data = new Array<Array<ChartData>>();
+      var temp1 = new Array<ChartData>();
+      for (var i = 0; i < this.metric.data.length; i++) {
+        var d = new ChartData();
+        d.Year = this.metric.data[i].x;
+        d.Staging = this.metric.data[i].y
+        temp1.push(d);
+      }
+      this.data.push(temp1)
       if (this.scraped) {
         if (this.scraped.Data && this.scraped.Data.length != 0) {
           this.scraped.Name = this.scraped.Name + "-- scraped"
-          this.data.push(this.scraped);
+          var temp2 = new Array<ChartData>();
+          for (var i = 0; i < this.scraped.Data.length; i++) {
+            var d = new ChartData();
+            d.Year = this.scraped.Data[i].Key;
+            d.Scraped = this.scraped.Data[i].Value;
+            temp2.push(d);
+          }
+          this.data.push(temp2)
+            
+          }
         }
       }
-
-
-    }
     else {
       this.hasData = false;
     }

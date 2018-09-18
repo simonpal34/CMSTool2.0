@@ -11,7 +11,7 @@ import { MissionService } from './missionService';
 import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
-import { Metric, ScrapedMetric, ChartData } from '../Models/Metric';
+import { Metric, ScrapedMetric, ModalData } from '../Models/Metric';
 import { MetricService } from './metricService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 
@@ -31,7 +31,7 @@ export class ServiceMaster {
   metricService: MetricService;
   metricEdit: Metric;
   scrapedMetric: ScrapedMetric;
-  data: ChartData;
+  data: ModalData;
   stagingChildren: Metric[];
   topicBreadCrumb: Topic;
   constructor(protected http: HttpClient, public dialog: MatDialog) {

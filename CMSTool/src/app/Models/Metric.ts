@@ -70,7 +70,12 @@ export class ScrapedData {
   public Value: number;
 }
 
-export class ChartData {
+export class ModalData {
   public metric: Metric;
   public scraped: ScrapedMetric;
+}
+export class ChartData {
+  public Year: string;
+  public Staging: number;
+  public Scraped: number;
 }

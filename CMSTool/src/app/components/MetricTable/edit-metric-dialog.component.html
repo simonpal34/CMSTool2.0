@@ -94,26 +94,28 @@
     </mat-tab>
     <mat-tab label="Sources"> Sources </mat-tab>
     <mat-tab label="Adjustments"> Adjustments </mat-tab>
-<<<<<<< HEAD
     <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
-        <igx-category-chart  style="position:center; height:400px; overflow:hidden; padding:40px "
-=======
-    <mat-tab label="Data Points" *ngIf="hasData">
-      <div style="position:center; width: 100%; height: 100%; padding-left: 10px">
-        <igx-category-chart  style="position:center; height:400px; margin-right:25px; margin-bottom:15px"
->>>>>>> f489d809638c60d03f9914738a997d1985c3e0a2
+        <igx-category-chart  style="position:center; height:400px; overflow:hidden; padding-right:65px; padding-bottom:60px "
                             [dataSource]="data"
+                            dataSourceType ="json"
                             thickness="1"
-                            brushes="#4286f4, #e8b220, #11c111"
-                            markerBrushes="#4286f4, #e8b220, #11c111"
+                            brushes="#002c77, #C62828"
+                            xAxisTitle="{{metric.x_type}}"
+                            yAxisTitle="{{metric.y_type}}"
+                            markerBrushes="#002c77, #C62828"
+                             markerOutlines="#002c77, #C62828"
                             chartTitle="{{metric.name}}"
-                            [chartType]="SplineAread"
+                            [chartType]="SplineArea"
                             markerTypes="Circle"
                             [tooltipTemplate]="valueTooltip">
         </igx-category-chart>
       <ng-template let-series="series" let-item="item" style="overflow:visible;" #valueTooltip>
-          <span [style.color]="series.actualBrush" style="font-size:10px">{{metric.name}}:  {{item.y}}<br /></span>
-          <span *ngIf="scraped" [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.value}}<br /></span>
+        <div *ngIf="item.Staging">
+          <span [style.color]="series.actualBrush"  style="font-size:10px">{{metric.name}}:  {{item.Staging}}</span>
+        </div>
+        <div *ngIf="item.Scraped" >
+          <span [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.Scraped}}</span>
+        </div>
       </ng-template>
     </mat-tab>
   </mat-tab-group>
