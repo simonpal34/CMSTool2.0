@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric, Meta, ModalData, ChartData, ScrapedMetric } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -19,16 +20,16 @@ export class EditMetricDialogComponent {
   data: ChartData[][];
   scraped: ScrapedMetric;
   hasData: boolean;
+  spinner: NgxSpinnerService;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
-    
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
     this.metricForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
     this.metric = _data.metric;
     this.scraped = _data.scraped;
-    
+    this.spinner = _data.spinner;
     this.axisLabels = ["People", "Dollars", "Percent", "Items", "Months", "Years", "Hours",
       "PerCapita", "DefendantsPerCriminalCase", "States", "WorkersPerState", "Per100000People", "Days", "Weeks"];
     if (this.metric.meta) {
@@ -71,7 +72,7 @@ export class EditMetricDialogComponent {
       this.hasData = false;
     }
     
-    
+    this.spinner.hide();
   }
   cancel() {
     this.dialogRef.close(null);

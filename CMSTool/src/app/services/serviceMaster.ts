@@ -14,6 +14,7 @@ import { Topic } from '../Models/Topic';
 import { Metric, ScrapedMetric, ModalData } from '../Models/Metric';
 import { MetricService } from './metricService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Injectable()
@@ -177,12 +178,12 @@ export class ServiceMaster {
     
   }
 
-  getParentMetricEdit(metric: Metric) {
+  getParentMetricEdit(metric: Metric, spinner: NgxSpinnerService) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(r => {
         this.scrapedMetric = r;
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric }
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
@@ -216,12 +217,12 @@ export class ServiceMaster {
   
   }
 
-  getChildMetricEdit(metric: Metric) {
+  getChildMetricEdit(metric: Metric, spinner: NgxSpinnerService ) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(r => {
         this.scrapedMetric = r;
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric }
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',

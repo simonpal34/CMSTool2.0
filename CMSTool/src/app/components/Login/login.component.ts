@@ -4,6 +4,7 @@ import { ServiceMaster } from '../../services/serviceMaster';
 import { Router } from '@angular/router';
 
 
+
 @Component({
     selector: 'app-login',
     templateUrl: './Login.component.html',
@@ -17,7 +18,7 @@ export class LoginComponent {
  
 
 
-  constructor(fb: FormBuilder , public svc: ServiceMaster, public router : Router)
+  constructor(fb: FormBuilder, public svc: ServiceMaster, public router: Router)
     {
       this.options = fb.group({
         hideRequired: false,

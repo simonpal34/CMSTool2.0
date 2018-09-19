@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric } from '../../Models/Metric';
 import { Topic } from '../../Models/Topic';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'metric-table',
@@ -9,11 +10,12 @@ import { Topic } from '../../Models/Topic';
 })
 export class MetricTableComponent {
   displayedColumns: string[] = ['child', 'name', 'last_modified','last_published', 'edit', 'publish'];
-  constructor(private svc: ServiceMaster) {
+  constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
 
   }
   openEdit(metric: Metric) {
-    this.svc.getParentMetricEdit(metric);
+    this.spinner.show();
+    this.svc.getParentMetricEdit(metric, this.spinner);
   }
 
   trendToChildren(m: Metric) {

@@ -23,6 +23,7 @@ import { MetricTableComponent } from './components/MetricTable/metricTable.compo
 import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { MAT_DIALOG_DATA } from "@angular/material";
     FormsModule,
     MaterialModule,
     IgxCategoryChartModule,
+    NgxSpinnerModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },

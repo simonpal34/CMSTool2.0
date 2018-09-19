@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export class Metric {
   public id: number;
@@ -73,6 +74,7 @@ export class ScrapedData {
 export class ModalData {
   public metric: Metric;
   public scraped: ScrapedMetric;
+  public spinner: NgxSpinnerService;
 }
 export class ChartData {
   public Year: string;
