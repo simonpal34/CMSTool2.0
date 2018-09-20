@@ -19,4 +19,12 @@ export class AppComponent {
     this.router.navigate(['/profile']);
   }
 
+  logout() {
+    this.svc.logout().then(response => {
+      if (response == false) {
+        this.router.navigate(['/login']);
+      }
+    })
+  }
+
 }

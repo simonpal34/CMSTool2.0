@@ -220,7 +220,21 @@ export class ServiceMaster {
     
   
   }
+  logout(): Promise<boolean> {
+    let header = new HttpHeaders({ 'Content-Type': 'application/json' });
 
+    return this.http.post('http://usafacts-api-staging.azurewebsites.net/api/v2/authentication/LogOut', { headers: header }).toPromise()
+      .then(response => {
+        this.loginService.isLoggedIn = false;
+        return Promise.resolve(this.loginService.isLoggedIn);
+
+
+      })
+      .catch(error => {
+        this.loginService.isLoggedIn = true;
+        return Promise.resolve(this.loginService.isLoggedIn);
+      });
+  }
   getChildMetricEdit(metric: Metric, spinner: NgxSpinnerService ) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
