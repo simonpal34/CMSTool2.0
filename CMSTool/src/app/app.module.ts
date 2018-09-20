@@ -19,6 +19,7 @@ import { ProfileComponent } from './components/Profile/profile.component'
 import { MissionTableComponent } from './components/MissionTable/missionTable.component'
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
+import { ExportTableComponent } from './/components/ExportTable/exportTable.component'
 import { MetricTableComponent } from './components/MetricTable/metricTable.component';
 import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
@@ -36,6 +37,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MissionTableComponent,
     ReportingUnitTableComponent,
     TopicTableComponent,
+    ExportTableComponent,
     MetricTableComponent,
     EditMetricDialogComponent,
     ChildrenTableComponent

@@ -8,10 +8,12 @@ import { map } from 'rxjs/operators';
 import { Profile } from '../Models/Profile';
 import { LoginService } from './LoginService';
 import { MissionService } from './missionService';
+import { ExportService } from './exportService';
 import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
 import { Metric, ScrapedMetric, ModalData } from '../Models/Metric';
+import { Export } from '../Models/Export';
 import { MetricService } from './metricService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,6 +23,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class ServiceMaster {
   loginService: LoginService;
   missionService: MissionService;
+  exportService: ExportService;
   authCode: string;
   stagingUrl = 'http://usafacts-api-staging.azurewebsites.net/api/v2';
   stagingMissions: Mission[];
@@ -29,6 +32,7 @@ export class ServiceMaster {
   missionBreadCrumb: Mission;
   reportingUnitBreadCrumb: ReportingUnit;
   stagingMetrics: Metric[];
+  exports: Export[];
   metricService: MetricService;
   metricEdit: Metric;
   scrapedMetric: ScrapedMetric;
