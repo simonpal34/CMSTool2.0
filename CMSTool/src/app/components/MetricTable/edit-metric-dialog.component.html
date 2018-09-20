@@ -76,7 +76,7 @@
         </div>
       </form>
     </mat-tab>
-    <mat-tab label="Meta Data">
+    <mat-tab label="Meta Data" style="width:100%; height:100%; overflow:visible ">
       <br />
       <div *ngFor="let m of metric.meta">
         <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:100%; height:40%">
@@ -84,48 +84,69 @@
           <textarea matInput name="{{m.type}}" rows="3" [(ngModel)]="m.data" value="{{m.data}}"></textarea>
         </mat-form-field>
         <div>
-          <button mat-flat-button color="warn" (click)="removeMeta(m)">Remove {{m.type}}</button>
+          <button mat-flat-button style="background-color:#C62828" (click)="removeMeta(m)">Remove {{m.type}}</button>
         </div>
       </div>
       <div class="pull-left" style="margin-top: 10px">
-        <button mat-flat-button *ngIf="!hasDef" color="primary" (click)="addDef()">Add Definition</button>
-        <button mat-flat-button *ngIf="!hasFootnotes" color="primary" (click)="addFoot()" style="margin-left:15px">Add Footnote</button>
+        <button mat-flat-button *ngIf="!hasDef" style="background-color:#002c77; " (click)="addDef()">Add Definition</button>
+        <button mat-flat-button (click)="addFoot()" style="margin-left:15px; background-color:#002c77;">Add Footnote</button>
       </div>
 
     </mat-tab>
     <mat-tab label="Sources"> Sources </mat-tab>
-    <mat-tab label="Adjustments"> Adjustments </mat-tab>
-    <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
-      <igx-category-chart style="position:center; height:400px; overflow:hidden; padding-right:65px; padding-bottom:60px "
-                          [dataSource]="data"
-                          dataSourceType="json"
-                          thickness="1"
-                          brushes="#002c77, #C62828"
-                          xAxisTitle="{{metric.x_type}}"
-                          yAxisTitle="{{metric.y_type}}"
-                          markerBrushes="#002c77, #C62828"
-                          markerOutlines="#002c77, #C62828"
-                          chartTitle="{{metric.name}}"
-                          [chartType]="SplineArea"
-                          markerTypes="Circle"
-                          [tooltipTemplate]="valueTooltip">
-      </igx-category-chart>
-      <ng-template let-series="series" let-item="item" style="overflow:visible;" #valueTooltip>
-        <div *ngIf="item.Staging">
-          <span [style.color]="series.actualBrush" style="font-size:10px">{{metric.name}}:  {{item.Staging}}</span>
-        </div>
-        <div *ngIf="item.Scraped">
-          <span [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.Scraped}}</span>
-        </div>
-      </ng-template>
+    <mat-tab label="Adjustments" style="width:100%; height:100%; overflow:visible ">
+        <table mat-table *ngIf="metric.available_adjustments.length != 0" [dataSource]="metric.available_adjustments" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
+          <ng-container matColumnDef="name" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef> Adjustment </th>
+            <td mat-cell *matCellDef="let adjustment"> {{adjustment.name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="delete" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let adjustment">
+              <button matTooltip="Delete {{adjustment.name}}" type="button" mat-icon-button style="color:#C62828" (click)="RemoveAdjustment(adjustment)">
+                <mat-icon style="color:#C62828">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      <button *ngIf="!hasInflation && !hasPerCapita" mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addInflation()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Adjust For Inflation</button>
     </mat-tab>
+    
+    
+
+      <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
+        <igx-category-chart style="position:center; height:400px; overflow:hidden; padding-right:65px; padding-bottom:60px "
+                            [dataSource]="data"
+                            dataSourceType="json"
+                            thickness="1"
+                            brushes="#002c77, #C62828"
+                            xAxisTitle="{{metric.x_type}}"
+                            yAxisTitle="{{metric.y_type}}"
+                            markerBrushes="#002c77, #C62828"
+                            markerOutlines="#002c77, #C62828"
+                            chartTitle="{{metric.name}}"
+                            [chartType]="SplineArea"
+                            markerTypes="Circle"
+                            [tooltipTemplate]="valueTooltip">
+        </igx-category-chart>
+        <ng-template let-series="series" let-item="item" style="overflow:visible;" #valueTooltip>
+          <div *ngIf="item.Staging">
+            <span [style.color]="series.actualBrush" style="font-size:10px">{{metric.name}}:  {{item.Staging}}</span>
+          </div>
+          <div *ngIf="item.Scraped">
+            <span [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.Scraped}}</span>
+          </div>
+        </ng-template>
+      </mat-tab>
   </mat-tab-group>
   <mat-dialog-actions style="overflow:visible">
     <div>
-      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <button mat-flat-button style="background-color:#002c77 " (click)="save()">Save</button>
     </div>
     <div style="padding-left:15px;">
-      <button mat-flat-button color="warn" (click)="cancel()">Cancel</button>
+      <button mat-flat-button style="background-color:#C62828"(click)="cancel()">Cancel</button>
     </div>
   </mat-dialog-actions>
 </div>

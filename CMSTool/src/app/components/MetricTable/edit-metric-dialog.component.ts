@@ -2,7 +2,7 @@ import { Component, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ServiceMaster } from '../../services/serviceMaster';
-import { Metric, Meta, ModalData, ChartData, ScrapedMetric } from '../../Models/Metric';
+import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -21,6 +21,8 @@ export class EditMetricDialogComponent {
   scraped: ScrapedMetric;
   hasData: boolean;
   spinner: NgxSpinnerService;
+  displayedColumns: string[] = ['name', 'delete'];
+  hasInflation: boolean;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
     this.metricForm = fb.group({
@@ -30,6 +32,7 @@ export class EditMetricDialogComponent {
     this.metric = _data.metric;
     this.scraped = _data.scraped;
     this.spinner = _data.spinner;
+    this.hasInflation = false;
     this.axisLabels = ["People", "Dollars", "Percent", "Items", "Months", "Years", "Hours",
       "PerCapita", "DefendantsPerCriminalCase", "States", "WorkersPerState", "Per100000People", "Days", "Weeks"];
     if (this.metric.meta) {
@@ -71,7 +74,18 @@ export class EditMetricDialogComponent {
     else {
       this.hasData = false;
     }
-    
+    if (this.metric.available_adjustments != null) {
+      if (this.metric.available_adjustments.length != 0) {
+        for (var i = 0; i < this.metric.available_adjustments.length; i++) {
+          if (this.metric.available_adjustments[i].id == "inflation") {
+            this.hasInflation = true;
+          }
+        }
+      }
+    }
+    if (this.metric.available_adjustments == null) {
+      this.metric.available_adjustments = new Array<Adjustment>();
+    }
     this.spinner.hide();
   }
   cancel() {
@@ -115,4 +129,25 @@ export class EditMetricDialogComponent {
     this.hasFootnotes = true;
   }
 
+  RemoveAdjustment(a: Adjustment) {
+    this.metric.available_adjustments.forEach((item, index) => {
+      if (item === a) this.metric.available_adjustments.splice(index, 1);
+    });
+    console.log(a.id);
+    if (a.id == "inflation") {
+      this.hasInflation = false;
+    }
+    
+  }
+  addInflation() {
+    var adj = new Adjustment();
+    adj.id = "inflation";
+    adj.name = "Adjust for inflation";
+      this.metric.available_adjustments.push(adj);
+      this.hasInflation = true;
+    
+  }
+  
 }
+
+
