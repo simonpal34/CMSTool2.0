@@ -1,10 +1,10 @@
 
 <h1 mat-dialog-title>Edit {{metric.name}}</h1>
 <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
-  <mat-tab-group style="width:100%; height:100%; overflow:visible  ">
-    <mat-tab label="Main" style="width:100%; height:85%;overflow:visible ">
+  <mat-tab-group style="width:100%; height:87%; overflow:visible  ">
+    <mat-tab label="Main" style="width:100%; height:100%;overflow:visible ">
       <br />
-      <form style="width:100%; height:80%;overflow:visible ">
+      <form style="width:100%; height:100%;overflow:visible ">
         <div style="width:100%">
           <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:65%">
             <mat-label>Name</mat-label>
@@ -93,7 +93,39 @@
       </div>
 
     </mat-tab>
-    <mat-tab label="Sources"> Sources </mat-tab>
+    <mat-tab label="Sources "  style="width:100%; height:100%; overflow:visible ">
+      <table mat-table *ngIf="sources.length != 0" [dataSource]="sources" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
+        <ng-container matColumnDef="agency" style="padding-left:35px">
+          <th mat-header-cell *matHeaderCellDef> Agency Name </th>
+          <td mat-cell *matCellDef="let source"> {{source.AgencyName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name" style="padding-left:35px">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let source"> {{source.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="delete" style="padding-left:35px">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let source">
+            <button matTooltip="Delete {{source.name}}" type="button" mat-icon-button style="color:#C62828 " (click)="removeSource(source, 0)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="deleteChildren" style="padding-left:35px">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let source">
+            <button matTooltip="Delete {{source.name}} from Children" type="button" mat-icon-button style="color:#C62828 " (click)="removeSource(source, 1)">
+              <mat-icon>delete_sweep</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsSource"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsSource;"></tr>
+      </table>
+
+      <button  mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addSources()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Sources</button>
+
+    </mat-tab>
     <mat-tab label="Adjustments" style="width:100%; height:100%; overflow:visible ">
         <table mat-table *ngIf="metric.available_adjustments.length != 0" [dataSource]="metric.available_adjustments" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
           <ng-container matColumnDef="name" style="padding-left:35px">
@@ -108,8 +140,8 @@
               </button>
             </td>
           </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsAdj"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsAdj;"></tr>
         </table>
       <button *ngIf="!hasInflation && !hasPerCapita" mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addInflation()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Adjust For Inflation</button>
     </mat-tab>

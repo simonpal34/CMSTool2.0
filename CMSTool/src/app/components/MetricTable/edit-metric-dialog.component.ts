@@ -5,6 +5,10 @@ import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Source } from '../../Models/Source';
+import { AddSourceDialogComponent } from './add-source-dialog.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 
 @Component({
@@ -21,10 +25,16 @@ export class EditMetricDialogComponent {
   scraped: ScrapedMetric;
   hasData: boolean;
   spinner: NgxSpinnerService;
-  displayedColumns: string[] = ['name', 'delete'];
+  displayedColumnsAdj: string[] = ['name', 'delete'];
+  displayedColumnsSource: string[] = ['agency', 'name', 'delete', 'deleteChildren'];
   hasInflation: boolean;
+  sources: Source[];
+  allSources: Source[];
+  key: string;
+  http: HttpClient;
+  url: string;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
     this.metricForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -33,6 +43,11 @@ export class EditMetricDialogComponent {
     this.scraped = _data.scraped;
     this.spinner = _data.spinner;
     this.hasInflation = false;
+    this.sources = _data.sources;
+    this.allSources = _data.allSources;
+    this.key = _data.key;
+    this.url = _data.url;
+    this.http = _data.http;
     this.axisLabels = ["People", "Dollars", "Percent", "Items", "Months", "Years", "Hours",
       "PerCapita", "DefendantsPerCriminalCase", "States", "WorkersPerState", "Per100000People", "Days", "Weeks"];
     if (this.metric.meta) {
@@ -86,6 +101,8 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
+    
+    
     this.spinner.hide();
   }
   cancel() {
@@ -146,6 +163,73 @@ export class EditMetricDialogComponent {
       this.metric.available_adjustments.push(adj);
       this.hasInflation = true;
     
+  }
+
+  addSources() {
+
+    if (this.sources.length != 0) {
+      for (var i = 0; i < this.metric.sources.length; i++) {
+        var data = this.allSources.filter(s => s.key != this.metric.sources[i]);
+      }
+    }
+    else {
+      var data = this.allSources;
+    }
+    let d = this.sourceDialog.open(AddSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        width: '70%',
+        height: '55%',
+        data
+
+      });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+        if (result.num == 0) {
+          var includeChildren = false;
+        }
+        else {
+          var includeChildren = true;
+        }
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
+          console.log("source deletion success")
+          if (!this.metric.sources || this.metric.sources.length == 0)
+            this.metric.sources = [];
+
+          this.metric.sources.push(result.source.key);
+          if (!this.sources || this.sources.length == 0)
+            this.sources = [];
+
+          for (let id of this.metric.sources) {
+            let s = this.allSources.filter(f => f.key == id);
+            if (s)
+              this.sources.push(s[0]);
+          }
+        },
+          error => {
+            console.log("source deletion failure");
+          })
+      }
+    });
+  }
+
+  async removeSource(s: Source, n: number) {
+    if (n == 0) {
+      var includeChildren = false;
+    }
+    else{
+      var includeChildren = true;
+    }
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    await this.http.put(this.url + "/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
+      console.log("source deletion success")
+      this.sources.splice(this.sources.indexOf(s), 1);
+      this.metric.sources.splice(this.metric.sources.indexOf(s.key), 1);
+    },
+      error => {
+        console.log("source deletion failure");
+      })
   }
   
 }

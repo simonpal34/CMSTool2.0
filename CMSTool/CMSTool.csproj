@@ -31,9 +31,8 @@
     <None Remove="src\app\services\LoginService.ts" />
     <None Remove="src\app\services\metricService.ts" />
     <None Remove="src\app\services\missionService.ts" />
-    <None Remove="src\app\services\reportingUnitService.ts" />
     <None Remove="src\app\services\serviceMaster.ts" />
-    <None Remove="src\app\services\topicService.ts" />
+    <None Remove="src\app\services\sourceService.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,9 +66,8 @@
     <TypeScriptCompile Include="src\app\services\missionService.ts" />
     <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />
     <TypeScriptCompile Include="src\app\services\LoginService.ts" />
-    <TypeScriptCompile Include="src\app\services\reportingUnitService.ts" />
     <TypeScriptCompile Include="src\app\services\serviceMaster.ts" />
-    <TypeScriptCompile Include="src\app\services\topicService.ts" />
+    <TypeScriptCompile Include="src\app\services\sourceService.ts" />
   </ItemGroup>
 
 </Project>

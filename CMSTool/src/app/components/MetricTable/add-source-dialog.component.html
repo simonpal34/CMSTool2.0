@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Add Sources</h1>
+<div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
+  <mat-form-field [floatLabel]="sourcesForm.value.floatLabel" style="padding-left:15px; width:50%">
+    <mat-label>Unique Sources</mat-label>
+    <mat-select matInput name="unique" [(ngModel)]="selectedSource" (ngModelChange)="selectSource()">
+      <mat-option *ngFor="let s of uniqueSources" [value]="s">
+        {{s}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div style="padding-top: 20px; padding-left:10px" *ngIf="selectedSources.length != 0">
+    <table mat-table *ngIf="selectedSources.length != 0" [dataSource]="selectedSources" class="mat-elevation-z8" style="width:100%; margin-top:10px; height:60%">
+      <ng-container matColumnDef="agency" style="padding-left:35px">
+        <th mat-header-cell *matHeaderCellDef> Agency Name </th>
+        <td mat-cell *matCellDef="let source"> {{source.AgencyName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="tableOrFile" style="padding-left:35px">
+        <th mat-header-cell *matHeaderCellDef> Table or File Name </th>
+        <td mat-cell *matCellDef="let source"> {{source.TableOrFileName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="add" style="padding-left:35px">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let source">
+          <button matTooltip="Add {{source.name}}" type="button" mat-icon-button style="color:#002c77 " (click)="addSource(source,0)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="addChildren" style="padding-left:35px">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let source">
+          <button matTooltip="Add {{source.name}} to Children" type="button" mat-icon-button style="color:#002c77 " (click)="addSource(source,0)">
+            <mat-icon>group_add</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  </div>

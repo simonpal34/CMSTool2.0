@@ -15,8 +15,10 @@ import { Topic } from '../Models/Topic';
 import { Metric, ScrapedMetric, ModalData } from '../Models/Metric';
 import { Export } from '../Models/Export';
 import { MetricService } from './metricService';
+import { SourceService } from './sourceService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Source } from '../Models/Source';
 
 
 @Injectable()
@@ -40,6 +42,8 @@ export class ServiceMaster {
   stagingChildren: Metric[];
   topicBreadCrumb: Topic;
   metricsBreadCrumbs: Metric[]
+  sourceService: SourceService;
+  allSources: Source[];
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -65,7 +69,9 @@ export class ServiceMaster {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
+    this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl);
     this.getMissions();
+    this.getAllSources();
     
 
   }
@@ -187,7 +193,16 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(r => {
         this.scrapedMetric = r;
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner }
+         var sources = [];
+        if (this.metricEdit.sources) {
+          for (let id of this.metricEdit.sources) {
+ 
+            let s = this.allSources.filter(f => f.key == id);
+            if (s)
+              sources.push(s[0]);
+          }
+        }
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
@@ -240,7 +255,16 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(r => {
         this.scrapedMetric = r;
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner }
+
+        var sources = [];
+        if (this.metricEdit.sources) {
+          for (let id of this.metricEdit.sources) {
+            let s = this.allSources.filter(f => f.key == id);
+            if (s)
+              sources.push(s[0]);
+          }
+        }
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http  }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
@@ -359,6 +383,10 @@ export class ServiceMaster {
     })
   }
 
-
+  async getAllSources() {
+    await this.sourceService.GetAllStagingSources().then(async response => {
+      this.allSources = await response
+    });
+  }
 
 }

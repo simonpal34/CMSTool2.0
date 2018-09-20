@@ -1,4 +1,8 @@
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Source } from './Source';
+import { AddSourceDialogComponent } from '../components/MetricTable/add-source-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
 
 export class Metric {
   public id: number;
@@ -75,7 +79,14 @@ export class ModalData {
   public metric: Metric;
   public scraped: ScrapedMetric;
   public spinner: NgxSpinnerService;
+  public sources: Source[];
+  public allSources: Source[];
+  public key: string;
+  public url: string;
+  public http: HttpClient;
 }
+
+
 export class ChartData {
   public Year: string;
   public Staging: number;
