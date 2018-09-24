@@ -4,7 +4,7 @@ import { FormsModule, FormBuilder } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { IgxCategoryChartModule } from "igniteui-angular-charts/ES5/igx-category-chart-module";
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -14,6 +14,7 @@ import { MaterialModule } from './Modules/material.module';
 import { ServiceMaster } from './services/serviceMaster';
 import { LoginGuard } from './services/login-guard.service';
 import { StagingComponent } from './components/Staging/staging.component';
+import { SourcesComponent } from './components/Sources/sources.component';
 import { ExportComponent } from './components/Export/export.component';
 import { ProfileComponent } from './components/Profile/profile.component'
 import { MissionTableComponent } from './components/MissionTable/missionTable.component'
@@ -21,6 +22,7 @@ import { ReportingUnitTableComponent } from './components/ReportingUnitTable/rep
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
 import { ExportTableComponent } from './/components/ExportTable/exportTable.component'
 import { MetricTableComponent } from './components/MetricTable/metricTable.component';
+import { SourceTableComponent } from './components/SourceTable/sourceTable.component';
 import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 import { AddSourceDialogComponent } from './components/MetricTable/add-source-dialog.component';
@@ -42,7 +44,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MetricTableComponent,
     EditMetricDialogComponent,
     ChildrenTableComponent,
-    AddSourceDialogComponent
+    AddSourceDialogComponent,
+    SourcesComponent,
+    SourceTableComponent
   ],
   imports: [
     BrowserModule,
@@ -50,12 +54,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     HttpClientModule,
     FormsModule,
     MaterialModule,
-    IgxCategoryChartModule,
+    ChartsModule,
     NgxSpinnerModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
       { path: "staging", component: StagingComponent, canActivate: [LoginGuard], data: { title: "Staging" } },
+      { path: "sources", component: SourcesComponent, canActivate: [LoginGuard], data: { title: "Sources" } },
       { path: "export", component: ExportComponent, canActivate: [LoginGuard], data: { title: "Export" } },
       { path: "profile", component: ProfileComponent, canActivate: [LoginGuard], data: { title: "Profile" } }
 

@@ -15,8 +15,10 @@
     <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <None Remove="src\app\components\MetricTable\metricTable.component.ts" />
     <None Remove="src\app\components\MissionTable\missionTable.component.ts" />
+    <None Remove="src\app\components\SourceTable\sourceTable.component.ts" />
     <None Remove="src\app\components\Profile\profile.component.ts" />
     <None Remove="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
+    <None Remove="src\app\components\Sources\sources.component.ts" />
     <None Remove="src\app\components\Staging\staging.component.ts" />
     <None Remove="src\app\components\TopicTable\topicTable.component.ts" />
     <None Remove="src\app\components\ExportTable\exportTable.component.ts" />
@@ -50,8 +52,10 @@
     <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\metricTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MissionTable\missionTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\SourceTable\sourceTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\Profile\profile.component.ts" />
     <TypeScriptCompile Include="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\Sources\sources.component.ts" />
     <TypeScriptCompile Include="src\app\components\Staging\staging.component.ts" />
     <TypeScriptCompile Include="src\app\components\TopicTable\topicTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\ExportTable\exportTable.component.ts" />
