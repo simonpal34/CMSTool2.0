@@ -3,6 +3,7 @@ import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric } from '../../Models/Metric';
 import { Topic } from '../../Models/Topic';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Source } from '../../Models/Source';
 
 @Component({
   selector: 'source-table',
@@ -14,6 +15,8 @@ export class SourceTableComponent {
     
 
   }
-
+  edit(s: Source) {
+    this.svc.openSourceEdit(s);
+  }
 
 }

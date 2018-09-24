@@ -15,6 +15,7 @@
     <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <None Remove="src\app\components\MetricTable\metricTable.component.ts" />
     <None Remove="src\app\components\MissionTable\missionTable.component.ts" />
+    <None Remove="src\app\components\SourceTable\edit-source-dialog.component.ts" />
     <None Remove="src\app\components\SourceTable\sourceTable.component.ts" />
     <None Remove="src\app\components\Profile\profile.component.ts" />
     <None Remove="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
@@ -52,6 +53,7 @@
     <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\metricTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MissionTable\missionTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\SourceTable\edit-source-dialog.component.ts" />
     <TypeScriptCompile Include="src\app\components\SourceTable\sourceTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\Profile\profile.component.ts" />
     <TypeScriptCompile Include="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />

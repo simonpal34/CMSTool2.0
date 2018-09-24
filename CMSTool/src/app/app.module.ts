@@ -26,6 +26,7 @@ import { SourceTableComponent } from './components/SourceTable/sourceTable.compo
 import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 import { AddSourceDialogComponent } from './components/MetricTable/add-source-dialog.component';
+import { EditSourceDialogComponent } from './components/SourceTable/edit-source-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -46,7 +47,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ChildrenTableComponent,
     AddSourceDialogComponent,
     SourcesComponent,
-    SourceTableComponent
+    SourceTableComponent,
+    EditSourceDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   ],
   entryComponents: [
     EditMetricDialogComponent,
-    AddSourceDialogComponent
+    AddSourceDialogComponent,
+    EditSourceDialogComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -19,6 +19,7 @@ import { SourceService } from './sourceService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source } from '../Models/Source';
+import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 
 
 @Injectable()
@@ -395,6 +396,17 @@ export class ServiceMaster {
         return arr.indexOf(el) == i;
       });
     });
+  }
+
+  openSourceEdit(s: Source) {
+    let dialogRef = this.dialog.open(EditSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        data: s,
+        width: '75%',
+        height: '75%',
+
+      });
   }
 
 }
