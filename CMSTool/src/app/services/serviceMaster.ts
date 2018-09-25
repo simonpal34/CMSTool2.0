@@ -19,6 +19,7 @@ import { SourceService } from './sourceService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source } from '../Models/Source';
+import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 
 
 @Injectable()
@@ -44,6 +45,9 @@ export class ServiceMaster {
   metricsBreadCrumbs: Metric[]
   sourceService: SourceService;
   allSources: Source[];
+  sourcesTabSelectedSource: string;
+  sourcesTabSelectedSources: Source[];
+  uniqueSources: string[];
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -63,6 +67,7 @@ export class ServiceMaster {
     this.stagingMetrics = [met];
     this.stagingChildren = [met];
     this.metricsBreadCrumbs = [met];
+    this.sourcesTabSelectedSource = "";
   }
 
   getAuthCode() {
@@ -386,7 +391,22 @@ export class ServiceMaster {
   async getAllSources() {
     await this.sourceService.GetAllStagingSources().then(async response => {
       this.allSources = await response
+      var curr = this.allSources.map(d => d.AgencyName);
+      this.uniqueSources = curr.filter(function (el, i, arr) {
+        return arr.indexOf(el) == i;
+      });
     });
+  }
+
+  openSourceEdit(s: Source) {
+    let dialogRef = this.dialog.open(EditSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        data: s,
+        width: '75%',
+        height: '75%',
+
+      });
   }
 
 }

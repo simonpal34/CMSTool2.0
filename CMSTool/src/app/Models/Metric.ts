@@ -88,7 +88,6 @@ export class ModalData {
 
 
 export class ChartData {
-  public Year: string;
-  public Staging: number;
-  public Scraped: number;
+  public data: number[];
+  public label: string;
 }

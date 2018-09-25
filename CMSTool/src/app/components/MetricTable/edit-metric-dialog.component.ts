@@ -21,7 +21,11 @@ export class EditMetricDialogComponent {
   axisLabels: string[];
   hasDef: boolean = false;
   hasFootnotes: boolean = false;
-  data: ChartData[][];
+  chartData: ChartData[];
+  chartLabels: string[]
+  chartOptions: any;
+  chartColor: any[];
+  chartType: string;
   scraped: ScrapedMetric;
   hasData: boolean;
   spinner: NgxSpinnerService;
@@ -62,30 +66,70 @@ export class EditMetricDialogComponent {
     }
     if (this.metric.data) {
       this.hasData = true;
-      this.data = new Array<Array<ChartData>>();
-      var temp1 = new Array<ChartData>();
-      for (var i = 0; i < this.metric.data.length; i++) {
-        var d = new ChartData();
-        d.Year = this.metric.data[i].x;
-        d.Staging = this.metric.data[i].y
-        temp1.push(d);
-      }
-      this.data.push(temp1)
-      if (this.scraped) {
-        if (this.scraped.Data && this.scraped.Data.length != 0) {
-          this.scraped.Name = this.scraped.Name + "-- scraped"
-          var temp2 = new Array<ChartData>();
-          for (var i = 0; i < this.scraped.Data.length; i++) {
-            var d = new ChartData();
-            d.Year = this.scraped.Data[i].Key;
-            d.Scraped = this.scraped.Data[i].Value;
-            temp2.push(d);
-          }
-          this.data.push(temp2)
-            
+      this.chartData = new Array();
+      this.chartLabels = new Array();
+      var cd1 = new ChartData();
+      cd1.data = new Array();
+      var j = 0;
+        for (var i = 0; i < this.metric.data.length; i++) {
+          if (this.metric.data[i].y != null) {
+            cd1.data[j] = this.metric.data[i].y;
+            this.chartLabels[j] = this.metric.data[i].x;
+            j++;
           }
         }
+
+      cd1.label = this.metric.name;
+      this.chartOptions = {
+        responsive: true,
+      };
+      this.chartType = 'line';
+      this.chartColor = [
+        { // grey
+          backgroundColor: 'rgba(148,159,177,0.2)',
+          borderColor: 'rgba(148,159,177,1)',
+          pointBackgroundColor: 'rgba(148,159,177,1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        },
+        {
+          backgroundColor: 'rgba(225, 0, 0, .1)',
+          borderColor: 'rgb(255, 0, 0, 1)',
+          pointBackgroundColor: 'rgb(255, 0, 0, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(225, 0, 0, .8)'
+        },
+        {
+          backgroundColor: 'rgba(50,240,21, .1)',
+          borderColor: 'rgb(50,240,21, 1)',
+          pointBackgroundColor: 'rgb(50,240,21, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(50,240,21, .8)'
+        }
+      ];
+      this.chartData.push(cd1);
+      if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
+
+
+        var cd2 = new ChartData();
+        cd2.data = new Array();
+        var j = 0;
+        for (var i = 0; i < this.scraped.Data.length; i++) {
+          if (this.scraped.Data[i].Value != null) {
+            cd2.data[j] = this.scraped.Data[i].Value;
+            j++;
+          }
+        }
+        cd2.label = this.metric.name + "--Scraped";
+
+        this.chartData.push(cd2);
       }
+
+    }
+
     else {
       this.hasData = false;
     }

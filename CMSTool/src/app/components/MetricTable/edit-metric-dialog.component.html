@@ -145,32 +145,15 @@
         </table>
       <button *ngIf="!hasInflation && !hasPerCapita" mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addInflation()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Adjust For Inflation</button>
     </mat-tab>
-    
-    
-
-      <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:100%; overflow:visible ">
-        <igx-category-chart style="position:center; height:400px; overflow:hidden; padding-right:65px; padding-bottom:60px "
-                            [dataSource]="data"
-                            dataSourceType="json"
-                            thickness="1"
-                            brushes="#002c77, #C62828"
-                            xAxisTitle="{{metric.x_type}}"
-                            yAxisTitle="{{metric.y_type}}"
-                            markerBrushes="#002c77, #C62828"
-                            markerOutlines="#002c77, #C62828"
-                            chartTitle="{{metric.name}}"
-                            [chartType]="SplineArea"
-                            markerTypes="Circle"
-                            [tooltipTemplate]="valueTooltip">
-        </igx-category-chart>
-        <ng-template let-series="series" let-item="item" style="overflow:visible;" #valueTooltip>
-          <div *ngIf="item.Staging">
-            <span [style.color]="series.actualBrush" style="font-size:10px">{{metric.name}}:  {{item.Staging}}</span>
+      <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:85%; overflow:visible ">
+        <div style="display:block; height: 50%; width:65%; position: relative">
+        <canvas baseChart 
+                [datasets]="chartData"
+                [labels]="chartLabels"
+                [options]="chartOptions"
+                [chartType]="chartType"
+                [colors]="chartColor"></canvas>
           </div>
-          <div *ngIf="item.Scraped">
-            <span [style.color]="series.actualBrush" style="font-size:10px">{{scraped.Name}}: {{item.Scraped}}</span>
-          </div>
-        </ng-template>
       </mat-tab>
   </mat-tab-group>
   <mat-dialog-actions style="overflow:visible">
