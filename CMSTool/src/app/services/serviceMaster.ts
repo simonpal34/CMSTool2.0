@@ -9,6 +9,7 @@ import { Profile } from '../Models/Profile';
 import { LoginService } from './LoginService';
 import { MissionService } from './missionService';
 import { ExportService } from './exportService';
+import { UploadFileService } from './uploadFileService';
 import { Mission } from '../Models/Mission';
 import { ReportingUnit } from '../Models/ReportingUnit';
 import { Topic } from '../Models/Topic';
@@ -20,6 +21,7 @@ import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source } from '../Models/Source';
 import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
+import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 
 
 @Injectable()
@@ -27,6 +29,8 @@ export class ServiceMaster {
   loginService: LoginService;
   missionService: MissionService;
   exportService: ExportService;
+  uploadFileService: UploadFileService;
+  uploaded: FileUpload[];
   authCode: string;
   stagingUrl = 'http://usafacts-api-staging.azurewebsites.net/api/v2';
   stagingMissions: Mission[];
@@ -48,6 +52,7 @@ export class ServiceMaster {
   sourcesTabSelectedSource: string;
   sourcesTabSelectedSources: Source[];
   uniqueSources: string[];
+  spreadSheets: SpreadSheet[];
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -68,6 +73,7 @@ export class ServiceMaster {
     this.stagingChildren = [met];
     this.metricsBreadCrumbs = [met];
     this.sourcesTabSelectedSource = "";
+    this.spreadSheets = [];
   }
 
   getAuthCode() {
@@ -75,6 +81,7 @@ export class ServiceMaster {
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
     this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl);
+    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl);
     this.getMissions();
     this.getAllSources();
     
@@ -407,6 +414,40 @@ export class ServiceMaster {
         height: '75%',
 
       });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.sourceService.UpdateSource(result).then(async s => {
+          await this.getAllSources();
+          this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
+          
+        });
+        
+      }
+    });
+  }
+
+  deleteSource(s: Source) {
+    this.sourceService.DeleteSource(s).then(async s => {
+      if (s) {
+        await this.getAllSources();
+        this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
+      }
+      else {
+        console.log("Delete fail");
+      }
+    })
+  }
+
+  getSpreadSheets() {
+    this.uploadFileService.getSpreadSheets().then(s => {
+      this.spreadSheets = s;
+    });
+  }
+  getUploaded() {
+    this.uploadFileService.getUploaded().then(f => {
+      this.uploaded = f;
+    });
   }
 
 }

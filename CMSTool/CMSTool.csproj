@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="src\app\components\Export\export.component.ts" />
+    <None Remove="src\app\components\FileTable\fileTable.component.ts" />
     <None Remove="src\app\components\Login\login.component.ts" />
     <None Remove="src\app\components\MetricTable\childrenTable.component.ts" />
     <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
@@ -23,11 +24,13 @@
     <None Remove="src\app\components\Staging\staging.component.ts" />
     <None Remove="src\app\components\TopicTable\topicTable.component.ts" />
     <None Remove="src\app\components\ExportTable\exportTable.component.ts" />
+    <None Remove="src\app\components\UploadFile\uploadFile.component.ts" />
     <None Remove="src\app\Models\Export.ts" />
     <None Remove="src\app\Models\Metric.ts" />
     <None Remove="src\app\Models\Mission.ts" />
     <None Remove="src\app\Models\Profile.ts" />
     <None Remove="src\app\Models\ReportingUnit.ts" />
+    <None Remove="src\app\Models\SpreadSheet.ts" />
     <None Remove="src\app\Models\Topic.ts" />
     <None Remove="src\app\services\exportService.ts" />
     <None Remove="src\app\services\login-guard.service.ts" />
@@ -36,6 +39,7 @@
     <None Remove="src\app\services\missionService.ts" />
     <None Remove="src\app\services\serviceMaster.ts" />
     <None Remove="src\app\services\sourceService.ts" />
+    <None Remove="src\app\services\uploadFileService.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +52,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="src\app\components\Export\export.component.ts" />
+    <TypeScriptCompile Include="src\app\components\FileTable\fileTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\Login\login.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\childrenTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
@@ -58,6 +63,7 @@
     <TypeScriptCompile Include="src\app\components\Profile\profile.component.ts" />
     <TypeScriptCompile Include="src\app\components\ReportingUnitTable\reportingUnitTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\Sources\sources.component.ts" />
+    <TypeScriptCompile Include="src\app\components\UploadFile\uploadFile.component.ts" />
     <TypeScriptCompile Include="src\app\components\Staging\staging.component.ts" />
     <TypeScriptCompile Include="src\app\components\TopicTable\topicTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\ExportTable\exportTable.component.ts" />
@@ -66,6 +72,7 @@
     <TypeScriptCompile Include="src\app\Models\Mission.ts" />
     <TypeScriptCompile Include="src\app\Models\Profile.ts" />
     <TypeScriptCompile Include="src\app\Models\ReportingUnit.ts" />
+    <TypeScriptCompile Include="src\app\Models\SpreadSheet.ts" />
     <TypeScriptCompile Include="src\app\Models\Topic.ts" />
     <TypeScriptCompile Include="src\app\services\exportService.ts" />
     <TypeScriptCompile Include="src\app\services\metricService.ts" />
@@ -74,6 +81,7 @@
     <TypeScriptCompile Include="src\app\services\LoginService.ts" />
     <TypeScriptCompile Include="src\app\services\serviceMaster.ts" />
     <TypeScriptCompile Include="src\app\services\sourceService.ts" />
+    <TypeScriptCompile Include="src\app\services\uploadFileService.ts" />
   </ItemGroup>
 
 </Project>

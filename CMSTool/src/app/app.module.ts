@@ -14,10 +14,12 @@ import { MaterialModule } from './Modules/material.module';
 import { ServiceMaster } from './services/serviceMaster';
 import { LoginGuard } from './services/login-guard.service';
 import { StagingComponent } from './components/Staging/staging.component';
+import { UploadFileComponent } from './components/UploadFile/uploadFile.component';
 import { SourcesComponent } from './components/Sources/sources.component';
 import { ExportComponent } from './components/Export/export.component';
 import { ProfileComponent } from './components/Profile/profile.component'
-import { MissionTableComponent } from './components/MissionTable/missionTable.component'
+import { MissionTableComponent } from './components/MissionTable/missionTable.component';
+import { FileTableComponent } from './components/FileTable/fileTable.component';
 import { ReportingUnitTableComponent } from './components/ReportingUnitTable/reportingUnitTable.component'
 import { TopicTableComponent } from './components/TopicTable/topicTable.component'
 import { ExportTableComponent } from './/components/ExportTable/exportTable.component'
@@ -48,7 +50,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AddSourceDialogComponent,
     SourcesComponent,
     SourceTableComponent,
-    EditSourceDialogComponent
+    EditSourceDialogComponent,
+    UploadFileComponent,
+    FileTableComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +66,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
       { path: "staging", component: StagingComponent, canActivate: [LoginGuard], data: { title: "Staging" } },
+      { path: "uploadFile", component: UploadFileComponent , canActivate: [LoginGuard], data: { title: "UploadFile" } },
       { path: "sources", component: SourcesComponent, canActivate: [LoginGuard], data: { title: "Sources" } },
       { path: "export", component: ExportComponent, canActivate: [LoginGuard], data: { title: "Export" } },
       { path: "profile", component: ProfileComponent, canActivate: [LoginGuard], data: { title: "Profile" } }

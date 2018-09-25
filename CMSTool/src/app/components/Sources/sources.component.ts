@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceMaster } from '../../services/serviceMaster'
 import { Metric } from '../../Models/Metric';
+import { Source } from '../../Models/Source';
 
 
 @Component({
@@ -22,6 +23,12 @@ export class SourcesComponent {
   selectSource() {
     this.svc.sourcesTabSelectedSources = this.svc.allSources.filter(s => s.AgencyName == this.svc.sourcesTabSelectedSource);
     this.selected = true;
+  }
+
+  addSource() {
+    var s = new Source();
+    s.AgencyName = "";
+    this.svc.openSourceEdit(s);
   }
 }
 

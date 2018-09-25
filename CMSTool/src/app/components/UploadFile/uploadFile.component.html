@@ -1,0 +1,20 @@
+
+<div class="header-row" style="padding-left:20px">
+  <h2>Upload</h2>
+</div>
+
+<div >
+      <input style="padding-left:20px" id="file-field" name="file-field" type="file" accept=".xlsx, .xltx, .xls" (change)="chooseFile($event)">
+      <mat-form-field [floatLabel]="uploadForm.value.floatLabel" style="padding-left:25px; margin-top: 10px">
+        <mat-label>Select Sheet Type</mat-label>
+        <mat-select matInput name="spreadSheets" [(ngModel)]="selectedType">
+          <mat-option *ngFor="let s of svc.spreadSheets" [value]="s">
+            {{s.SheetName}}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
+</div>
+<file-table></file-table>
+
