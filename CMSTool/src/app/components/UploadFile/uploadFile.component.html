@@ -7,14 +7,14 @@
   <input style="padding-left:20px" id="file-field" name="file-field" type="file" accept=".xlsx, .xltx, .xls" (change)="chooseFile($event)">
   <mat-form-field [floatLabel]="uploadForm.value.floatLabel" style="padding-left:25px; margin-top: 10px">
     <mat-label>Select Sheet Type</mat-label>
-    <mat-select matInput name="spreadSheets" [(ngModel)]="selectedType">
+    <mat-select matInput name="spreadSheets" [(ngModel)]="selectedType" (ngModelChange)="onSelect($event)">
       <mat-option *ngFor="let s of svc.spreadSheets" [value]="s">
         {{s.SheetName}}
       </mat-option>
     </mat-select>
 
   </mat-form-field>
-  <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; color:white;" ><mat-icon style=" font-size:10pt; margin-top:10px">cloud_upload</mat-icon> Upload</button>
+  <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; color:white;" (click)="upload()" ><mat-icon style=" font-size:10pt; margin-top:10px">cloud_upload</mat-icon> Upload</button>
 
 
 </div>

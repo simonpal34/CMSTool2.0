@@ -87,7 +87,7 @@ export class ServiceMaster {
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
     this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl);
-    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl);
+    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr);
     this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl);
     //this.getMissions();
     //this.getAllSources();
@@ -260,12 +260,14 @@ export class ServiceMaster {
     return this.http.post('http://usafacts-api-staging.azurewebsites.net/api/v2/authentication/LogOut', { headers: header }).toPromise()
       .then(response => {
         this.loginService.isLoggedIn = false;
+        this.toastr.successToastr('Logged Out!', 'Success!');
         return Promise.resolve(this.loginService.isLoggedIn);
 
 
       })
       .catch(error => {
         this.loginService.isLoggedIn = true;
+        this.toastr.errorToastr('Logout Failed!', 'Oops!');
         return Promise.resolve(this.loginService.isLoggedIn);
       });
   }
@@ -456,5 +458,13 @@ export class ServiceMaster {
       this.uploaded = f;
     });
   }
-
+  upload(sheet: File, type: SpreadSheet) {
+    if (sheet) {
+      this.uploadFileService.DoesFileUploadMetricExist(sheet);
+    }
+    else {
+      this.toastr.errorToastr('Select SpreadSheet!', 'Oops!');
+    }
+    
+  }
 }
