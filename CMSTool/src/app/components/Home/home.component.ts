@@ -12,7 +12,8 @@ export class HomeComponent {
 
   sourceSelectForm: FormGroup;
   selected: boolean;
-
+  displayedColumnsModified = ['name', 'last_modified', 'last_published'];
+  displayedColumnsPublished = ['name', 'last_modified', 'last_published'];
   constructor(fb: FormBuilder, private svc: ServiceMaster ) {
 
     this.selected = false;
