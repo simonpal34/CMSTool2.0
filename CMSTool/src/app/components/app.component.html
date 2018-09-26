@@ -23,6 +23,7 @@
         <ul>
           <li routerLinkActive="['link-active']"><a mat-list-item routerLink='/staging' style="color:white">Staging</a></li>
           <li routerLinkActive="['link-active']"><a mat-list-item routerLink='/sources' style="color:white">Sources</a></li>
+          <li routerLinkActive="['link-active']"><a mat-list-item routerLink='/uploadFile' style="color:white">Upload</a></li>
           <li *ngIf="svc.loginService.profile.Role == 'SuperAdmin'"><a mat-list-item routerLink='/export' style="color:white">Export</a></li>
         </ul>
         

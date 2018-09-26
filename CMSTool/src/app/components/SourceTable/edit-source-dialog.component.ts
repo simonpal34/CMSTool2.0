@@ -26,6 +26,11 @@ export class EditSourceDialogComponent {
     this.source = _source;
     console.log(this.source.AgencyName)
   }
-
+  save(){
+    this.dialogRef.close(this.source);
+  }
+  cancel() {
+    this.dialogRef.close(null);
+  }
 
 }
