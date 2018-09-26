@@ -15,12 +15,10 @@ export class FileTableComponent {
   displayedColumns: string[] = ['fileType', 'name', 'status', 'uploadedBy', 'date','details'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<FileUpload>;
-  length: number = 0;
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
     this.svc.getUploaded();
     this.dataSource = new MatTableDataSource<FileUpload>(this.svc.uploaded);
     this.dataSource.paginator = this.paginator;
-    this.length = this.svc.uploaded.length;
   }
 
 }

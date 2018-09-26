@@ -9,3 +9,9 @@ export class Profile {
     public key: string;
 
 }
+export class MyActions {
+  public action: string;
+  public date: string;
+  public status: string;
+  public metric: string;
+}

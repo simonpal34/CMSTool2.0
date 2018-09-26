@@ -1,6 +1,6 @@
 <div style="padding-left:35px; width:75%;">
   <caption style="padding-left:35px"><b>Uploaded Files</b></caption>
-  <div class="mat-elevation-z8" *ngIf="length != 0">
+  <div class="mat-elevation-z8" >
     <table mat-table [dataSource]="dataSource" style="width:100%; table-layout: fixed">
       <ng-container matColumnDef="fileType" >
         <th mat-header-cell *matHeaderCellDef> File Type </th>
@@ -30,6 +30,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [length]="length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
