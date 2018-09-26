@@ -9,7 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './metricTable.component.html',
 })
 export class MetricTableComponent {
-  displayedColumns: string[] = ['child', 'name', 'last_modified','last_published', 'edit', 'publish'];
+  displayedColumns: string[] = ['child', 'name', 'last_modified','last_published', 'edit', 'download', 'publish'];
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
 
   }
