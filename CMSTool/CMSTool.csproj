@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="src\app\components\Export\export.component.ts" />
     <None Remove="src\app\components\FileTable\fileTable.component.ts" />
+    <None Remove="src\app\components\Home\home.component.ts" />
     <None Remove="src\app\components\Login\login.component.ts" />
     <None Remove="src\app\components\MetricTable\childrenTable.component.ts" />
     <None Remove="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
@@ -33,6 +34,7 @@
     <None Remove="src\app\Models\SpreadSheet.ts" />
     <None Remove="src\app\Models\Topic.ts" />
     <None Remove="src\app\services\exportService.ts" />
+    <None Remove="src\app\services\kpiService.ts" />
     <None Remove="src\app\services\login-guard.service.ts" />
     <None Remove="src\app\services\LoginService.ts" />
     <None Remove="src\app\services\metricService.ts" />
@@ -53,6 +55,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\app\components\Export\export.component.ts" />
     <TypeScriptCompile Include="src\app\components\FileTable\fileTable.component.ts" />
+    <TypeScriptCompile Include="src\app\components\Home\home.component.ts" />
     <TypeScriptCompile Include="src\app\components\Login\login.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\childrenTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\MetricTable\edit-metric-dialog.component.ts" />
@@ -75,6 +78,7 @@
     <TypeScriptCompile Include="src\app\Models\SpreadSheet.ts" />
     <TypeScriptCompile Include="src\app\Models\Topic.ts" />
     <TypeScriptCompile Include="src\app\services\exportService.ts" />
+    <TypeScriptCompile Include="src\app\services\kpiService.ts" />
     <TypeScriptCompile Include="src\app\services\metricService.ts" />
     <TypeScriptCompile Include="src\app\services\missionService.ts" />
     <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />

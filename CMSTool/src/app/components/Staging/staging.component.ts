@@ -17,6 +17,8 @@ export class StagingComponent {
       floatLabel: 'auto',
     });
     this.SearchID = "";
+    this.svc.getMissions();
+    this.svc.getAllSources();
   }
 
   clear() {

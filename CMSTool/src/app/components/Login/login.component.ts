@@ -38,16 +38,10 @@ export class LoginComponent {
         this.wrongLogin = !log
         if (log) {
           this.svc.getAuthCode();
-          this.router.navigate(['/staging'])
+          this.router.navigate(['/home'])
         } else {
           console.log("it did not worked");
         }
-
-
-      });
-        
-        
-        
+      });  
     }
-
 }

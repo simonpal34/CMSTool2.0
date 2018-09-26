@@ -16,6 +16,7 @@ import { Topic } from '../Models/Topic';
 import { Metric, ScrapedMetric, ModalData } from '../Models/Metric';
 import { Export } from '../Models/Export';
 import { MetricService } from './metricService';
+import { KPIService } from './kpiService';
 import { SourceService } from './sourceService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -41,6 +42,7 @@ export class ServiceMaster {
   stagingMetrics: Metric[];
   exports: Export[];
   metricService: MetricService;
+  kpiService: KPIService;
   metricEdit: Metric;
   scrapedMetric: ScrapedMetric;
   data: ModalData;
@@ -53,6 +55,9 @@ export class ServiceMaster {
   sourcesTabSelectedSources: Source[];
   uniqueSources: string[];
   spreadSheets: SpreadSheet[];
+  kpi_modified: Metric[];
+  kpi_published: Metric[];
+
   constructor(protected http: HttpClient, public dialog: MatDialog) {
     this.loginService = new LoginService(http);
     var r = new ReportingUnit();
@@ -82,8 +87,9 @@ export class ServiceMaster {
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
     this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl);
     this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl);
-    this.getMissions();
-    this.getAllSources();
+    this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl);
+    //this.getMissions();
+    //this.getAllSources();
     
 
   }

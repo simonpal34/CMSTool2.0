@@ -3,7 +3,7 @@
   <h2>Sources</h2>
 </div>
 <div>
-  <mat-form-field [floatLabel]="sourceSelectForm.value.floatLabel" style="padding-left:35px">
+  <mat-form-field [floatLabel]="sourceSelectForm.value.floatLabel" style="padding-left:35px; width:30%">
     <mat-label>Select Source</mat-label>
     <mat-select matInput name="selectedSource" [(ngModel)]="svc.sourcesTabSelectedSource" (ngModelChange)="selectSource()">
       <mat-option *ngFor="let s of svc.uniqueSources" [value]="s">

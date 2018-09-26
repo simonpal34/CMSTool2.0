@@ -13,6 +13,7 @@ import { AppComponent } from './components/app.component';
 import { MaterialModule } from './Modules/material.module';
 import { ServiceMaster } from './services/serviceMaster';
 import { LoginGuard } from './services/login-guard.service';
+import { HomeComponent } from './components/Home/home.component';
 import { StagingComponent } from './components/Staging/staging.component';
 import { UploadFileComponent } from './components/UploadFile/uploadFile.component';
 import { SourcesComponent } from './components/Sources/sources.component';
@@ -37,6 +38,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   declarations: [
     AppComponent,
     LoginComponent,
+    HomeComponent,
     StagingComponent,
     ExportComponent,
     ProfileComponent,
@@ -65,6 +67,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
+      { path: "home", component: HomeComponent, canActivate: [LoginGuard], data: { title: "Home" } },
       { path: "staging", component: StagingComponent, canActivate: [LoginGuard], data: { title: "Staging" } },
       { path: "uploadFile", component: UploadFileComponent , canActivate: [LoginGuard], data: { title: "UploadFile" } },
       { path: "sources", component: SourcesComponent, canActivate: [LoginGuard], data: { title: "Sources" } },
