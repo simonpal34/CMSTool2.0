@@ -8,7 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './childrenTable.component.html',
 })
 export class ChildrenTableComponent {
-  displayedColumns: string[] = ['child', 'name', 'last_modified', 'last_published', 'edit', 'publish'];
+  displayedColumns: string[] = ['child', 'name', 'last_modified', 'last_published', 'edit', 'download', 'publish'];
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
 
   }

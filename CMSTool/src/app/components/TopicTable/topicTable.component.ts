@@ -8,7 +8,7 @@ import { Topic } from '../../Models/Topic';
   templateUrl: './topicTable.component.html',
 })
 export class TopicTableComponent {
-  displayedColumns: string[] = ['child', 'name'];
+  displayedColumns: string[] = ['child', 'name', 'download'];
   constructor(private svc: ServiceMaster) {
 
   }
