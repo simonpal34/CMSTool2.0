@@ -17,8 +17,7 @@ export class FileTableComponent {
   dataSource: MatTableDataSource<FileUpload>;
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
     this.svc.getUploaded();
-    this.dataSource = new MatTableDataSource<FileUpload>(this.svc.uploaded);
-    this.dataSource.paginator = this.paginator;
+    
   }
 
 }

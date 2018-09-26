@@ -13,6 +13,10 @@ export class SourcesComponent {
   sourceSelectForm: FormGroup;
   selected: boolean;
   constructor(fb: FormBuilder, private svc: ServiceMaster) {
+
+    if (this.svc.uniqueSources == null) {
+      this.svc.getAllSources();
+    }
     this.selected = false;
     this.svc.sourcesTabSelectedSource = "";
     this.sourceSelectForm = fb.group({
