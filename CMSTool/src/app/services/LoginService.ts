@@ -4,13 +4,14 @@ import { ActivatedRoute, Router, NavigationExtras  } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Profile } from '../Models/Profile';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Injectable()
 export class LoginService {
   isLoggedIn: boolean;
   public profile: Profile;
 
-  constructor(protected http: HttpClient) {
+  constructor(protected http: HttpClient, public toastr: ToastrManager) {
     this.isLoggedIn = false;
   }
   login(Username: string, Password: string): Promise<boolean>{
@@ -20,12 +21,14 @@ export class LoginService {
       .then(response => {
         this.isLoggedIn = true;
         this.profile = response;
+        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!');
         return Promise.resolve(this.isLoggedIn);
 
 
       })
       .catch(error => {
         this.isLoggedIn = false;
+        this.toastr.errorToastr('Invalid Username or Password!', 'Oops!');
         return Promise.resolve(this.isLoggedIn);
       });
   }

@@ -23,6 +23,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Source } from '../Models/Source';
 import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 
 @Injectable()
@@ -58,8 +59,8 @@ export class ServiceMaster {
   kpi_modified: Metric[];
   kpi_published: Metric[];
 
-  constructor(protected http: HttpClient, public dialog: MatDialog) {
-    this.loginService = new LoginService(http);
+  constructor(protected http: HttpClient, public dialog: MatDialog, public toastr: ToastrManager) {
+    this.loginService = new LoginService(http, this.toastr);
     var r = new ReportingUnit();
     r.id = -1;
     this.stagingReportingUnits = [r];

@@ -32,6 +32,7 @@ import { AddSourceDialogComponent } from './components/MetricTable/add-source-di
 import { EditSourceDialogComponent } from './components/SourceTable/edit-source-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     SourceTableComponent,
     EditSourceDialogComponent,
     UploadFileComponent,
-    FileTableComponent
+    FileTableComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MaterialModule,
     ChartsModule,
     NgxSpinnerModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },

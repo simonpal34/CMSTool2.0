@@ -38,6 +38,8 @@
     "igniteui-angular-core": "^6.1.1",
     "jquery": "^3.3.1",
     "ng2-charts": "^1.6.0",
+    "ng2-toastr": "^4.1.2",
+    "ng6-toastr-notifications": "^1.0.4",
     "ngx-bootstrap": "^3.0.1",
     "ngx-spinner": "^6.1.2",
     "ngx-toasta": "^0.1.0",
