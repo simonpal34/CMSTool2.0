@@ -139,13 +139,13 @@ export class EditMetricDialogComponent {
         var j = 0;
         for (var i = 0; i < this.published.data.length; i++) {
           if (this.published.data[i].y != null) {
-            cd2.data[j] = this.published.data[i].y;
+            cd3.data[j] = this.published.data[i].y;
             j++;
           }
         }
-        cd2.label = this.metric.name + "--Published";
+        cd3.label = this.metric.name + "--Published";
 
-        this.chartData.push(cd2);
+        this.chartData.push(cd3);
       }
 
     }

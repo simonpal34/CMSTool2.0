@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Metric, ScrapedMetric } from '../Models/Metric';
+import { Metric, ScrapedMetric, ScrapedData } from '../Models/Metric';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Injectable()
@@ -32,7 +32,10 @@ export class MetricService {
   }
   getScraped(m: Metric): Promise<ScrapedMetric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-    return this.http.get<ScrapedMetric>('http://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise();
+    return this.http.get<ScrapedMetric>('http://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise().catch(error => {
+      var m = new ScrapedMetric();
+      return Promise.resolve(m);
+    });
   }
 
   stagingPost(m: Metric): Promise<Metric> {
