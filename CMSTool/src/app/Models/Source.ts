@@ -12,3 +12,8 @@ export class Source {
     description: string;
     Metrics: number[];
 }
+
+export class AddModel {
+  AllSources: Source[];
+  hasChildren: boolean;
+}

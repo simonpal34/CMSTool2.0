@@ -20,7 +20,7 @@ import { KPIService } from './kpiService';
 import { SourceService } from './sourceService';
 import { EditMetricDialogComponent } from '../components/MetricTable/edit-metric-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Source } from '../Models/Source';
+import { Source, AddModel } from '../Models/Source';
 import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -58,7 +58,7 @@ export class ServiceMaster {
   spreadSheets: SpreadSheet[];
   kpi_modified: Metric[];
   kpi_published: Metric[];
-
+  publishedMetric: Metric;
   constructor(protected http: HttpClient, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
     var r = new ReportingUnit();
@@ -85,8 +85,8 @@ export class ServiceMaster {
   getAuthCode() {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
-    this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl);
-    this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl);
+    this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl, this.toastr);
+    this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl, this.toastr);
     this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr);
     this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl);
     //this.getMissions();
@@ -210,8 +210,12 @@ export class ServiceMaster {
   getParentMetricEdit(metric: Metric, spinner: NgxSpinnerService) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
-      this.metricService.getScraped(response).then(r => {
+      this.metricService.getScraped(response).then(async r => {
         this.scrapedMetric = r;
+        this.metricService.getPublishedEdit(metric.id.toString()).then(p => {
+          this.publishedMetric = p;
+          
+          
          var sources = [];
         if (this.metricEdit.sources) {
           for (let id of this.metricEdit.sources) {
@@ -221,8 +225,9 @@ export class ServiceMaster {
               sources.push(s[0]);
           }
         }
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http }
-        let dialogRef = this.dialog.open(EditMetricDialogComponent,
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric }
+
+            let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
             data: this.data,
@@ -235,6 +240,8 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
+              if (m) {
+                this.toastr.successToastr(m.name + ' edit complete', 'Success!');
               if (m.children && m.children.length > 0) {
                 m.hasChildren = true;
               }
@@ -244,16 +251,19 @@ export class ServiceMaster {
               var i = temp.findIndex(met => met.id == m.id);
               temp[i] = m;
               console.log(m.name + " " + i);
-              this.stagingMetrics = Object.assign([], temp)
+                this.stagingMetrics = Object.assign([], temp)
+              }
             });
           }
         });
+        });
       });
-      
     });
     
   
-  }
+}
+
+
   logout(): Promise<boolean> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -274,9 +284,10 @@ export class ServiceMaster {
   getChildMetricEdit(metric: Metric, spinner: NgxSpinnerService ) {
     this.metricService.getStagingEdit(metric.id.toString()).then(response => {
       this.metricEdit = response;
-      this.metricService.getScraped(response).then(r => {
+      this.metricService.getScraped(response).then( r => {
         this.scrapedMetric = r;
-
+        this.metricService.getPublishedEdit(metric.id.toString()).then( p => {
+          this.publishedMetric = p;
         var sources = [];
         if (this.metricEdit.sources) {
           for (let id of this.metricEdit.sources) {
@@ -285,7 +296,7 @@ export class ServiceMaster {
               sources.push(s[0]);
           }
         }
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http  }
+        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
@@ -299,21 +310,25 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
-              if (m.children && m.children.length > 0) {
-                m.hasChildren = true;
+              if (m.id != -1) {
+                this.toastr.errorToastr(m.name + ' edit complete', 'Oops!');
+                if (m.children && m.children.length > 0) {
+                  m.hasChildren = true;
+                }
+                else {
+                  m.hasChildren = false;
+                }
+                var i = temp.findIndex(met => met.id == m.id);
+                temp[i] = m;
+                console.log(m.name + " " + i);
+                this.stagingChildren = Object.assign([], temp)
               }
-              else {
-                m.hasChildren = false;
-              }
-              var i = temp.findIndex(met => met.id == m.id);
-              temp[i] = m;
-              console.log(m.name + " " + i);
-              this.stagingChildren = Object.assign([], temp)
-            });
+              });
+          
           }
         });
+        });
       });
-
     });
 
 
@@ -414,7 +429,8 @@ export class ServiceMaster {
     });
   }
 
-  openSourceEdit(s: Source) {
+  openSourceEdit(s: Source, add: boolean) {
+    
     let dialogRef = this.dialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
@@ -426,7 +442,7 @@ export class ServiceMaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.sourceService.UpdateSource(result).then(async s => {
+        this.sourceService.UpdateSource(result, add).then(async s => {
           await this.getAllSources();
           this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
           
@@ -460,11 +476,32 @@ export class ServiceMaster {
   }
   upload(sheet: File, type: SpreadSheet) {
     if (sheet) {
-      this.uploadFileService.DoesFileUploadMetricExist(sheet);
+      this.uploadFileService.DoesFileUploadMetricExist(sheet).then(response => {
+        if (!response) {
+          this.uploadSheet(sheet, type);
+        }
+        else {
+          if (confirm("This metric already exists do you want to replace it")) {
+            this.uploadSheet(sheet, type);
+          }
+          else {
+            this.toastr.infoToastr('Spread Sheet upload canceled','Info')
+          }
+        }
+      })
     }
     else {
       this.toastr.errorToastr('Select SpreadSheet!', 'Oops!');
     }
     
+  }
+
+  uploadSheet(sheet: File, type: SpreadSheet) {
+    this.uploadFileService.UploadFile(sheet, type).then(async response => {
+      if (response) {
+        await this.getUploaded();
+        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success')
+      }
+    })
   }
 }

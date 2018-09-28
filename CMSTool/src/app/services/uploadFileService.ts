@@ -16,13 +16,15 @@ export class UploadFileService {
 
     return this.http.get<SpreadSheet[]>(this.url + '/spreadsheets', { headers: header }).toPromise();
   }
+
   getUploaded(): Promise<FileUpload[]> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.http.get<FileUpload[]>(this.url + '/upload', { headers: header }).toPromise();
   }
+
   public async DoesFileUploadMetricExist(file: File): Promise<boolean> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    let header = new HttpHeaders({ 'Authorization': this.key });
     var formData = new FormData();
     formData.append('uploadFile', file, file.name);
     return await this.http.post<boolean>(this.url + '/upload/DoesExist/Template', formData, { headers: header }).toPromise().then(
@@ -30,12 +32,31 @@ export class UploadFileService {
         return Promise.resolve(response);
       })
       .catch(error => {
+        var e = new Error();
+        e = error;
         var r = true;  //how to handle the error
-        this.toastr.errorToastr('An Error: ' + error.ExceptionMessage + ' has occured while processing ' + file.name + ' !', 'Oops!');
+        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!');
         return Promise.resolve(r);
       });
   }
-  
+
+  public async UploadFile(file: File, type: SpreadSheet): Promise<boolean> {
+    let header = new HttpHeaders({ 'Authorization': this.key });
+    var formData = new FormData();
+    formData.append('uploadFile', file, file.name);
+    var sheet = type.SheetName.replace('.', '_');
+    return await this.http.post<boolean>(this.url + '/upload/uploadSpreadsheet/' + sheet, formData, { headers: header }).toPromise().then(
+      response => {
+        return Promise.resolve(true);
+      })
+      .catch(error => {
+        var e = new Error();
+        e = error;
+        var r =  false;  //how to handle the error
+        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!');
+        return Promise.resolve(r);
+      });
+  }
   
 
 }

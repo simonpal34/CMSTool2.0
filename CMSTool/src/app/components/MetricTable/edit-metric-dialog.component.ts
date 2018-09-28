@@ -5,7 +5,7 @@ import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Source } from '../../Models/Source';
+import { Source, AddModel } from '../../Models/Source';
 import { AddSourceDialogComponent } from './add-source-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -32,11 +32,13 @@ export class EditMetricDialogComponent {
   displayedColumnsAdj: string[] = ['name', 'delete'];
   displayedColumnsSource: string[] = ['agency', 'name', 'delete', 'deleteChildren'];
   hasInflation: boolean;
+  hasPerCapita: boolean;
   sources: Source[];
   allSources: Source[];
   key: string;
   http: HttpClient;
   url: string;
+  published: Metric;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
     this.metricForm = fb.group({
@@ -52,6 +54,10 @@ export class EditMetricDialogComponent {
     this.key = _data.key;
     this.url = _data.url;
     this.http = _data.http;
+    this.published = _data.published;
+    if (this.metric.children && this.metric.children.length != 0) {
+      this.metric.hasChildren = true;
+    }
     this.axisLabels = ["People", "Dollars", "Percent", "Items", "Months", "Years", "Hours",
       "PerCapita", "DefendantsPerCriminalCase", "States", "WorkersPerState", "Per100000People", "Days", "Weeks"];
     if (this.metric.meta) {
@@ -127,6 +133,20 @@ export class EditMetricDialogComponent {
 
         this.chartData.push(cd2);
       }
+      if (this.published && this.published.data && this.published.data.length) {
+        var cd3 = new ChartData();
+        cd3.data = new Array();
+        var j = 0;
+        for (var i = 0; i < this.published.data.length; i++) {
+          if (this.published.data[i].y != null) {
+            cd2.data[j] = this.published.data[i].y;
+            j++;
+          }
+        }
+        cd2.label = this.metric.name + "--Published";
+
+        this.chartData.push(cd2);
+      }
 
     }
 
@@ -138,6 +158,9 @@ export class EditMetricDialogComponent {
         for (var i = 0; i < this.metric.available_adjustments.length; i++) {
           if (this.metric.available_adjustments[i].id == "inflation") {
             this.hasInflation = true;
+          }
+          if (this.metric.available_adjustments[i].id == "per capita") {
+            this.hasPerCapita = true;
           }
         }
       }
@@ -191,12 +214,17 @@ export class EditMetricDialogComponent {
   }
 
   RemoveAdjustment(a: Adjustment) {
-    this.metric.available_adjustments.forEach((item, index) => {
-      if (item === a) this.metric.available_adjustments.splice(index, 1);
+    var temp = Object.assign([], this.metric.available_adjustments);
+    temp.forEach((item, index) => {
+      if (item === a) temp.splice(index, 1);
     });
+    this.metric.available_adjustments = temp;
     console.log(a.id);
     if (a.id == "inflation") {
       this.hasInflation = false;
+    }
+    if (a.id == "per capita") {
+      this.hasPerCapita = false;
     }
     
   }
@@ -204,20 +232,44 @@ export class EditMetricDialogComponent {
     var adj = new Adjustment();
     adj.id = "inflation";
     adj.name = "Adjust for inflation";
-      this.metric.available_adjustments.push(adj);
+    var temp = Object.assign([], this.metric.available_adjustments);
+    if (this.hasPerCapita) {
+      temp[1] = adj;
+    }
+    else {
+      temp.push(adj);
+    }
+    this.metric.available_adjustments = temp;
       this.hasInflation = true;
     
+  }
+  addPerCapita() {
+    var adj = new Adjustment();
+    adj.id = "per capita";
+    adj.name = "Adjust for per capita";
+    var temp = Object.assign([], this.metric.available_adjustments);
+    if (this.hasInflation) {
+      temp[1] = adj;
+    }
+    else {
+      temp.push(adj);
+    }
+    this.metric.available_adjustments = temp;
+    this.hasPerCapita = true;
+
   }
 
   addSources() {
 
     if (this.sources.length != 0) {
       for (var i = 0; i < this.metric.sources.length; i++) {
-        var data = this.allSources.filter(s => s.key != this.metric.sources[i]);
+        var data = new AddModel();
+        data = { AllSources: this.allSources.filter(s => s.key != this.metric.sources[i]), hasChildren: this.metric.hasChildren};
       }
     }
     else {
-      var data = this.allSources;
+      var data = new AddModel();
+      data = { AllSources: this.allSources, hasChildren: this.metric.hasChildren };
     }
     let d = this.sourceDialog.open(AddSourceDialogComponent,
       {

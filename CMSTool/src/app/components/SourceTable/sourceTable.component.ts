@@ -17,7 +17,7 @@ export class SourceTableComponent {
 
   }
   edit(s: Source) {
-    this.svc.openSourceEdit(s);
+    this.svc.openSourceEdit(s, false);
   }
 
   delete(s: Source) {

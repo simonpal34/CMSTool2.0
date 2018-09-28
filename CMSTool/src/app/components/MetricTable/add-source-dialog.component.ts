@@ -5,7 +5,7 @@ import { ServiceMaster } from '../../services/serviceMaster';
 import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Source } from '../../Models/Source';
+import { Source, AddModel } from '../../Models/Source';
 
 
 @Component({
@@ -17,14 +17,17 @@ export class AddSourceDialogComponent {
   sourcesForm: FormGroup;
   selectedSource: string;
   selectedSources: Source[];
+  allSources: Source[];
+  hasChildren: boolean;
   displayedColumns: string[] = ['agency', 'tableOrFile', 'add', 'addChildren'];
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<AddSourceDialogComponent>, @Inject(MAT_DIALOG_DATA) public allSources: Source[]) {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<AddSourceDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
     this.sourcesForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
-    
+    this.allSources = data.AllSources;
+    this.hasChildren = data.hasChildren;
     var curr = this.allSources.map(d => d.AgencyName);
     console.log(this.allSources.length);
     this.uniqueSources = curr.filter(function (el, i, arr) {
@@ -43,5 +46,8 @@ export class AddSourceDialogComponent {
 
   async addSource(s: Source, n: number) {
     this.dialogRef.close({ source: s, num: n });
+  }
+  cancel() {
+    this.dialogRef.close(null);
   }
 }

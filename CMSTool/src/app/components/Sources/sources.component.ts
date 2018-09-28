@@ -32,7 +32,7 @@ export class SourcesComponent {
   addSource() {
     var s = new Source();
     s.AgencyName = "";
-    this.svc.openSourceEdit(s);
+    this.svc.openSourceEdit(s, true);
   }
 }
 

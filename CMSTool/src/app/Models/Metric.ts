@@ -84,6 +84,7 @@ export class ModalData {
   public key: string;
   public url: string;
   public http: HttpClient;
+  public published: Metric;
 }
 
 
