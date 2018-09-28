@@ -52,10 +52,11 @@ export class MetricService {
     var body = '';
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
-    return this.http.put<boolean>(this.url + '/metrics/publish/' + m.Id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
+    return this.http.put<boolean>(this.url + '/metrics/publish/' + m.id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
       this.toastr.successToastr(m.name + ' is published', 'Success');
       return Promise.resolve(true);
     }).catch(error => {
+      
       this.toastr.errorToastr('Publish Failed!', 'Oops!');
       return Promise.resolve(false);
     })
