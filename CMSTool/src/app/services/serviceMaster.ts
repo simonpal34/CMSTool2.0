@@ -195,15 +195,21 @@ export class ServiceMaster {
     var t = new Topic();
     t.id = -1;
     this.topicBreadCrumb = t;
-    for (var i = 0; i < this.stagingTopics[0].metrics.length; i++) {
-      if (this.stagingTopics[0].metrics[i].children && this.stagingTopics[0].metrics[i].children.length != 0) {
-        this.stagingTopics[0].metrics[i].hasChildren = true;
-      }
-      else {
-        this.stagingTopics[0].metrics[i].hasChildren = false;
-      }
+    var ids: string = "";
+    for (var i = 0; i < this.stagingTopics[0].metrics.length - 1; i++) {
+      ids = ids + this.stagingTopics[0].metrics[i].id.toString() + ",";
     }
-    this.stagingMetrics = this.stagingTopics[0].metrics;
+    this.metricService.getStagingMetricSearch(ids).then(response => {
+      this.stagingMetrics = response;
+      for (var i = 0; i < this.stagingMetrics.length; i++) {
+        if (this.stagingMetrics[i].children && this.stagingMetrics[i].children.length != 0) {
+          this.stagingMetrics[i].hasChildren = true;
+        }
+        else {
+          this.stagingMetrics[i].hasChildren = false;
+        }
+      }
+    })
     
   }
 
@@ -311,7 +317,7 @@ export class ServiceMaster {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
               if (m.id != -1) {
-                this.toastr.errorToastr(m.name + ' edit complete', 'Oops!');
+                this.toastr.successToastr(m.name + ' edit complete', 'Success!');
                 if (m.children && m.children.length > 0) {
                   m.hasChildren = true;
                 }
@@ -377,9 +383,11 @@ export class ServiceMaster {
           });
           if (this.stagingMetrics[0].ancestry.ancestor_metrics) {
             this.metricService.getStagingMetricSearch(this.stagingMetrics[0].ancestry.ancestor_metrics.toString()).then(r => {
-              this.metricsBreadCrumbs = r;
-              this.metricsBreadCrumbs.push(response[0]);
+              this.metricsBreadCrumbs = r.concat(response[0]);
             });
+          }
+          else {
+            this.metricsBreadCrumbs = [response[0]];
           }
           if (this.stagingMetrics[0].hasChildren) {
             this.metricService.getStagingMetricSearch(this.stagingMetrics[0].children.toString()).then(response => {
@@ -394,7 +402,7 @@ export class ServiceMaster {
               }
             })
           }
-          
+
       
       }
       }
@@ -503,5 +511,9 @@ export class ServiceMaster {
         this.toastr.successToastr(sheet.name + ' was uploaded', 'Success')
       }
     })
+  }
+
+  publishMetric(m: Metric, b: boolean) {
+    this.metricService.publishMetric(m, b);
   }
 }

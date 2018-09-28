@@ -36,5 +36,13 @@ export class MetricTableComponent {
     this.svc.stagingMetrics = [m];
     this.svc.trendToChildren(m);
   }
+  publishMetric(m: Metric, n: number) {
+    if (n == 0) {
+      this.svc.publishMetric(m, false);
+    }
+    else {
+      this.svc.publishMetric(m, true);
+    }
+  }
 
 }
