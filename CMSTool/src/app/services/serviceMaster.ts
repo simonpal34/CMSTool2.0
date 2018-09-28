@@ -311,7 +311,7 @@ export class ServiceMaster {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
               if (m.id != -1) {
-                this.toastr.errorToastr(m.name + ' edit complete', 'Oops!');
+                this.toastr.successToastr(m.name + ' edit complete', 'Success!');
                 if (m.children && m.children.length > 0) {
                   m.hasChildren = true;
                 }
