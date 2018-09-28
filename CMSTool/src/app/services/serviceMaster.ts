@@ -504,4 +504,8 @@ export class ServiceMaster {
       }
     })
   }
+
+  publishMetric(m: Metric, b: boolean) {
+    this.metricService.publishMetric(m, b);
+  }
 }

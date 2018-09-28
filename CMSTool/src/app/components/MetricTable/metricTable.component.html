@@ -14,7 +14,7 @@
       </td>
     </ng-container>
     <ng-container matColumnDef="name" style="padding-left:35px">
-      <th mat-header-cell *matHeaderCellDef> Mame </th>
+      <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let metric"> {{metric.name}} </td>
     </ng-container>
     <ng-container matColumnDef="last_modified" style="padding-left:35px">
@@ -46,10 +46,10 @@
       <td mat-cell *matCellDef="let metric">
         <button mat-raised-button *ngIf="svc.stagingMetrics[0].id != -2" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color:white" [matMenuTriggerFor]="menu"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Publish</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="publishMetric(metric,0)">
             Individual Metric<mat-icon>publish</mat-icon>
           </button>
-          <button mat-menu-item *ngIf="metric.hasChildren">
+          <button mat-menu-item *ngIf="metric.hasChildren" (click)="publishMetric(metric,1)">
             Metric with Children<mat-icon>publish</mat-icon>
           </button>
         </mat-menu>
