@@ -2,7 +2,7 @@
 <div class="header-row" style="padding-left:20px">
   <h2>Sources</h2>
 </div>
-<div>
+<div style="height:100%; overflow:auto">
   <mat-form-field [floatLabel]="sourceSelectForm.value.floatLabel" style="padding-left:35px; width:30%">
     <mat-label>Select Source</mat-label>
     <mat-select matInput name="selectedSource" [(ngModel)]="svc.sourcesTabSelectedSource" (ngModelChange)="selectSource()">
