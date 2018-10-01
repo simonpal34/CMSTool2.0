@@ -12,7 +12,7 @@ import { FileUpload } from '../../Models/SpreadSheet';
   templateUrl: './fileTable.component.html',
 })
 export class FileTableComponent {
-  displayedColumns: string[] = ['fileType', 'name', 'status', 'uploadedBy', 'date','details'];
+  displayedColumns: string[] = ['download','fileType', 'name', 'status', 'uploadedBy', 'date','details'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<FileUpload>;
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {

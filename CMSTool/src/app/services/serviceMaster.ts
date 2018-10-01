@@ -514,28 +514,30 @@ export class ServiceMaster {
   }
 
   async publishMetric(m: Metric, b: boolean) {
-    await this.metricService.publishMetric(m, b).then(async response => {
-      var metric = await response;
-      var temp = Object.assign([], this.stagingMetrics);
-      //update the hasChildren (This is used by the UI)
-      if (metric.children && metric.children.length != 0) {
-        metric.hasChildren = true;
-      }
-      else {
-        metric.hasChildren = false;
-      }
-      var i = temp.findIndex(met => met.id == metric.id);
-      temp[i] = metric;
-      this.stagingMetrics = Object.assign([], temp);
-      if (b && this.stagingChildren[0].id != -2) {
-        var tempChildren = Object.assign([], this.stagingChildren);
-        for (let child of metric.children) {
-          var i = tempChildren.findIndex(met => met.id == child);
-          tempChildren[i].LastPushedIntoProduction = metric.LastPushedIntoProduction
-          tempChildren[i].modified_on = metric.modified_on
+      this.toastr.infoToastr("Publishing can take a few minutes", "Info");
+      await this.metricService.publishMetric(m, b).then(async response => {
+        var metric = await response;
+        var temp = Object.assign([], this.stagingMetrics);
+        //update the hasChildren (This is used by the UI)
+        if (metric.children && metric.children.length != 0) {
+          metric.hasChildren = true;
         }
-        this.stagingChildren = Object.assign([], tempChildren);
-      }
-    });
+        else {
+          metric.hasChildren = false;
+        }
+        var i = temp.findIndex(met => met.id == metric.id);
+        temp[i] = metric;
+        this.stagingMetrics = Object.assign([], temp);
+        if (b && this.stagingChildren[0].id != -2) {
+          var tempChildren = Object.assign([], this.stagingChildren);
+          for (let child of metric.children) {
+            var i = tempChildren.findIndex(met => met.id == child);
+            tempChildren[i].LastPushedIntoProduction = metric.LastPushedIntoProduction
+            tempChildren[i].modified_on = metric.modified_on
+          }
+          this.stagingChildren = Object.assign([], tempChildren);
+        }
+      });
+   
   }
 }

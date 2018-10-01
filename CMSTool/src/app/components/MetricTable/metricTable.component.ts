@@ -37,6 +37,7 @@ export class MetricTableComponent {
     this.svc.trendToChildren(m);
   }
   publishMetric(m: Metric, n: number) {
+    
     if (n == 0) {
       this.svc.publishMetric(m, false);
     }
