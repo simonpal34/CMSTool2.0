@@ -19,7 +19,7 @@ export class MetricService {
   getPublishedEdit(id: string): Promise<Metric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
-    return this.http.get<Metric>('http://usafacts-api.azurewebsites.net/api/v2/metrics/' + id, { headers: header }).toPromise().catch(error => {
+    return this.http.get<Metric>('https://usafacts-api.azurewebsites.net/api/v2/metrics/' + id, { headers: header }).toPromise().catch(error => {
       var m = new Metric();
       return Promise.resolve(m);
     });
@@ -32,7 +32,7 @@ export class MetricService {
   }
   getScraped(m: Metric): Promise<ScrapedMetric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-    return this.http.get<ScrapedMetric>('http://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise().catch(error => {
+    return this.http.get<ScrapedMetric>('https://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise().catch(error => {
       var m = new ScrapedMetric();
       return Promise.resolve(m);
     });
@@ -51,19 +51,17 @@ export class MetricService {
     });
   }
 
-  publishMetric(m: Metric, includeChildren: boolean): Promise<boolean> {
+  async publishMetric(m: Metric, includeChildren: boolean): Promise<Metric> {
     var body = '';
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
-    return this.http.put<boolean>(this.url + '/metrics/publish/' + m.id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
+    return this.http.put<Metric>(this.url + '/metrics/publish/' + m.id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
       this.toastr.successToastr(m.name + ' is published', 'Success');
-      return Promise.resolve(true);
+      return Promise.resolve(response);
     }).catch(error => {
-      
-      this.toastr.errorToastr('Publish Failed!', 'Oops!');
-      return Promise.resolve(false);
-    })
-  }
-  
 
+      this.toastr.errorToastr('Publish Failed!', 'Oops!');
+      return Promise.resolve(null);
+    });
+  }
 }

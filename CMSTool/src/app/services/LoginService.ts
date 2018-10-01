@@ -17,7 +17,7 @@ export class LoginService {
   login(Username: string, Password: string): Promise<boolean>{
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post<Profile>('http://usafacts-api-staging.azurewebsites.net/api/v2/authentication', JSON.stringify({ Username, Password }), { headers: header }).toPromise()
+    return this.http.post<Profile>('https://usafacts-api-staging.azurewebsites.net/api/v2/authentication', JSON.stringify({ Username, Password }), { headers: header }).toPromise()
       .then(response => {
         this.isLoggedIn = true;
         this.profile = response;
