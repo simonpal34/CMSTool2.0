@@ -21,5 +21,18 @@ export class ChildrenTableComponent {
     this.svc.stagingMetrics = [m];
     this.svc.trendToChildren(m);
   }
+  publishMetric(m: Metric, n: number) {
 
+    if (n == 0) {
+      this.svc.publishMetric(m, false);
+    }
+    else {
+      this.svc.publishMetric(m, true);
+    }
+  }
+
+  export(m: Metric) {
+    this.spinner.show();
+    this.svc.metricService.exportMetric(m, this.spinner);
+  }
 }

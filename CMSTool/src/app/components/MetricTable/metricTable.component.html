@@ -36,7 +36,7 @@
     <ng-container matColumnDef="download" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let metric">
-        <button *ngIf="svc.stagingMetrics[0].id != -2"  matTooltip="Download {{metric.name}}" type="button" mat-icon-button>
+        <button *ngIf="svc.stagingMetrics[0].id != -2"  matTooltip="Download {{metric.name}}" type="button" mat-icon-button (click)="export(metric)">
           <mat-icon>cloud_download</mat-icon>
         </button>
       </td>

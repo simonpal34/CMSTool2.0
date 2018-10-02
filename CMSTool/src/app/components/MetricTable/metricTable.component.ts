@@ -46,4 +46,9 @@ export class MetricTableComponent {
     }
   }
 
+  export(m: Metric) {
+    this.spinner.show();
+    this.svc.metricService.exportMetric(m, this.spinner);
+  }
+
 }

@@ -4,11 +4,14 @@ import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Metric, ScrapedMetric, ScrapedData } from '../Models/Metric';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class MetricService {
 
-
+  fileUrl;
+  sanitizer: DomSanitizer
   constructor(protected http: HttpClient, private key: string, private url: string, public toastr: ToastrManager) {
   }
   getStagingEdit(id: string): Promise<Metric> {
@@ -62,6 +65,31 @@ export class MetricService {
 
       this.toastr.errorToastr('Publish Failed!', 'Oops!');
       return Promise.resolve(null);
+    });
+  }
+
+  async exportMetric(m: Metric, spinner: NgxSpinnerService) {
+    let header = new HttpHeaders({ 'Content-Type': 'application/octet-stream', 'Authorization': this.key });
+
+
+    return this.http.get(this.url + '/metrics/' + m.id + '/export', { headers: header, responseType: 'blob' }).subscribe(response => {
+      this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success');
+      spinner.hide();
+      var url = window.URL.createObjectURL(response);
+      var a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = m.name + ".xls";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove(); 
+      var url = window.URL.createObjectURL(response);
+    },error => {
+      var err = new Error();
+      err = error;
+      this.toastr.errorToastr('Export failed with error: ' + err.message, 'Oops!');
+      return null;
     });
   }
 }

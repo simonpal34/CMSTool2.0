@@ -7,7 +7,7 @@
              type="ball-pulse"></ngx-spinner>
 <div class="row">
   <div style="padding-left:35px; max-height:33%; width: 48%; float:left">
-    <caption style="padding-left:35px; width:75%"><b>Last Updated in Staging</b></caption>
+    <caption style="padding-left:35px; width:100%; display:inline"><b style="width:100%">Last Updated in Staging</b></caption>
     <table mat-table [dataSource]="svc.kpi_modified" class="mat-elevation-z8" style="width:100%; overflow:scroll;">
       <ng-container matColumnDef="name" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -27,7 +27,7 @@
   </div>
 
   <div style="padding-right:135px; width: 48%; float:right">
-    <caption style="padding-right:35px; width:75%"><b>Last Updated in Production</b></caption>
+    <caption style="padding-right:35px; width:100%; display:inline"><b>Last Updated in Production</b></caption>
     <table mat-table [dataSource]="svc.kpi_published" class="mat-elevation-z8" style="width:100%">
       <ng-container matColumnDef="child" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef></th>
@@ -56,7 +56,7 @@
 </div>
 <br />
 <div class="row" style="padding-left:35px; width: 75%">
-  <caption style="padding-left:35px"><b>My Actions</b></caption>
+  <caption style="padding-left:35px;width:100%; display:inline"><b>My Actions</b></caption>
   <table mat-table [dataSource]="actions" class="mat-elevation-z8" style="width:100%">
     <ng-container matColumnDef="action" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Action </th>

@@ -514,7 +514,7 @@ export class ServiceMaster {
   }
 
   async publishMetric(m: Metric, b: boolean) {
-      this.toastr.infoToastr("Publishing can take a few minutes", "Info");
+    this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.You may continue using the application and you will be notified when it is complete ", "Info");
       await this.metricService.publishMetric(m, b).then(async response => {
         var metric = await response;
         var temp = Object.assign([], this.stagingMetrics);
