@@ -505,6 +505,7 @@ export class ServiceMaster {
   }
 
   uploadSheet(sheet: File, type: SpreadSheet) {
+    this.toastr.infoToastr("The upload is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info");
     this.uploadFileService.UploadFile(sheet, type).then(async response => {
       if (response) {
         await this.getUploaded();
@@ -514,7 +515,7 @@ export class ServiceMaster {
   }
 
   async publishMetric(m: Metric, b: boolean) {
-    this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.You may continue using the application and you will be notified when it is complete ", "Info");
+    this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info");
       await this.metricService.publishMetric(m, b).then(async response => {
         var metric = await response;
         var temp = Object.assign([], this.stagingMetrics);
