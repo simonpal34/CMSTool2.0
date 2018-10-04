@@ -42,7 +42,7 @@
       <ng-container matColumnDef="addChildren" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let source">
-          <button *ngIf="hasChildren" matTooltip="Add {{source.name}} to Children" type="button" mat-icon-button style="color:#002c77 " (click)="addSource(source,0)">
+          <button *ngIf="hasChildren" matTooltip="Add {{source.name}} to Children" type="button" mat-icon-button style="color:#002c77 " (click)="addSource(source,1)">
             <mat-icon>group_add</mat-icon>
           </button>
         </td>
