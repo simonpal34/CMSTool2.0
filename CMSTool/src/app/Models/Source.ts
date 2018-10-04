@@ -16,4 +16,5 @@ export class Source {
 export class AddModel {
   AllSources: Source[];
   hasChildren: boolean;
+  public key: string;
 }

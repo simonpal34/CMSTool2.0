@@ -7,7 +7,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source, AddModel } from '../../Models/Source';
 import { EditSourceDialogComponent } from '../SourceTable/edit-source-dialog.component';
-
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
   selector: 'add-source-dialog',
@@ -20,13 +21,15 @@ export class AddSourceDialogComponent {
   selectedSources: Source[];
   allSources: Source[];
   hasChildren: boolean;
-  displayedColumns: string[] = ['agency', 'tableOrFile','edit', 'add', 'addChildren'];
+  displayedColumns: string[] = ['agency','name', 'tableOrFile', 'edit', 'add', 'addChildren'];
+  key: string;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<AddSourceDialogComponent>, public editDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
+    private fb: FormBuilder, public toastr: ToastrManager, public dialogRef: MatDialogRef<AddSourceDialogComponent>, public editDialog: MatDialog, public http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
     this.sourcesForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
+    this.key = data.key;
     this.allSources = data.AllSources;
     this.hasChildren = data.hasChildren;
     var curr = this.allSources.map(d => d.AgencyName);
@@ -52,7 +55,7 @@ export class AddSourceDialogComponent {
     this.dialogRef.close(null);
   }
   edit(s: Source) {
-    let dialogRef = this.editDialog.open(EditSourceDialogComponent,
+    let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         data: s,
@@ -60,5 +63,24 @@ export class AddSourceDialogComponent {
         height: '75%',
 
       });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+       
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        var response = false;
+        var body = JSON.stringify(result);
+        return this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+          this.toastr.successToastr(result.name + ' edit complete', 'Success!');
+          s = result;
+        }).catch(error => {
+          this.toastr.errorToastr('Edit Failed!', 'Oops!');
+          })
+       
+      }
+      else {
+            console.log("same");
+          }
+    });
   }
+ 
 }

@@ -91,4 +91,5 @@ export class ModalData {
 export class ChartData {
   public data: number[];
   public label: string;
+
 }

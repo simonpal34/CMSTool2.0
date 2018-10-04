@@ -264,12 +264,12 @@ export class EditMetricDialogComponent {
     if (this.sources.length != 0) {
       for (var i = 0; i < this.metric.sources.length; i++) {
         var data = new AddModel();
-        data = { AllSources: this.allSources.filter(s => s.key != this.metric.sources[i]), hasChildren: this.metric.hasChildren};
+        data = { AllSources: this.allSources.filter(s => s.key != this.metric.sources[i]), hasChildren: this.metric.hasChildren, key: this.key};
       }
     }
     else {
       var data = new AddModel();
-      data = { AllSources: this.allSources, hasChildren: this.metric.hasChildren };
+      data = { AllSources: this.allSources, hasChildren: this.metric.hasChildren, key: this.key };
     }
     let d = this.sourceDialog.open(AddSourceDialogComponent,
       {

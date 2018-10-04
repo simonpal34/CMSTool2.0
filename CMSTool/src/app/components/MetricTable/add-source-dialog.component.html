@@ -15,17 +15,21 @@
         <th mat-header-cell *matHeaderCellDef> Agency Name </th>
         <td mat-cell *matCellDef="let source"> {{source.AgencyName}} </td>
       </ng-container>
+      <ng-container matColumnDef="name" style="padding-left:35px">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let source"> {{source.name}} </td>
+      </ng-container>
       <ng-container matColumnDef="tableOrFile" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Table or File Name </th>
         <td mat-cell *matCellDef="let source"> {{source.TableOrFileName}} </td>
       </ng-container>
       <ng-container matColumnDef="edit" style="padding-left:35px">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let source">
-        <button matTooltip="Edit {{source.name}}" type="button" mat-icon-button style="color:#ffae42 " (click)="edit(source)" >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let source">
+          <button matTooltip="Edit {{source.name}}" type="button" mat-icon-button style="color:#ffae42 " (click)="edit(source)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
       </ng-container>
       <ng-container matColumnDef="add" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef></th>

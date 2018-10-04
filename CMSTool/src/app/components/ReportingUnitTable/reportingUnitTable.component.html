@@ -4,12 +4,12 @@
 
     <ng-container matColumnDef="name" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let reportingUnit"> {{reportingUnit.name}} </td>
+      <td mat-cell *matCellDef="let reportingUnit" matTooltip="{{reportingUnit.id}}"> {{reportingUnit.name}} </td>
     </ng-container>
     <ng-container matColumnDef="child" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let reportingUnit">
-        <button *ngIf="svc.stagingReportingUnits.length > 1" matTooltip="{{reportingUnit.id}}" type="button" (click)="selectReportingUnit(reportingUnit)" mat-icon-button color="primary">
+        <button *ngIf="svc.stagingReportingUnits.length > 1" matTooltip="To Topics" type="button" (click)="selectReportingUnit(reportingUnit)" mat-icon-button color="primary">
           <mat-icon style="color:#002c77">people</mat-icon>
         </button>
       </td>
