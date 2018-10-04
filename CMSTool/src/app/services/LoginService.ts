@@ -27,8 +27,15 @@ export class LoginService {
 
       })
       .catch(error => {
+        var err = new Error();
+        err = error;
         this.isLoggedIn = false;
-        this.toastr.errorToastr('Invalid Username or Password!', 'Oops!');
+        if (err.message == "Http failure response for https://usafacts-api-staging.azurewebsites.net/api/v2/authentication: 403 Forbidden") {
+          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!');
+        }
+        else {
+          this.toastr.errorToastr('Login failed with error: ' + err.message, 'Oops!');
+        }
         return Promise.resolve(this.isLoggedIn);
       });
   }

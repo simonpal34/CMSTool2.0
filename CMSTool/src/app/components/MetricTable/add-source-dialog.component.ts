@@ -6,6 +6,7 @@ import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '.
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source, AddModel } from '../../Models/Source';
+import { EditSourceDialogComponent } from '../SourceTable/edit-source-dialog.component';
 
 
 @Component({
@@ -19,9 +20,9 @@ export class AddSourceDialogComponent {
   selectedSources: Source[];
   allSources: Source[];
   hasChildren: boolean;
-  displayedColumns: string[] = ['agency', 'tableOrFile', 'add', 'addChildren'];
+  displayedColumns: string[] = ['agency', 'tableOrFile','edit', 'add', 'addChildren'];
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<AddSourceDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<AddSourceDialogComponent>, public editDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
     this.sourcesForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -49,5 +50,15 @@ export class AddSourceDialogComponent {
   }
   cancel() {
     this.dialogRef.close(null);
+  }
+  edit(s: Source) {
+    let dialogRef = this.editDialog.open(EditSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        data: s,
+        width: '75%',
+        height: '75%',
+
+      });
   }
 }
