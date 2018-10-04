@@ -47,6 +47,9 @@ export class MetricService {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.http.put<Metric>(this.url + '/metrics/update/verbose', body, { headers: header }).toPromise().catch(error => {
+      var err = new Error();
+      err = error;
+      console.log(err.message);
       this.toastr.errorToastr('Edit Failed!', 'Oops!');
       var m = new Metric();
       m.id = -1;
@@ -59,11 +62,11 @@ export class MetricService {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.http.put<Metric>(this.url + '/metrics/publish/' + m.id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
-      this.toastr.successToastr(m.name + ' is published', 'Success');
+      this.toastr.successToastr(m.name + ' is published', 'Success', { toastLife: 10000 });
       return Promise.resolve(response);
     }).catch(error => {
 
-      this.toastr.errorToastr('Publish Failed!', 'Oops!');
+      this.toastr.errorToastr('Publish Failed!', 'Oops!', { toastLife: 10000 });
       return Promise.resolve(null);
     });
   }
@@ -73,7 +76,7 @@ export class MetricService {
 
 
     return this.http.get(this.url + '/metrics/' + m.id + '/export', { headers: header, responseType: 'blob' }).subscribe(response => {
-      this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success');
+      this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success', { toastLife: 10000 });
       spinner.hide();
       var url = window.URL.createObjectURL(response);
       var a = document.createElement('a');
@@ -88,7 +91,7 @@ export class MetricService {
     },error => {
       var err = new Error();
       err = error;
-      this.toastr.errorToastr('Export failed with error: ' + err.message, 'Oops!');
+      this.toastr.errorToastr('Export failed with error: ' + err.message, 'Oops!', { toastLife: 10000 });
       return null;
     });
   }

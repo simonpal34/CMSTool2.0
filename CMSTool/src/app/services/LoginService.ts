@@ -21,7 +21,7 @@ export class LoginService {
       .then(response => {
         this.isLoggedIn = true;
         this.profile = response;
-        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!');
+        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!', { toastLife: 1000000 });
         return Promise.resolve(this.isLoggedIn);
 
 
@@ -30,11 +30,12 @@ export class LoginService {
         var err = new Error();
         err = error;
         this.isLoggedIn = false;
+
         if (err.message == "Http failure response for https://usafacts-api-staging.azurewebsites.net/api/v2/authentication: 403 Forbidden") {
-          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!');
+          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!', { toastLife: 10000 });
         }
         else {
-          this.toastr.errorToastr('Login failed with error: ' + err.message, 'Oops!');
+          this.toastr.errorToastr('Login failed with error: ' + err.message, 'Oops!', { toastLife: 10000 });
         }
         return Promise.resolve(this.isLoggedIn);
       });
