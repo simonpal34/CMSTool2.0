@@ -34,7 +34,7 @@ export class ServiceMaster {
   uploadFileService: UploadFileService;
   uploaded: FileUpload[];
   authCode: string;
-  stagingUrl = 'https://usafacts-api-staging.azurewebsites.net/api/v2';
+  stagingUrl = 'http://localhost:60534/api/v2';
   stagingMissions: Mission[];
   stagingReportingUnits: ReportingUnit[];
   stagingTopics: Topic[];
@@ -247,7 +247,7 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
-              if (m) {
+              if (m.id != -1) {
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastLife: 10000 });
               if (m.children && m.children.length > 0) {
                 m.hasChildren = true;

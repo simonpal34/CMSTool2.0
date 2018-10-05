@@ -46,14 +46,26 @@ export class MetricService {
     var body = JSON.stringify(m);
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
-    return this.http.put<Metric>(this.url + '/metrics/update/verbose', body, { headers: header }).toPromise().catch(error => {
+    return this.http.put<Metric>(this.url + '/metrics/update/verbose', body, { headers: header }).toPromise().then(response => {
+      return Promise.resolve(response);
+    }).catch(error => {
       var err = new Error();
       err = error;
-      console.log(err.message);
-      this.toastr.errorToastr('Edit Failed!', 'Oops!');
-      var m = new Metric();
-      m.id = -1;
-      return Promise.resolve(m);
+      
+      if (err.message == 'Http failure response for ' + this.url + 'metrics/update/verbose: 404 Not Found') {
+        console.log(err.message);
+        this.toastr.errorToastr('Your session has expired!', 'Oops!');
+        var m = new Metric();
+        m.id = -1;
+        return Promise.resolve(m);
+      }
+      else {
+        this.toastr.errorToastr('Edit Failed!', 'Oops!');
+        var m = new Metric();
+        m.id = -1;
+        return Promise.resolve(m);
+      }
+      
     });
   }
 
