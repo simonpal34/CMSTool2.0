@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Source, AddModel } from '../../Models/Source';
 import { AddSourceDialogComponent } from './add-source-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ToastrManager } from 'ng6-toastr-notifications';
 
 
 
@@ -40,7 +41,7 @@ export class EditMetricDialogComponent {
   url: string;
   published: Metric;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData)  {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     this.metricForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -290,10 +291,10 @@ export class EditMetricDialogComponent {
         
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
-          console.log("source addition success")
+          this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!" , "Success!");
           if (!this.metric.sources || this.metric.sources.length == 0) {
             
-            this.metric.sources.push(result);
+            this.metric.sources.push(result.source.key);
           }
           else {
             var temp = Object.assign([], this.metric.sources);
@@ -311,16 +312,16 @@ export class EditMetricDialogComponent {
             var temp2 = Object.assign([], this.sources);
             this.sources = [];
           }
-          if (result) {
+          if (result.source) {
             
-            temp2.push(result);
+            temp2.push(result.source);
           }
-          console.log(temp2[temp2.length-1].name)
           this.sources = Object.assign([], temp2);
+          console.log("hi");
           
         },
           error => {
-            console.log("source deletion failure");
+            this.toastr.errorToastr("Adding Source failed", "Oops!");
           })
       }
     });
@@ -335,12 +336,17 @@ export class EditMetricDialogComponent {
     }
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     await this.http.put(this.url + "/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
-      console.log("source deletion success")
-      this.sources.splice(this.sources.indexOf(s), 1);
-      this.metric.sources.splice(this.metric.sources.indexOf(s.key), 1);
+      this.toastr.successToastr("Source \'" + s.name + "\' was deleted from " + this.metric.name + "!", "Success!");
+      var temp1 = this.sources.filter(f => f.key != s.key);
+      this.sources = [];
+      this.sources = Object.assign([], temp1);
+      var temp2 = this.metric.sources.filter(f => f != s.key);
+      this.metric.sources = [];
+      this.metric.sources = Object.assign([], temp2);
+
     },
       error => {
-        console.log("source deletion failure");
+        this.toastr.errorToastr("Deleting Source failed", "Oops!");
       })
   }
   
