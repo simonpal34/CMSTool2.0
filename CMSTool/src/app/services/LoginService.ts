@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import { ActivatedRoute, Router, NavigationExtras  } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,21 +21,18 @@ export class LoginService {
       .then(response => {
         this.isLoggedIn = true;
         this.profile = response;
-        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!', { toastLife: 1000000 });
+        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!');
         return Promise.resolve(this.isLoggedIn);
 
 
       })
-      .catch(error => {
-        var err = new Error();
-        err = error;
+      .catch((error:HttpErrorResponse) => {
         this.isLoggedIn = false;
-
-        if (err.message == "Http failure response for https://usafacts-api-staging.azurewebsites.net/api/v2/authentication: 403 Forbidden") {
-          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!', { toastLife: 10000 });
+        if (error.status == 403) {
+          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!');
         }
         else {
-          this.toastr.errorToastr('Login failed with error: ' + err.message, 'Oops!', { toastLife: 10000 });
+          this.toastr.errorToastr('Login failed with error: ' + error.message, 'Oops!');
         }
         return Promise.resolve(this.isLoggedIn);
       });
