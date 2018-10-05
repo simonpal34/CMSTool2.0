@@ -59,7 +59,8 @@ export class ServiceMaster {
   kpi_modified: Metric[];
   kpi_published: Metric[];
   publishedMetric: Metric;
-  constructor(protected http: HttpClient, public dialog: MatDialog, public toastr: ToastrManager) {
+
+  constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
     var r = new ReportingUnit();
     r.id = -1;
@@ -219,7 +220,8 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(async r => {
         this.scrapedMetric = r;
-        this.metricService.getPublishedEdit(metric.id.toString()).then(p => {
+        
+        this.metricService.getPublishedEdit(metric).then(p => {
           this.publishedMetric = p;
           
           
@@ -247,19 +249,26 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
-              if (m.id != -1) {
+              if (m.id > -1) {
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastLife: 10000 });
-              if (m.children && m.children.length > 0) {
-                m.hasChildren = true;
-              }
-              else {
-                m.hasChildren = false;
-              }
-              var i = temp.findIndex(met => met.id == m.id);
-              temp[i] = m;
-              console.log(m.name + " " + i);
+                if (m.children && m.children.length > 0) {
+                  m.hasChildren = true;
+                }
+                else {
+                  m.hasChildren = false;
+                }
+                var i = temp.findIndex(met => met.id == m.id);
+                temp[i] = m;
+                console.log(m.name + " " + i);
                 this.stagingMetrics = Object.assign([], temp)
               }
+              if (m.id == -5) {
+                this.logout().then(response => {
+                  if (response == false) {
+                    this.router.navigate(['/login']);
+                  }
+                })
+                  }
             });
           }
         });
@@ -293,7 +302,7 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then( r => {
         this.scrapedMetric = r;
-        this.metricService.getPublishedEdit(metric.id.toString()).then( p => {
+        this.metricService.getPublishedEdit(metric).then( p => {
           this.publishedMetric = p;
         var sources = [];
         if (this.metricEdit.sources) {
@@ -329,6 +338,13 @@ export class ServiceMaster {
                 temp[i] = m;
                 console.log(m.name + " " + i);
                 this.stagingChildren = Object.assign([], temp)
+              }
+              if (m.id == -5) {
+                this.logout().then(response => {
+                  if (response == false) {
+                    this.router.navigate(['/login']);
+                  }
+                })
               }
               });
           
