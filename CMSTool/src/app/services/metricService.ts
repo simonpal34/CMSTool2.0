@@ -51,7 +51,7 @@ export class MetricService {
     }).catch(error => {
       var err = new Error();
       err = error;
-      
+      console.log(err.message);
       if (err.message == 'Http failure response for ' + this.url + 'metrics/update/verbose: 404 Not Found') {
         console.log(err.message);
         this.toastr.errorToastr('Your session has expired!', 'Oops!');

@@ -287,21 +287,37 @@ export class EditMetricDialogComponent {
         else {
           var includeChildren = true;
         }
+        
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
-          console.log("source deletion success")
-          if (!this.metric.sources || this.metric.sources.length == 0)
-            this.metric.sources = [];
-
-          this.metric.sources.push(result.source.key);
-          if (!this.sources || this.sources.length == 0)
-            this.sources = [];
-
-          for (let id of this.metric.sources) {
-            let s = this.allSources.filter(f => f.key == id);
-            if (s)
-              this.sources.push(s[0]);
+          console.log("source addition success")
+          if (!this.metric.sources || this.metric.sources.length == 0) {
+            
+            this.metric.sources.push(result);
           }
+          else {
+            var temp = Object.assign([], this.metric.sources);
+            temp.push(result.source.key);
+            this.metric.sources = [];
+            this.metric.sources = Object.assign([], temp);
+          }
+          
+          if (!this.sources || this.sources.length == 0) {
+            this.sources = [];
+            var temp2 = Object.assign([], this.sources);
+          }
+          else {
+            
+            var temp2 = Object.assign([], this.sources);
+            this.sources = [];
+          }
+          if (result) {
+            
+            temp2.push(result);
+          }
+          console.log(temp2[temp2.length-1].name)
+          this.sources = Object.assign([], temp2);
+          
         },
           error => {
             console.log("source deletion failure");

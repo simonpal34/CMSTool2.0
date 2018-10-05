@@ -34,7 +34,7 @@ export class ServiceMaster {
   uploadFileService: UploadFileService;
   uploaded: FileUpload[];
   authCode: string;
-  stagingUrl = 'http://localhost:60534/api/v2';
+  stagingUrl = 'https://usafacts-api-staging.azurewebsites.net/api/v2';
   stagingMissions: Mission[];
   stagingReportingUnits: ReportingUnit[];
   stagingTopics: Topic[];
