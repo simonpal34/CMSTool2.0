@@ -8,6 +8,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="newSource()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add New Sources</button>
 
   <div style="padding-top: 20px; padding-left:10px" *ngIf="selectedSources.length != 0">
     <table mat-table *ngIf="selectedSources.length != 0" [dataSource]="selectedSources" class="mat-elevation-z8" style="width:100%; margin-top:10px; height:60%">

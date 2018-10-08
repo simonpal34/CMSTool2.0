@@ -71,12 +71,42 @@ export class AddSourceDialogComponent {
         return this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
           this.toastr.successToastr(result.name + ' edit complete', 'Success!');
           s = result;
+          var temp = Object.assign([], this.selectedSources);
+          var i = temp.findIndex(src => src.key == s.key);
+          temp[i] = result;
+          this.selectedSources = Object.assign([], temp);
         }).catch(error => {
           this.toastr.errorToastr('Edit Failed!', 'Oops!');
           })
        
       }
       else {
+      }
+    });
+  }
+
+  newSource() {
+    var s = new Source();
+    s.AgencyName = '';
+    let d = this.editDialog.open(EditSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        data: s,
+        width: '75%',
+        height: '75%',
+
+      });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        var response = false;
+        var body = JSON.stringify(result);
+        return this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+            this.toastr.successToastr(result.name + ' was added', 'Success!');
+        }).catch(error => {
+            this.toastr.errorToastr('Add Failed!', 'Oops!');
+
+        });
       }
     });
   }
