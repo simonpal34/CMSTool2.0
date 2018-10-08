@@ -199,7 +199,7 @@ export class ServiceMaster {
     t.id = -1;
     this.topicBreadCrumb = t;
     var ids: string = "";
-    for (var i = 0; i < this.stagingTopics[0].metrics.length - 1; i++) {
+    for (var i = 0; i < this.stagingTopics[0].metrics.length; i++) {
       ids = ids + this.stagingTopics[0].metrics[i].id.toString() + ",";
     }
     this.metricService.getStagingMetricSearch(ids).then(response => {
