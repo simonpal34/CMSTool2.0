@@ -61,7 +61,8 @@ export class ServiceMaster {
   kpi_published: Metric[];
   kpi_activity_log: ActivityLog[];
   publishedMetric: Metric;
-  constructor(protected http: HttpClient, public dialog: MatDialog, public toastr: ToastrManager) {
+
+  constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
     var r = new ReportingUnit();
     r.id = -1;
@@ -220,7 +221,8 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then(async r => {
         this.scrapedMetric = r;
-        this.metricService.getPublishedEdit(metric.id.toString()).then(p => {
+        
+        this.metricService.getPublishedEdit(metric).then(p => {
           this.publishedMetric = p;
           
           
@@ -248,7 +250,7 @@ export class ServiceMaster {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
-              if (m.id != -1) {
+              if (m.id > -1) {
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastLife: 10000 });
               if (m.children && m.children.length > 0) {
                 m.hasChildren = true;
@@ -260,6 +262,13 @@ export class ServiceMaster {
               temp[i] = m;
                 this.stagingMetrics = Object.assign([], temp)
               }
+              if (m.id == -5) {
+                this.logout().then(response => {
+                  if (response == false) {
+                    this.router.navigate(['/login']);
+                  }
+                })
+                  }
             });
           }
         });
@@ -293,7 +302,7 @@ export class ServiceMaster {
       this.metricEdit = response;
       this.metricService.getScraped(response).then( r => {
         this.scrapedMetric = r;
-        this.metricService.getPublishedEdit(metric.id.toString()).then( p => {
+        this.metricService.getPublishedEdit(metric).then( p => {
           this.publishedMetric = p;
         var sources = [];
         if (this.metricEdit.sources) {
@@ -328,6 +337,13 @@ export class ServiceMaster {
                 var i = temp.findIndex(met => met.id == m.id);
                 temp[i] = m;
                 this.stagingChildren = Object.assign([], temp)
+              }
+              if (m.id == -5) {
+                this.logout().then(response => {
+                  if (response == false) {
+                    this.router.navigate(['/login']);
+                  }
+                })
               }
               });
           

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Metric, ScrapedMetric, ScrapedData } from '../Models/Metric';
@@ -19,13 +19,19 @@ export class MetricService {
 
     return this.http.get<Metric>(this.url + '/metrics/' + id + '/verbose', { headers: header }).toPromise();
   }
-  getPublishedEdit(id: string): Promise<Metric> {
+  getPublishedEdit(m: Metric): Promise<Metric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-
-    return this.http.get<Metric>('https://usafacts-api.azurewebsites.net/api/v2/metrics/' + id, { headers: header }).toPromise().catch(error => {
+    if (m.LastPushedIntoProduction) {
+      return this.http.get<Metric>('https://usafacts-api.azurewebsites.net/api/v2/metrics/' + m.id, { headers: header }).toPromise().catch(error => {
+        var m = new Metric();
+        return Promise.resolve(m);
+      });
+    }
+    else {
       var m = new Metric();
       return Promise.resolve(m);
-    });
+    }
+    
   }
 
   getStagingMetricSearch(id: string): Promise<Metric[]> {
@@ -48,17 +54,15 @@ export class MetricService {
 
     return this.http.put<Metric>(this.url + '/metrics/update/verbose', body, { headers: header }).toPromise().then(response => {
       return Promise.resolve(response);
-    }).catch(error => {
-      var err = new Error();
-      err = error;
-      if (err.message == 'Http failure response for ' + this.url + 'metrics/update/verbose: 404 Not Found') {
-        this.toastr.errorToastr('Your session has expired!', 'Oops!');
+    }).catch((error: HttpErrorResponse) => {
+      if (error.status == 404) {
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!');
         var m = new Metric();
-        m.id = -1;
+        m.id = -5;
         return Promise.resolve(m);
       }
       else {
-        this.toastr.errorToastr('Edit Failed!', 'Oops!');
+        this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!');
         var m = new Metric();
         m.id = -1;
         return Promise.resolve(m);
