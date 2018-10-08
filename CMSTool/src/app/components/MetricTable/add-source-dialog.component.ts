@@ -33,7 +33,6 @@ export class AddSourceDialogComponent {
     this.allSources = data.AllSources;
     this.hasChildren = data.hasChildren;
     var curr = this.allSources.map(d => d.AgencyName);
-    console.log(this.allSources.length);
     this.uniqueSources = curr.filter(function (el, i, arr) {
       return arr.indexOf(el) == i;
     });
@@ -78,8 +77,7 @@ export class AddSourceDialogComponent {
        
       }
       else {
-            console.log("same");
-          }
+      }
     });
   }
  

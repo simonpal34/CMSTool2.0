@@ -40,7 +40,6 @@ export class LoginComponent {
           this.svc.getAuthCode();
           this.router.navigate(['/home'])
         } else {
-          console.log("it did not worked");
         }
       });  
     }

@@ -26,7 +26,6 @@ export class SourceTableComponent {
     });
 
     snackBarRef.onAction().subscribe(() => {
-      console.log('The snack-bar action was triggered!');
       this.svc.deleteSource(s);
     });
 

@@ -16,11 +16,6 @@ export class HomeComponent {
   displayedColumnsModified = ['name', 'last_modified', 'last_published'];
   displayedColumnsPublished = ['name', 'last_modified', 'last_published'];
   displayedColumnsMyActions = ['action', 'date', 'status', 'metric'];
-  actions: MyActions[] = [
-    { action: "Published", date: '08/12/2018', status: 'In Progress', metric: "	sp test -- Housing unit" },
-    { action: "Edited", date: '08/30/2018', status: 'Done', metric: "	sp test -- Housing unit" },
-    { action: "Uploaded", date: '08/1/2018', status: 'Done', metric: "	sp test -- Housing unit" }
-  ]
   constructor(fb: FormBuilder, private svc: ServiceMaster ) {
 
     this.selected = false;
@@ -35,6 +30,10 @@ export class HomeComponent {
 
     this.svc.kpiService.getPublished().then(response => {
       this.svc.kpi_published = response;
+    });
+
+    this.svc.kpiService.getActivityLog().then(response => {
+      this.svc.kpi_activity_log = response;
     });
   }
 }

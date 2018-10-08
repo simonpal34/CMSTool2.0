@@ -26,6 +26,7 @@
     <None Remove="src\app\components\TopicTable\topicTable.component.ts" />
     <None Remove="src\app\components\ExportTable\exportTable.component.ts" />
     <None Remove="src\app\components\UploadFile\uploadFile.component.ts" />
+    <None Remove="src\app\Models\ActivityLog.ts" />
     <None Remove="src\app\Models\Export.ts" />
     <None Remove="src\app\Models\Metric.ts" />
     <None Remove="src\app\Models\Mission.ts" />
@@ -77,6 +78,7 @@
     <TypeScriptCompile Include="src\app\Models\ReportingUnit.ts" />
     <TypeScriptCompile Include="src\app\Models\SpreadSheet.ts" />
     <TypeScriptCompile Include="src\app\Models\Topic.ts" />
+    <TypeScriptCompile Include="src\app\Models\ActivityLog.ts" />
     <TypeScriptCompile Include="src\app\services\exportService.ts" />
     <TypeScriptCompile Include="src\app\services\kpiService.ts" />
     <TypeScriptCompile Include="src\app\services\metricService.ts" />

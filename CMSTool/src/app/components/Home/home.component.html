@@ -57,22 +57,22 @@
 <br />
 <div class="row" style="padding-left:35px; width: 75%">
   <caption style="padding-left:35px;width:100%; display:inline"><b>My Actions</b></caption>
-  <table mat-table [dataSource]="actions" class="mat-elevation-z8" style="width:100%">
+  <table mat-table [dataSource]="svc.kpi_activity_log" class="mat-elevation-z8" style="width:100%">
     <ng-container matColumnDef="action" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let action"> {{action.action}} </td>
+      <td mat-cell *matCellDef="let activitylog"> {{activitylog.Action}} </td>
     </ng-container>
     <ng-container matColumnDef="date" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Date </th>
-      <td mat-cell *matCellDef="let action"> {{action.date}} </td>
+      <td mat-cell *matCellDef="let activitylog"> {{activitylog.CreatedUtc | date: 'MM/dd/yyyy hh:mm'}} </td>
     </ng-container>
     <ng-container matColumnDef="status" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let action"> {{ action.status}}</td>
+      <td mat-cell *matCellDef="let activitylog"> {{ activitylog.Result}}</td>
     </ng-container>
     <ng-container matColumnDef="metric" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Metric </th>
-      <td mat-cell *matCellDef="let action"> {{ action.metric}}</td>
+      <td mat-cell *matCellDef="let activitylog"> {{ activitylog.name}}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumnsMyActions"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsMyActions;"></tr>

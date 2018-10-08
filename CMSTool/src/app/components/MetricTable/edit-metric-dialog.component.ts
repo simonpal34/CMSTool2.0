@@ -169,8 +169,6 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
-    
-    
     this.spinner.hide();
   }
   cancel() {
@@ -220,7 +218,6 @@ export class EditMetricDialogComponent {
       if (item === a) temp.splice(index, 1);
     });
     this.metric.available_adjustments = temp;
-    console.log(a.id);
     if (a.id == "inflation") {
       this.hasInflation = false;
     }
@@ -288,7 +285,7 @@ export class EditMetricDialogComponent {
         else {
           var includeChildren = true;
         }
-        
+        this.spinner.show();
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
           this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!" , "Success!");
@@ -317,11 +314,12 @@ export class EditMetricDialogComponent {
             temp2.push(result.source);
           }
           this.sources = Object.assign([], temp2);
-          console.log("hi");
+          this.spinner.hide();
           
         },
           error => {
             this.toastr.errorToastr("Adding Source failed", "Oops!");
+            this.spinner.hide();
           })
       }
     });
@@ -334,6 +332,7 @@ export class EditMetricDialogComponent {
     else{
       var includeChildren = true;
     }
+    this.spinner.show();
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     await this.http.put(this.url + "/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
       this.toastr.successToastr("Source \'" + s.name + "\' was deleted from " + this.metric.name + "!", "Success!");
@@ -343,10 +342,11 @@ export class EditMetricDialogComponent {
       var temp2 = this.metric.sources.filter(f => f != s.key);
       this.metric.sources = [];
       this.metric.sources = Object.assign([], temp2);
-
+      this.spinner.hide();
     },
       error => {
         this.toastr.errorToastr("Deleting Source failed", "Oops!");
+        this.spinner.hide();
       })
   }
   

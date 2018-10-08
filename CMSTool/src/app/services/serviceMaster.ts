@@ -24,6 +24,7 @@ import { Source, AddModel } from '../Models/Source';
 import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { ActivityLog } from '../Models/ActivityLog';
 
 
 @Injectable()
@@ -58,6 +59,7 @@ export class ServiceMaster {
   spreadSheets: SpreadSheet[];
   kpi_modified: Metric[];
   kpi_published: Metric[];
+  kpi_activity_log: ActivityLog[];
   publishedMetric: Metric;
   constructor(protected http: HttpClient, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
@@ -154,7 +156,6 @@ export class ServiceMaster {
       }
     }
     else {
-      console.log("Error getting reporting units");
     }
     
   }
@@ -257,7 +258,6 @@ export class ServiceMaster {
               }
               var i = temp.findIndex(met => met.id == m.id);
               temp[i] = m;
-              console.log(m.name + " " + i);
                 this.stagingMetrics = Object.assign([], temp)
               }
             });
@@ -327,7 +327,6 @@ export class ServiceMaster {
                 }
                 var i = temp.findIndex(met => met.id == m.id);
                 temp[i] = m;
-                console.log(m.name + " " + i);
                 this.stagingChildren = Object.assign([], temp)
               }
               });
@@ -468,7 +467,6 @@ export class ServiceMaster {
         this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
       }
       else {
-        console.log("Delete fail");
       }
     })
   }
