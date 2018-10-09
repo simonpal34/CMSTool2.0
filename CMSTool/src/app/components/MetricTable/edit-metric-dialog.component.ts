@@ -9,6 +9,7 @@ import { Source, AddModel } from '../../Models/Source';
 import { AddSourceDialogComponent } from './add-source-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Notification } from '../../Models/ActivityLog';
 
 
 
@@ -40,6 +41,7 @@ export class EditMetricDialogComponent {
   http: HttpClient;
   url: string;
   published: Metric;
+  notifications: Notification[];
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     this.metricForm = fb.group({
@@ -55,6 +57,7 @@ export class EditMetricDialogComponent {
     this.key = _data.key;
     this.url = _data.url;
     this.http = _data.http;
+    this.notifications = _data.notifications;
     this.published = _data.published;
     if (this.metric.children && this.metric.children.length != 0) {
       this.metric.hasChildren = true;
@@ -176,7 +179,7 @@ export class EditMetricDialogComponent {
   }
 
   save() {
-    this.dialogRef.close(this.metric);
+    this.dialogRef.close({ metric: this.metric, notifications: this.notifications });
   }
 
   removeMeta(m: Meta) {
@@ -295,7 +298,20 @@ export class EditMetricDialogComponent {
         }
         this.spinner.show();
         this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
-          this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!" , "Success!");
+          this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!", "Success!");
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Added Source: " + result.source.name + " to " + this.metric.name;
+            note.date = new Date();
+            this.notifications.push(note);
+          }
+          else {
+            var note = new Notification();
+            note.name = "Added Source: " + result.source.name + " to " + this.metric.name;
+            note.date = new Date();
+            this.notifications.push(note);
+            this.notifications.shift();
+          }
           if (!this.metric.sources || this.metric.sources.length == 0) {
             
             this.metric.sources.push(result.source.key);
@@ -327,6 +343,19 @@ export class EditMetricDialogComponent {
           error => {
             this.toastr.errorToastr("Adding Source failed", "Oops!");
             this.spinner.hide();
+            if (this.notifications.length != 10) {
+              var note = new Notification();
+              note.name = "Adding Source: " + result.source.name + " to " + this.metric.name + " Failed";
+              note.date = new Date();
+              this.notifications.push(note);
+            }
+            else {
+              var note = new Notification();
+              note.name = "Adding Source: " + result.source.name + " to " + this.metric.name + " Failed";
+              note.date = new Date();
+              this.notifications.push(note);
+              this.notifications.shift();
+            }
           })
       }
     });
@@ -343,6 +372,19 @@ export class EditMetricDialogComponent {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     await this.http.put(this.url + "/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
       this.toastr.successToastr("Source \'" + s.name + "\' was deleted from " + this.metric.name + "!", "Success!");
+      if (this.notifications.length != 10) {
+        var note = new Notification();
+        note.name = "Removed Source: " + s.name + " from " + this.metric.name;
+        note.date = new Date();
+        this.notifications.push(note);
+      }
+      else {
+        var note = new Notification();
+        note.name = "Removed Source: " + s.name + " from " + this.metric.name;
+        note.date = new Date();
+        this.notifications.push(note);
+        this.notifications.shift();
+      }
       var temp1 = this.sources.filter(f => f.key != s.key);
       this.sources = [];
       this.sources = Object.assign([], temp1);
@@ -354,6 +396,19 @@ export class EditMetricDialogComponent {
       error => {
         this.toastr.errorToastr("Deleting Source failed", "Oops!");
         this.spinner.hide();
+        if (this.notifications.length != 10) {
+          var note = new Notification();
+          note.name = "Removing Source: " + s.name + " from " + this.metric.name + " Failed";
+          note.date = new Date();
+          this.notifications.push(note);
+        }
+        else {
+          var note = new Notification();
+          note.name = "Removing Source: " + s.name + " from " + this.metric.name + " Failed";
+          note.date = new Date();
+          this.notifications.push(note);
+          this.notifications.shift();
+        }
       })
   }
   

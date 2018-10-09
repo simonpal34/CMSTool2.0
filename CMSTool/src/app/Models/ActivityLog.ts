@@ -4,3 +4,7 @@ export class ActivityLog {
   public Result: string;
   public CreatedUtc: Date;
 }
+export class Notification {
+  name: string;
+  date: Date;
+}

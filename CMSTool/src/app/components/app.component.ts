@@ -26,5 +26,8 @@ export class AppComponent {
       }
     })
   }
-
+  getNot() {
+    this.svc.notificationNum = 0;
+    this.svc.hasNotification = false;
+  }
 }

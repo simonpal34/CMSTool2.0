@@ -24,7 +24,7 @@ import { Source, AddModel } from '../Models/Source';
 import { EditSourceDialogComponent } from '../components/SourceTable/edit-source-dialog.component';
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { ActivityLog } from '../Models/ActivityLog';
+import { ActivityLog, Notification } from '../Models/ActivityLog';
 
 
 @Injectable()
@@ -61,6 +61,9 @@ export class ServiceMaster {
   kpi_published: Metric[];
   kpi_activity_log: ActivityLog[];
   publishedMetric: Metric;
+  notifications: Notification[];
+  hasNotification: boolean;
+  notificationNum: number;
 
   constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
@@ -83,7 +86,9 @@ export class ServiceMaster {
     this.metricsBreadCrumbs = [met];
     this.sourcesTabSelectedSource = "";
     this.spreadSheets = [];
-    
+    this.notifications = [];
+    this.hasNotification = false;
+    this.notificationNum = 0;
   }
 
   getAuthCode() {
@@ -234,8 +239,8 @@ export class ServiceMaster {
             if (s)
               sources.push(s[0]);
           }
-        }
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric }
+          }
+          this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric, notifications: this.notifications }
 
             let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
@@ -249,10 +254,31 @@ export class ServiceMaster {
       
           dialogRef.afterClosed().subscribe(result => {
             this.getAllSources();
-          if (result != null) {
-            this.metricService.stagingPost(result).then(m => {
+            if (result != null) {
+                if (this.notifications.length != result.notifications.length) {
+                  this.hasNotification = true;
+                  this.notificationNum += (result.notifications.length - this.notifications.length);
+                  this.notifications = result.notifications;
+                }
+            this.metricService.stagingPost(result.metric).then(m => {
               if (m.id > -1) {
+                this.hasNotification = true;
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
+                if (this.notifications.length != 10) {
+                  this.notificationNum++;
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id;
+                  note.date = new Date();
+                  this.notifications.push(note);
+                }
+                else {
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id;
+                  note.date = new Date();
+                  this.notifications.push(note);
+                  this.notifications.shift();
+                }
+                
               if (m.children && m.children.length > 0) {
                 m.hasChildren = true;
               }
@@ -284,7 +310,7 @@ export class ServiceMaster {
   logout(): Promise<boolean> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post('https://usafacts-api-staging.azurewebsites.net/api/v2/authentication/LogOut', { headers: header }).toPromise()
+    return this.http.post(this.stagingUrl + '/authentication/LogOut', { headers: header }).toPromise()
       .then(response => {
         this.loginService.isLoggedIn = false;
         this.toastr.successToastr('Logged Out!', 'Success!', { toastTimeout: 10000 });
@@ -313,7 +339,7 @@ export class ServiceMaster {
               sources.push(s[0]);
           }
         }
-        this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric }
+          this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric, notifications: this.notifications }
         let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
             panelClass: 'mat-dialog-lg',
@@ -326,10 +352,29 @@ export class ServiceMaster {
 
           dialogRef.afterClosed().subscribe(result => {
             this.getAllSources();
-          if (result != null) {
-            this.metricService.stagingPost(result).then(m => {
+            if (result != null) {
+              if (this.notifications.length != result.notifications.length) {
+                this.hasNotification = true;
+                this.notificationNum += (result.notifications.length - this.notifications.length);
+                this.notifications = result.notifications;
+              }
+            this.metricService.stagingPost(result.metric).then(m => {
               if (m.id != -1) {
-                this.getAllSources();
+                this.hasNotification = true;
+                if (this.notifications.length != 10) {
+                  this.notificationNum++;
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id;
+                  note.date = new Date();
+                  this.notifications.push(note);
+                }
+                else {
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id;
+                  note.date = new Date();
+                  this.notifications.push(note);
+                  this.notifications.shift();
+                }
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
                 if (m.children && m.children.length > 0) {
                   m.hasChildren = true;

@@ -4,10 +4,10 @@
     <mat-toolbar-row>
       <h1 class="app-name">{{title}}</h1>&nbsp;v 1.31
       <span style="flex: 1 1 auto;"></span>
-      <button type="button" *ngIf="svc.loginService.isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
+      <button type="button" *ngIf="svc.loginService.isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu1">
         <mat-icon>person</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
+      <mat-menu #menu1="matMenu">
         <button mat-menu-item (click)="logout()">
           Log Out
         </button>
@@ -15,9 +15,19 @@
           Your Profile
         </button>
       </mat-menu>
-      <button type="button"  *ngIf="svc.loginService.isLoggedIn" mat-icon-button >
-        <mat-icon matBadge="8" matBadgePosition="before" matBadgeColor="warn">notifications</mat-icon>
+      <button type="button" *ngIf="svc.loginService.isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu2" (click)="getNot()">  
+        <mat-icon matBadge="{{svc.notificationNum}}" matBadgeColor="warn" [matBadgeHidden]="!svc.hasNotification">notifications</mat-icon>
       </button>
+      <mat-menu #menu2="matMenu">
+        <ul *ngIf="svc.notifications.length != 0" style="margin-left:0">
+          <li *ngFor="let notification of svc.notifications.slice().reverse()" style="border-bottom:1px solid black; margin-left:0">
+            <h6>{{notification.date | date: 'MM/dd/yyyy hh:mm'}}</h6> <p>{{notification.name}}</p>  
+          </li>
+        </ul>
+        <div *ngIf="svc.notifications.length == 0">
+          No Notifications
+        </div>
+      </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-sidenav-container class="example-container" style="height: 100%" >

@@ -3,6 +3,7 @@ import { Source } from './Source';
 import { AddSourceDialogComponent } from '../components/MetricTable/add-source-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
+import { Notification } from './ActivityLog';
 
 export class Metric {
   public id: number;
@@ -85,6 +86,7 @@ export class ModalData {
   public url: string;
   public http: HttpClient;
   public published: Metric;
+  public notifications: Notification[];
 }
 
 
