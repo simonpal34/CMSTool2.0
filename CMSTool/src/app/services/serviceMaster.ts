@@ -247,11 +247,12 @@ export class ServiceMaster {
           });
         var temp = Object.assign([], this.stagingMetrics);
       
-        dialogRef.afterClosed().subscribe(result => {
+          dialogRef.afterClosed().subscribe(result => {
+            this.getAllSources();
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
               if (m.id > -1) {
-                this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastLife: 10000 });
+                this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
               if (m.children && m.children.length > 0) {
                 m.hasChildren = true;
               }
@@ -286,14 +287,14 @@ export class ServiceMaster {
     return this.http.post('https://usafacts-api-staging.azurewebsites.net/api/v2/authentication/LogOut', { headers: header }).toPromise()
       .then(response => {
         this.loginService.isLoggedIn = false;
-        this.toastr.successToastr('Logged Out!', 'Success!', { toastLife: 10000 });
+        this.toastr.successToastr('Logged Out!', 'Success!', { toastTimeout: 10000 });
         return Promise.resolve(this.loginService.isLoggedIn);
 
 
       })
       .catch(error => {
         this.loginService.isLoggedIn = true;
-        this.toastr.errorToastr('Logout Failed!', 'Oops!', { toastLife: 10000 });
+        this.toastr.errorToastr('Logout Failed!', 'Oops!', { toastTimeout: 10000 });
         return Promise.resolve(this.loginService.isLoggedIn);
       });
   }
@@ -323,11 +324,13 @@ export class ServiceMaster {
           });
         var temp = Object.assign([], this.stagingChildren);
 
-        dialogRef.afterClosed().subscribe(result => {
+          dialogRef.afterClosed().subscribe(result => {
+            this.getAllSources();
           if (result != null) {
             this.metricService.stagingPost(result).then(m => {
               if (m.id != -1) {
-                this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastLife: 10000 });
+                this.getAllSources();
+                this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
                 if (m.children && m.children.length > 0) {
                   m.hasChildren = true;
                 }
@@ -508,29 +511,29 @@ export class ServiceMaster {
             this.uploadSheet(sheet, type);
           }
           else {
-            this.toastr.infoToastr('Spread Sheet upload canceled', 'Info', { toastLife: 10000 })
+            this.toastr.infoToastr('Spread Sheet upload canceled', 'Info', { toastTimeout: 10000 })
           }
         }
       })
     }
     else {
-      this.toastr.errorToastr('Select SpreadSheet!', 'Oops!', { toastLife: 10000 });
+      this.toastr.errorToastr('Select SpreadSheet!', 'Oops!', { toastTimeout: 10000 });
     }
     
   }
 
   uploadSheet(sheet: File, type: SpreadSheet) {
-    this.toastr.infoToastr("The upload is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastLife: 10000 });
+    this.toastr.infoToastr("The upload is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
     this.uploadFileService.UploadFile(sheet, type).then(async response => {
       if (response) {
         await this.getUploaded();
-        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastLife: 10000 })
+        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 })
       }
     })
   }
 
   async publishMetric(m: Metric, b: boolean) {
-    this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastLife: 10000 });
+    this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
       await this.metricService.publishMetric(m, b).then(async response => {
         var metric = await response;
         var temp = Object.assign([], this.stagingMetrics);

@@ -260,10 +260,13 @@ export class EditMetricDialogComponent {
   addSources() {
 
     if (this.sources.length != 0) {
+      var sources = this.allSources;
       for (var i = 0; i < this.metric.sources.length; i++) {
         var data = new AddModel();
-        data = { AllSources: this.allSources.filter(s => s.key != this.metric.sources[i]), hasChildren: this.metric.hasChildren, key: this.key};
+        sources = sources.filter(s => s.key != this.metric.sources[i])
+        
       }
+      data = { AllSources: sources, hasChildren: this.metric.hasChildren, key: this.key };
     }
     else {
       var data = new AddModel();
@@ -278,7 +281,12 @@ export class EditMetricDialogComponent {
 
       });
     d.afterClosed().subscribe(result => {
+      let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+      this.http.get<Source[]>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", { headers: header }).subscribe(result => {
+        this.allSources = result
+      })
       if (result != null) {
+        
         if (result.num == 0) {
           var includeChildren = false;
         }
@@ -286,7 +294,6 @@ export class EditMetricDialogComponent {
           var includeChildren = true;
         }
         this.spinner.show();
-        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
           this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!" , "Success!");
           if (!this.metric.sources || this.metric.sources.length == 0) {

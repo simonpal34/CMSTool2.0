@@ -15,7 +15,9 @@
           Your Profile
         </button>
       </mat-menu>
-      
+      <button type="button"  *ngIf="svc.loginService.isLoggedIn" mat-icon-button >
+        <mat-icon matBadge="8" matBadgePosition="before" matBadgeColor="warn">notifications</mat-icon>
+      </button>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-sidenav-container class="example-container" style="height: 100%" >

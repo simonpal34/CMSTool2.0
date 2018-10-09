@@ -21,7 +21,7 @@ export class LoginService {
       .then(response => {
         this.isLoggedIn = true;
         this.profile = response;
-        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!');
+        this.toastr.successToastr('Welcome ' + response.FirstName + '!', 'Success!', { toastTimeout: 10000 });
         return Promise.resolve(this.isLoggedIn);
 
 
@@ -29,10 +29,10 @@ export class LoginService {
       .catch((error:HttpErrorResponse) => {
         this.isLoggedIn = false;
         if (error.status == 403) {
-          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!');
+          this.toastr.errorToastr('Invalid Username or Password ', 'Oops!', { toastTimeout: 10000 });
         }
         else {
-          this.toastr.errorToastr('Login failed with error: ' + error.message, 'Oops!');
+          this.toastr.errorToastr('Login failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
         }
         return Promise.resolve(this.isLoggedIn);
       });

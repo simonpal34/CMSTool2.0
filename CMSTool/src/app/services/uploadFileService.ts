@@ -35,7 +35,7 @@ export class UploadFileService {
         var e = new Error();
         e = error;
         var r = true;  //how to handle the error
-        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!');
+        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
         return Promise.resolve(r);
       });
   }
@@ -53,7 +53,7 @@ export class UploadFileService {
         var e = new Error();
         e = error;
         var r =  false;  //how to handle the error
-        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!');
+        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
         return Promise.resolve(r);
       });
   }

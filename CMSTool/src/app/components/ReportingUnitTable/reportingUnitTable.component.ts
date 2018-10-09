@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ServiceMaster } from '../../services/serviceMaster';
 import { ReportingUnit } from '../../Models/ReportingUnit';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -10,7 +11,6 @@ import { ReportingUnit } from '../../Models/ReportingUnit';
 export class ReportingUnitTableComponent {
   displayedColumns: string[] = ['child', 'name'];
   constructor(private svc: ServiceMaster) {
-
   }
 
   selectReportingUnit(reportingUnit: ReportingUnit) {

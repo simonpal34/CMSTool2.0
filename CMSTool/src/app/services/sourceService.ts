@@ -1,15 +1,16 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Source } from '../Models/Source';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Router } from '@angular/router';
 
 @Injectable()
 
 export class SourceService {
 
-
+  router: Router;
   constructor(protected http: HttpClient, private key: string, private url: string, public toastr: ToastrManager) {
   }
 
@@ -30,21 +31,26 @@ export class SourceService {
     var body = JSON.stringify(source);
     return this.http.put<Source>(this.url + "/sources", body, { headers: header }).toPromise().then(response => {
       if (add) {
-        this.toastr.successToastr(source.name + ' was added', 'Success!');
+        this.toastr.successToastr(source.name + ' was added', 'Success!', { toastTimeout: 10000 });
       }
       else {
-        this.toastr.successToastr(source.name + ' edit complete', 'Success!');
+        this.toastr.successToastr(source.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
       }
       
       return Promise.resolve(response);
-    }).catch(error => {
-      if (add) {
-        this.toastr.errorToastr('Add Failed!', 'Oops!');
+    }).catch((error: HttpErrorResponse) => {
+      if (error.status == 404) {
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
+        this.router.navigate(['/login']);
       }
       else {
-        this.toastr.errorToastr('Edit Failed!', 'Oops!');
+        if (add) {
+          this.toastr.errorToastr('Add Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
+        }
+        else {
+          this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
+        }
       }
-      
       return Promise.resolve(new Source());
     });
   }
@@ -54,14 +60,14 @@ export class SourceService {
     var response = false;
     return this.http.put(this.url + "/sources/remove/" + source.key , '', { headers: header }).toPromise()
       .then(response => {
-        this.toastr.successToastr(source.name + ' was deleted', 'Success!');
+        this.toastr.successToastr(source.name + ' was deleted', 'Success!', { toastTimeout: 10000 });
         var r = true
         return Promise.resolve(r);
 
 
       })
-      .catch(error => {
-        this.toastr.errorToastr('Delete Failed!', 'Oops!');
+      .catch((error: HttpErrorResponse) => {
+        this.toastr.errorToastr('Delete Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
         var r = false;
         return Promise.resolve(r);
       });

@@ -10,9 +10,7 @@ import { FormControl } from '@angular/forms';
 })
 export class MissionTableComponent {
   displayedColumns: string[] = ['child', 'name'];
-  position: FormControl
   constructor(private svc: ServiceMaster) {
-    this.position = new FormControl('left');
   }
 
   selectMission(mission: Mission) {

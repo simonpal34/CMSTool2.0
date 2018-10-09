@@ -4,12 +4,15 @@
 </div>
 
 <div>
-  <mat-form-field [floatLabel]="search.value.floatLabel" style="padding-left:35px; width: 30%">
-    <mat-label>Search Metric</mat-label>
-    <input matInput name="search" [(ngModel)]="SearchID" value="{{SearchID}}">
-  </mat-form-field>
-  <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; color:white;" (click)="getSearch()"><mat-icon style=" font-size:10pt; margin-top:10px">search</mat-icon> Search</button>
-  <button mat-raised-button *ngIf="svc.stagingReportingUnits[0].id != -1 || svc.stagingTopics[0].id != -1 || svc.stagingMetrics[0].id != -1"  style="color:white; background-color:#C62828; font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> Clear</button>
+  <form (submit)="getSearch()">
+    <mat-form-field [floatLabel]="search.value.floatLabel" style="padding-left:35px; width: 30%">
+      <mat-label>Search Metric</mat-label>
+      <input matInput name="search" [(ngModel)]="SearchID" value="{{SearchID}}">
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; color:white;"><mat-icon style=" font-size:10pt; margin-top:10px">search</mat-icon> Search</button>
+    <button mat-raised-button type="button" *ngIf="svc.stagingReportingUnits[0].id != -1 || svc.stagingTopics[0].id != -1 || svc.stagingMetrics[0].id != -1" style="color:white; background-color:#C62828; font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> Clear</button>
+  </form>
 </div>
 <ul>
   <li *ngIf="svc.missionBreadCrumb.id != -1" style="display:inline">

@@ -4,7 +4,7 @@
 
     <ng-container matColumnDef="name" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let mission"> <p style="width:auto" matTooltip="{{mission.id}}" [matTooltipPosition]="position.value">{{mission.name}}</p> </td>
+      <td mat-cell *matCellDef="let mission"> <p matTooltip="{{mission.id}}">{{mission.name}}</p> </td>
     </ng-container>
     <ng-container matColumnDef="child" style="padding-left:35px">
       <th mat-header-cell *matHeaderCellDef></th>

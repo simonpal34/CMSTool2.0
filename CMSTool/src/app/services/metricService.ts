@@ -56,13 +56,13 @@ export class MetricService {
       return Promise.resolve(response);
     }).catch((error: HttpErrorResponse) => {
       if (error.status == 404) {
-        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!');
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
         var m = new Metric();
         m.id = -5;
         return Promise.resolve(m);
       }
       else {
-        this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!');
+        this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
         var m = new Metric();
         m.id = -1;
         return Promise.resolve(m);
@@ -76,11 +76,11 @@ export class MetricService {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.http.put<Metric>(this.url + '/metrics/publish/' + m.id + '?includeChildren=' + includeChildren, body, { headers: header }).toPromise().then(response => {
-      this.toastr.successToastr(m.name + ' is published', 'Success', { toastLife: 10000 });
+      this.toastr.successToastr(m.name + ' is published', 'Success', { toastTimeout: 10000 });
       return Promise.resolve(response);
     }).catch(error => {
 
-      this.toastr.errorToastr('Publish Failed!', 'Oops!', { toastLife: 10000 });
+      this.toastr.errorToastr('Publish Failed!', 'Oops!', { toastTimeout: 10000 });
       return Promise.resolve(null);
     });
   }
@@ -90,14 +90,14 @@ export class MetricService {
 
 
     return this.http.get(this.url + '/metrics/' + m.id + '/export', { headers: header, responseType: 'blob' }).subscribe(response => {
-      this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success', { toastLife: 10000 });
+      this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success', { toastTimeout: 10000 });
       spinner.hide();
       var url = window.URL.createObjectURL(response);
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.setAttribute('style', 'display: none');
       a.href = url;
-      a.download = m.name + ".xls";
+      a.download = m.id + "_" + m.name + ".xlsx";
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove(); 
@@ -105,7 +105,7 @@ export class MetricService {
     },error => {
       var err = new Error();
       err = error;
-      this.toastr.errorToastr('Export failed with error: ' + err.message, 'Oops!', { toastLife: 10000 });
+      this.toastr.errorToastr('Export failed with error: ' + err.message, 'Oops!', { toastTimeout: 10000 });
       return null;
     });
   }

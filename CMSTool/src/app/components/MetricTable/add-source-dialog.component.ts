@@ -68,7 +68,7 @@ export class AddSourceDialogComponent {
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         var response = false;
         var body = JSON.stringify(result);
-        return this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+        this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
           this.toastr.successToastr(result.name + ' edit complete', 'Success!');
           s = result;
           var temp = Object.assign([], this.selectedSources);
@@ -99,10 +99,18 @@ export class AddSourceDialogComponent {
     d.afterClosed().subscribe(result => {
       if (result != null) {
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-        var response = false;
         var body = JSON.stringify(result);
-        return this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
-            this.toastr.successToastr(result.name + ' was added', 'Success!');
+        this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+          this.toastr.successToastr(result.name + ' was added', 'Success!');
+          var temp = Object.assign([], this.allSources);
+          temp.push(response);
+          this.allSources = Object.assign([], temp);
+            var curr = this.allSources.map(d => d.AgencyName);
+            this.uniqueSources = curr.filter(function (el, i, arr) {
+              return arr.indexOf(el) == i;
+            });
+            this.selectedSource = '';
+            this.selectedSources = [];
         }).catch(error => {
             this.toastr.errorToastr('Add Failed!', 'Oops!');
 
