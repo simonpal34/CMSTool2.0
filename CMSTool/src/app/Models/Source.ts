@@ -1,3 +1,5 @@
+import { Notification } from "./ActivityLog";
+
 export class Source {
     AgencyName: string;
     TableOrFileName: string;
@@ -17,4 +19,5 @@ export class AddModel {
   AllSources: Source[];
   hasChildren: boolean;
   public key: string;
+  notifications: Notification[];
 }

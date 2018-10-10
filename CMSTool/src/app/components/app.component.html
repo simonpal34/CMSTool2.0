@@ -20,10 +20,21 @@
       </button>
       <mat-menu #menu2="matMenu">
         <ul *ngIf="svc.notifications.length != 0" style="margin-left:0">
-          <li *ngFor="let notification of svc.notifications.slice().reverse()" style="border-bottom:1px solid black; margin-left:0">
-            <h6>{{notification.date | date: 'MM/dd/yyyy hh:mm'}}</h6> <p>{{notification.name}}</p>  
+          
+          <li *ngFor="let notification of svc.notifications.slice().reverse()" style="margin-left:0">
+            <div style=" border-bottom:1px solid #D3D3D3; display:block; " class="e">
+              <button type="button" class="close">
+                <span aria-hidden="true" style="color:#C62828">&times;</span>
+              </button>
+              <h6>{{notification.date | date: 'MM/dd/yyyy hh:mm'}}</h6>
+              <mat-icon *ngIf="notification.success" style="float:left; color:#5cb85c; display:inline-block; width:20%">check_circle</mat-icon>
+              <mat-icon *ngIf="!notification.success" style="float:left; color:#C62828; display:inline-block; width:20%">error</mat-icon>
+              <p style="display:inline-block; width:80%">{{notification.name}}</p>
+            </div>
           </li>
+            
         </ul>
+          
         <div *ngIf="svc.notifications.length == 0">
           No Notifications
         </div>

@@ -7,4 +7,5 @@ export class ActivityLog {
 export class Notification {
   name: string;
   date: Date;
+  success: boolean;
 }

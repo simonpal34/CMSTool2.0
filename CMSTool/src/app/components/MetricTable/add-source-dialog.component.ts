@@ -9,6 +9,7 @@ import { Source, AddModel } from '../../Models/Source';
 import { EditSourceDialogComponent } from '../SourceTable/edit-source-dialog.component';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Notification } from '../../Models/ActivityLog';
 
 @Component({
   selector: 'add-source-dialog',
@@ -23,13 +24,17 @@ export class AddSourceDialogComponent {
   hasChildren: boolean;
   displayedColumns: string[] = ['agency','name', 'tableOrFile', 'edit', 'add', 'addChildren'];
   key: string;
+  notifications: Notification[];
+  nots: number;
   constructor(
     private fb: FormBuilder, public toastr: ToastrManager, public dialogRef: MatDialogRef<AddSourceDialogComponent>, public editDialog: MatDialog, public http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: AddModel) {
     this.sourcesForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
+    this.nots = 0;
     this.key = data.key;
+    this.notifications = data.notifications;
     this.allSources = data.AllSources;
     this.hasChildren = data.hasChildren;
     var curr = this.allSources.map(d => d.AgencyName);
@@ -48,10 +53,10 @@ export class AddSourceDialogComponent {
   }
 
   async addSource(s: Source, n: number) {
-    this.dialogRef.close({ source: s, num: n });
+    this.dialogRef.close({ source: s, num: n, notifications: this.notifications, notNum: this.nots });
   }
   cancel() {
-    this.dialogRef.close(null);
+    this.dialogRef.close({ source: null, num: null, notifications: this.notifications, notNum: this.nots });
   }
   edit(s: Source) {
     let d = this.editDialog.open(EditSourceDialogComponent,
@@ -70,6 +75,23 @@ export class AddSourceDialogComponent {
         var body = JSON.stringify(result);
         this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
           this.toastr.successToastr(result.name + ' edit complete', 'Success!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Edited Source: " + result.name ;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Edited Source: " + result.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);         
+            this.notifications.shift();
+            this.nots++;
+          }
           s = result;
           var temp = Object.assign([], this.selectedSources);
           var i = temp.findIndex(src => src.key == s.key);
@@ -77,6 +99,23 @@ export class AddSourceDialogComponent {
           this.selectedSources = Object.assign([], temp);
         }).catch(error => {
           this.toastr.errorToastr('Edit Failed!', 'Oops!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Edit Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Edit Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            this.nots++;
+          }
           })
        
       }
@@ -102,6 +141,23 @@ export class AddSourceDialogComponent {
         var body = JSON.stringify(result);
         this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
           this.toastr.successToastr(result.name + ' was added', 'Success!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Added Source: " + result.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Added Source: " + result.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.notifications.shift();
+            this.nots++;
+          }
           var temp = Object.assign([], this.allSources);
           temp.push(response);
           this.allSources = Object.assign([], temp);
@@ -112,7 +168,24 @@ export class AddSourceDialogComponent {
             this.selectedSource = '';
             this.selectedSources = [];
         }).catch(error => {
-            this.toastr.errorToastr('Add Failed!', 'Oops!');
+          this.toastr.errorToastr('Add Failed!', 'Oops!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Add Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Add Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            this.nots++;
+          }
 
         });
       }

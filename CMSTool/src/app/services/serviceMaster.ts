@@ -240,7 +240,7 @@ export class ServiceMaster {
               sources.push(s[0]);
           }
           }
-          this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric, notifications: this.notifications }
+          this.data = { metric: this.metricEdit, scraped: this.scrapedMetric, spinner: spinner, sources: sources, allSources: this.allSources, key: this.authCode, url: this.stagingUrl, http: this.http, published: this.publishedMetric, notifications: Object.assign([], this.notifications) };
 
             let dialogRef = this.dialog.open(EditMetricDialogComponent,
           {
@@ -254,12 +254,13 @@ export class ServiceMaster {
       
           dialogRef.afterClosed().subscribe(result => {
             this.getAllSources();
-            if (result != null) {
-                if (this.notifications.length != result.notifications.length) {
-                  this.hasNotification = true;
-                  this.notificationNum += (result.notifications.length - this.notifications.length);
-                  this.notifications = result.notifications;
-                }
+            if (result.num != 0) {
+              this.hasNotification = true;
+              this.notificationNum += result.num;
+              this.notifications = result.notifications;
+            }
+            if (result.metric != null) {
+                
             this.metricService.stagingPost(result.metric).then(m => {
               if (m.id > -1) {
                 this.hasNotification = true;
@@ -269,12 +270,14 @@ export class ServiceMaster {
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
+                  note.success = true;
                   this.notifications.push(note);
                 }
                 else {
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
+                  note.success = true;
                   this.notifications.push(note);
                   this.notifications.shift();
                 }
@@ -295,7 +298,25 @@ export class ServiceMaster {
                     this.router.navigate(['/login']);
                   }
                 })
-                  }
+              }
+              if (m.id == -1) {
+                if (this.notifications.length != 10) {
+                  this.notificationNum++;
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
+                  note.date = new Date();
+                  note.success = false;
+                  this.notifications.push(note);
+                }
+                else {
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
+                  note.date = new Date();
+                  note.success = false;
+                  this.notifications.push(note);
+                  this.notifications.shift();
+                }
+              }
             });
           }
         });
@@ -351,13 +372,14 @@ export class ServiceMaster {
         var temp = Object.assign([], this.stagingChildren);
 
           dialogRef.afterClosed().subscribe(result => {
+            if (result.num != 0) {
+              this.hasNotification = true;
+              this.notificationNum += result.num;
+              this.notifications = result.notifications;
+            }
             this.getAllSources();
-            if (result != null) {
-              if (this.notifications.length != result.notifications.length) {
-                this.hasNotification = true;
-                this.notificationNum += (result.notifications.length - this.notifications.length);
-                this.notifications = result.notifications;
-              }
+            if (result.metric != null) {
+              
             this.metricService.stagingPost(result.metric).then(m => {
               if (m.id != -1) {
                 this.hasNotification = true;
@@ -366,12 +388,14 @@ export class ServiceMaster {
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
+                  note.success = true;
                   this.notifications.push(note);
                 }
                 else {
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
+                  note.success = true;
                   this.notifications.push(note);
                   this.notifications.shift();
                 }
@@ -392,6 +416,24 @@ export class ServiceMaster {
                     this.router.navigate(['/login']);
                   }
                 })
+              }
+              if (m.id == -1) {
+                if (this.notifications.length != 10) {
+                  this.notificationNum++;
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
+                  note.date = new Date();
+                  note.success = false;
+                  this.notifications.push(note);
+                }
+                else {
+                  var note = new Notification();
+                  note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
+                  note.date = new Date();
+                  note.success = false;
+                  this.notifications.push(note);
+                  this.notifications.shift();
+                }
               }
               });
           

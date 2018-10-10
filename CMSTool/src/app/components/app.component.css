@@ -10,3 +10,6 @@ ul {
 li {
   list-style-type: none;
 }
+.e:hover {
+  background-color: #F0F0F0;
+}
