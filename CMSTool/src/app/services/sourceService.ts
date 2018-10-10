@@ -51,6 +51,8 @@ export class SourceService {
           this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
         }
       }
+      var s = new Source();
+      s.id = -1;
       return Promise.resolve(new Source());
     });
   }

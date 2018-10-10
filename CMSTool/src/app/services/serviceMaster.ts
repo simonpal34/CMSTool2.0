@@ -556,9 +556,88 @@ export class ServiceMaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
+        
         this.sourceService.UpdateSource(result, add).then(async s => {
-          await this.getAllSources();
-          this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
+          if (s.id != -1) {
+            await this.getAllSources();
+            if (!add) {
+              if (this.notifications.length != 10) {
+                this.notificationNum++;
+                var note = new Notification();
+                note.name = "Edited source: " + result.name;
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+              }
+              else {
+                var note = new Notification();
+                note.name = "Edited source: " + result.name;
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+                this.notifications.shift();
+              }
+            }
+            else {
+              if (this.notifications.length != 10) {
+                this.notificationNum++;
+                var note = new Notification();
+                note.name = "Added source: " + result.name;
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+              }
+              else {
+                var note = new Notification();
+                note.name = "Added source: " + result.name;
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+                this.notifications.shift();
+              }
+            }
+            
+            this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
+          }
+          else {
+            if (!add) {
+              if (this.notifications.length != 10) {
+                this.notificationNum++;
+                var note = new Notification();
+                note.name = "Edit source: " + result.name + " failed";
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+              }
+              else {
+                var note = new Notification();
+                note.name = "Edited source: " + result.name + " failed";
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+                this.notifications.shift();
+              }
+            }
+            else {
+              if (this.notifications.length != 10) {
+                this.notificationNum++;
+                var note = new Notification();
+                note.name = "Add source: " + result.name + " failed";
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+              }
+              else {
+                var note = new Notification();
+                note.name = "Add source: " + result.name + " failed";
+                note.date = new Date();
+                note.success = false;
+                this.notifications.push(note);
+                this.notifications.shift();
+              }
+            }
+            
+          }
           
         });
         

@@ -18,19 +18,17 @@
       <button type="button" *ngIf="svc.loginService.isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu2" (click)="getNot()">  
         <mat-icon matBadge="{{svc.notificationNum}}" matBadgeColor="warn" [matBadgeHidden]="!svc.hasNotification">notifications</mat-icon>
       </button>
-      <mat-menu #menu2="matMenu">
-        <ul *ngIf="svc.notifications.length != 0" style="margin-left:0">
+      <mat-menu #menu2="matMenu" style="padding:0; margin:0">
+        <ul *ngIf="svc.notifications.length != 0" style="padding:0">
           
-          <li *ngFor="let notification of svc.notifications.slice().reverse()" style="margin-left:0">
-            <div style=" border-bottom:1px solid #D3D3D3; display:block; " class="e">
-              <button type="button" class="close">
+          <li *ngFor="let notification of svc.notifications.slice().reverse()" class="e" style="margin-left:0; margin-bottom:0; padding:0; display:block;border-bottom:1px solid #D3D3D3; ">
+              <button type="button" class="close" style="margin-right:7px">
                 <span aria-hidden="true" style="color:#C62828">&times;</span>
               </button>
-              <h6>{{notification.date | date: 'MM/dd/yyyy hh:mm'}}</h6>
+              <h6 sstyle="margin-left:7px">{{notification.date | date: 'MM/dd/yyyy hh:mm'}}</h6>
               <mat-icon *ngIf="notification.success" style="float:left; color:#5cb85c; display:inline-block; width:20%">check_circle</mat-icon>
               <mat-icon *ngIf="!notification.success" style="float:left; color:#C62828; display:inline-block; width:20%">error</mat-icon>
               <p style="display:inline-block; width:80%">{{notification.name}}</p>
-            </div>
           </li>
             
         </ul>
