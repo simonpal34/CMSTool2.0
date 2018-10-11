@@ -59,7 +59,13 @@ export class SourceService {
 
   public async DeleteSource(source: Source): Promise<Boolean> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-    var response = false;
+    if (source.Metrics && source.Metrics.length > 0) {
+      for (var i = 0; i < source.Metrics.length; i++)
+      {
+        await this.http.put<boolean>(this.url + "/metrics/" + source.Metrics[i] + "/RemoveSource/" + source.key + "?IncludeChildren=" + false, '', { headers: header }).toPromise();;
+      }
+      
+    }
     return this.http.put(this.url + "/sources/remove/" + source.key , '', { headers: header }).toPromise()
       .then(response => {
         this.toastr.successToastr(source.name + ' was deleted', 'Success!', { toastTimeout: 10000 });

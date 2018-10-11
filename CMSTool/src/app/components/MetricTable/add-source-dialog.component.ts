@@ -90,7 +90,9 @@ export class AddSourceDialogComponent {
             note.success = true;
             this.notifications.push(note);         
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
           s = result;
           var temp = Object.assign([], this.selectedSources);
@@ -114,7 +116,9 @@ export class AddSourceDialogComponent {
             note.success = false;
             this.notifications.push(note);
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
           })
        
@@ -156,7 +160,9 @@ export class AddSourceDialogComponent {
             note.success = true;
             this.notifications.push(note);
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
           var temp = Object.assign([], this.allSources);
           temp.push(response);
@@ -184,7 +190,9 @@ export class AddSourceDialogComponent {
             note.success = false;
             this.notifications.push(note);
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
 
         });

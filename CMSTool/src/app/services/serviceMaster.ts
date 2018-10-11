@@ -263,9 +263,10 @@ export class ServiceMaster {
                 
             this.metricService.stagingPost(result.metric).then(m => {
               if (m.id > -1) {
-                this.hasNotification = true;
+                
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
                 if (this.notifications.length != 10) {
+                  this.hasNotification = true;
                   this.notificationNum++;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
@@ -274,12 +275,16 @@ export class ServiceMaster {
                   this.notifications.push(note);
                 }
                 else {
+                  this.hasNotification = true;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
                   note.success = true;
                   this.notifications.push(note);
                   this.notifications.shift();
+                  if (this.notificationNum < 10) {
+                    this.notificationNum++;
+                  }
                 }
                 
               if (m.children && m.children.length > 0) {
@@ -301,6 +306,7 @@ export class ServiceMaster {
               }
               if (m.id == -1) {
                 if (this.notifications.length != 10) {
+                  this.hasNotification = true;
                   this.notificationNum++;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
@@ -309,12 +315,16 @@ export class ServiceMaster {
                   this.notifications.push(note);
                 }
                 else {
+                  this.hasNotification = true;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
                   note.date = new Date();
                   note.success = false;
                   this.notifications.push(note);
                   this.notifications.shift();
+                  if (this.notificationNum < 10) {
+                    this.notificationNum++;
+                  }
                 }
               }
             });
@@ -382,8 +392,9 @@ export class ServiceMaster {
               
             this.metricService.stagingPost(result.metric).then(m => {
               if (m.id != -1) {
-                this.hasNotification = true;
+                
                 if (this.notifications.length != 10) {
+                  this.hasNotification = true;
                   this.notificationNum++;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
@@ -392,12 +403,16 @@ export class ServiceMaster {
                   this.notifications.push(note);
                 }
                 else {
+                  this.hasNotification = true;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id;
                   note.date = new Date();
                   note.success = true;
                   this.notifications.push(note);
                   this.notifications.shift();
+                  if (this.notificationNum < 10) {
+                    this.notificationNum++;
+                  }
                 }
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
                 if (m.children && m.children.length > 0) {
@@ -419,6 +434,7 @@ export class ServiceMaster {
               }
               if (m.id == -1) {
                 if (this.notifications.length != 10) {
+                  this.hasNotification = true;
                   this.notificationNum++;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
@@ -427,12 +443,16 @@ export class ServiceMaster {
                   this.notifications.push(note);
                 }
                 else {
+                  this.hasNotification = true;
                   var note = new Notification();
                   note.name = "Edited metric: " + m.name + " id: " + m.id + " failed";
                   note.date = new Date();
                   note.success = false;
                   this.notifications.push(note);
                   this.notifications.shift();
+                  if (this.notificationNum < 10) {
+                    this.notificationNum++;
+                  }
                 }
               }
               });
@@ -561,39 +581,50 @@ export class ServiceMaster {
           if (s.id != -1) {
             await this.getAllSources();
             if (!add) {
+
               if (this.notifications.length != 10) {
+                this.hasNotification = true;
                 this.notificationNum++;
                 var note = new Notification();
                 note.name = "Edited source: " + result.name;
                 note.date = new Date();
-                note.success = false;
+                note.success = true;
                 this.notifications.push(note);
               }
               else {
+                this.hasNotification = true;
                 var note = new Notification();
                 note.name = "Edited source: " + result.name;
                 note.date = new Date();
-                note.success = false;
+                note.success = true;
                 this.notifications.push(note);
                 this.notifications.shift();
+                if (this.notificationNum < 10) {
+                  this.notificationNum++;
+                }
               }
             }
             else {
               if (this.notifications.length != 10) {
+                this.hasNotification = true;
                 this.notificationNum++;
                 var note = new Notification();
                 note.name = "Added source: " + result.name;
                 note.date = new Date();
-                note.success = false;
+                note.success = true;
                 this.notifications.push(note);
               }
               else {
+                this.hasNotification = true;
                 var note = new Notification();
                 note.name = "Added source: " + result.name;
                 note.date = new Date();
-                note.success = false;
+                note.success = true;
                 this.notifications.push(note);
                 this.notifications.shift();
+                if (this.notificationNum < 10) {
+                  this.notificationNum++;
+                }
               }
             }
             
@@ -602,6 +633,7 @@ export class ServiceMaster {
           else {
             if (!add) {
               if (this.notifications.length != 10) {
+                this.hasNotification = true;
                 this.notificationNum++;
                 var note = new Notification();
                 note.name = "Edit source: " + result.name + " failed";
@@ -610,16 +642,21 @@ export class ServiceMaster {
                 this.notifications.push(note);
               }
               else {
+                this.hasNotification = true;
                 var note = new Notification();
                 note.name = "Edited source: " + result.name + " failed";
                 note.date = new Date();
                 note.success = false;
                 this.notifications.push(note);
                 this.notifications.shift();
+                if (this.notificationNum < 10) {
+                  this.notificationNum++;
+                }
               }
             }
             else {
               if (this.notifications.length != 10) {
+                this.hasNotification = true;
                 this.notificationNum++;
                 var note = new Notification();
                 note.name = "Add source: " + result.name + " failed";
@@ -628,17 +665,20 @@ export class ServiceMaster {
                 this.notifications.push(note);
               }
               else {
+                this.hasNotification = true;
                 var note = new Notification();
                 note.name = "Add source: " + result.name + " failed";
                 note.date = new Date();
                 note.success = false;
                 this.notifications.push(note);
                 this.notifications.shift();
+                if (this.notificationNum < 10) {
+                  this.notificationNum++;
+                }
               }
             }
             
           }
-          
         });
         
       }
@@ -646,13 +686,58 @@ export class ServiceMaster {
   }
 
   deleteSource(s: Source) {
-    this.sourceService.DeleteSource(s).then(async s => {
-      if (s) {
+    this.sourceService.DeleteSource(s).then(async b => {
+      if (b) {
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Deleted source: " + s.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Deleted source: " + s.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
+            this.notificationNum++;
+          }
+        }
         await this.getAllSources();
-        this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
+        this.sourcesTabSelectedSources = this.allSources.filter(src => src.AgencyName == this.sourcesTabSelectedSource);
       }
       else {
+
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Deleting source: " + s.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Deleting source: " + s.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
+            this.notificationNum++;
+          }
+        }
       }
+      
+      
     })
   }
 
@@ -693,14 +778,105 @@ export class ServiceMaster {
     this.uploadFileService.UploadFile(sheet, type).then(async response => {
       if (response) {
         await this.getUploaded();
-        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 })
+        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Uploaded sheet: " + sheet.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Uploaded sheet: " + sheet.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
+            this.notificationNum++;
+          }
+        }
+      }
+      else {
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
+            this.notificationNum++;
+          }
+        }
       }
     })
   }
 
   async publishMetric(m: Metric, b: boolean) {
     this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
-      await this.metricService.publishMetric(m, b).then(async response => {
+    await this.metricService.publishMetric(m, b).then(async response => {
+      if (response) {
+        if (b) {
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
+            this.notificationNum++;
+            var note = new Notification();
+            note.name = "Published metric: " + m.name + " id: " + m.id + " and children";
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Published metric: " + m.name + " id: " + m.id + " and children";
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
+          }
+        }
+        else {
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
+            this.notificationNum++;
+            var note = new Notification();
+            note.name = "Published metric: " + m.name + " id: " + m.id;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Published metric: " + m.name + " id: " + m.id;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
+          }
+        }
         var metric = await response;
         var temp = Object.assign([], this.stagingMetrics);
         //update the hasChildren (This is used by the UI)
@@ -722,6 +898,56 @@ export class ServiceMaster {
           }
           this.stagingChildren = Object.assign([], tempChildren);
         }
+      }
+      else {
+        if (b) {
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
+            this.notificationNum++;
+            var note = new Notification();
+            note.name = "Publisheing metric: " + m.name + " id: " + m.id + " and children failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Publishing metric: " + m.name + " id: " + m.id + " and children failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
+          }
+        }
+        else {
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
+            this.notificationNum++;
+            var note = new Notification();
+            note.name = "Publishing metric: " + m.name + " id: " + m.id + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Published metric: " + m.name + " id: " + m.id + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
+          }
+        }
+      }
+        
       });
    
   }

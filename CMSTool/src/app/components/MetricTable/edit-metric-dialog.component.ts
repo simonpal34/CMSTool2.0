@@ -322,7 +322,9 @@ export class EditMetricDialogComponent {
               note.success = true;
               this.notifications.push(note);
               this.notifications.shift();
-              this.nots++;
+              if (this.nots < 10) {
+                this.nots++
+              }
             }
           }
           else {
@@ -342,7 +344,9 @@ export class EditMetricDialogComponent {
               note.success = true;
               this.notifications.push(note);
               this.notifications.shift();
-              this.nots++;
+              if (this.nots < 10) {
+                this.nots++
+              }
             }
           }
           if (!this.metric.sources || this.metric.sources.length == 0) {
@@ -392,7 +396,9 @@ export class EditMetricDialogComponent {
                 note.success = false;
                 this.notifications.push(note);
                 this.notifications.shift();
-                this.nots++
+                if (this.nots < 10) {
+                  this.nots++
+                }
               }
             }
             else {
@@ -405,6 +411,7 @@ export class EditMetricDialogComponent {
                 note.success = false;
                 this.notifications.push(note);
                 this.nots++;
+                
               }
               else {
                 var note = new Notification();
@@ -413,7 +420,10 @@ export class EditMetricDialogComponent {
                 note.success = false;
                 this.notifications.push(note);
                 this.notifications.shift();
-                this.nots++
+                if (this.nots < 10) {
+                  this.nots++
+                }
+                
               }
             }
             
@@ -449,7 +459,9 @@ export class EditMetricDialogComponent {
           note.success = true;
           this.notifications.push(note);
           this.notifications.shift();
-          this.nots++;
+          if (this.nots < 10) {
+            this.nots++
+          }
         }
       }
       else {
@@ -469,7 +481,9 @@ export class EditMetricDialogComponent {
           note.success = true;
           this.notifications.push(note);
           this.notifications.shift();
-          this.nots++;
+          if (this.nots < 10) {
+            this.nots++
+          }
         }
       }
      
@@ -500,7 +514,9 @@ export class EditMetricDialogComponent {
             note.success = false;
             this.notifications.push(note);
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
         }
         else {
@@ -521,7 +537,9 @@ export class EditMetricDialogComponent {
             note.success = false;
             this.notifications.push(note);
             this.notifications.shift();
-            this.nots++;
+            if (this.nots < 10) {
+              this.nots++
+            }
           }
         }
         
