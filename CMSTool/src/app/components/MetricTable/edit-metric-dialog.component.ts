@@ -91,35 +91,35 @@ export class EditMetricDialogComponent {
           }
         }
 
-      cd1.label = this.metric.name;
+      cd1.label = "Staging";
       this.chartOptions = {
         responsive: true,
       };
       this.chartType = 'line';
       this.chartColor = [
         { // grey
-          backgroundColor: 'rgba(148,159,177,0.2)',
-          borderColor: 'rgba(148,159,177,1)',
-          pointBackgroundColor: 'rgba(148,159,177,1)',
+          backgroundColor: 'rgba(0,44,119,0.2)',
+          borderColor: 'rgba(0,44,119,1)',
+          pointBackgroundColor: 'rgba(0,44,119,1)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+          pointHoverBorderColor: 'rgba(0,44,119,0.8)'
         },
         {
-          backgroundColor: 'rgba(225, 0, 0, .1)',
-          borderColor: 'rgb(255, 0, 0, 1)',
-          pointBackgroundColor: 'rgb(255, 0, 0, 1)',
+          backgroundColor: 'rgba(198,40,40, .1)',
+          borderColor: 'rgb(198,40,40, 1)',
+          pointBackgroundColor: 'rgb(198,40,40, 1)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(225, 0, 0, .8)'
+          pointHoverBorderColor: 'rgba(198,40,40, .8)'
         },
         {
-          backgroundColor: 'rgba(50,240,21, .1)',
-          borderColor: 'rgb(50,240,21, 1)',
-          pointBackgroundColor: 'rgb(50,240,21, 1)',
+          backgroundColor: 'rgba(34,139,34, .1)',
+          borderColor: 'rgb(34,139,34, 1)',
+          pointBackgroundColor: 'rgb(34,139,34, 1)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(50,240,21, .8)'
+          pointHoverBorderColor: 'rgba(34,139,34, .8)'
         }
       ];
       this.chartData.push(cd1);
@@ -135,7 +135,7 @@ export class EditMetricDialogComponent {
             j++;
           }
         }
-        cd2.label = this.metric.name + "--Scraped";
+        cd2.label = "Scraped";
 
         this.chartData.push(cd2);
       }
@@ -149,7 +149,7 @@ export class EditMetricDialogComponent {
             j++;
           }
         }
-        cd3.label = this.metric.name + "--Published";
+        cd3.label = "Published";
 
         this.chartData.push(cd3);
       }
