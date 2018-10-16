@@ -1,7 +1,7 @@
 <h2>Hi, {{svc.loginService.profile.FirstName}}</h2>
 <mat-form-field [floatLabel]="options.value.floatLabel" style="padding-left:15px">
   <mat-label>First Name</mat-label>
-  <input matInput [(ngModel)]="svc.loginService.profile.FirstName"  value="{{svc.loginService.profile.FirstName}}">
+  <input matInput [(ngModel)]="svc.loginService.profile.FirstName" value="{{svc.loginService.profile.FirstName}}">
 </mat-form-field>
 <mat-form-field [floatLabel]="options.value.floatLabel">
   <mat-label>Last Name</mat-label>
@@ -15,5 +15,11 @@
 <br />
 <mat-form-field [floatLabel]="options.value.floatLabel" style="padding-left:15px">
   <mat-label>Password</mat-label>
-  <input matInput [(ngModel)]="svc.loginService.profile.Password" value="{{svc.loginService.profile.Password}}">
+  <input type="password" matInput [(ngModel)]="svc.loginService.profile.Password" value="{{svc.loginService.profile.Password}}">
 </mat-form-field>
+<mat-dialog-actions style="overflow:visible">
+  <div style="padding-left:15px;">
+    <button mat-flat-button style="background-color:#002c77 " (click)="Save()">Save</button>
+    <button mat-flat-button style="background-color:#C62828; margin-left:15px" (click)="Cancel()">Close</button>
+  </div>
+</mat-dialog-actions>
