@@ -11,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Notification } from '../../Models/ActivityLog';
 import { BaseChartDirective } from 'ng2-charts';
+import { EditSourceDialogComponent } from '../SourceTable/edit-source-dialog.component';
 
 
 
@@ -33,7 +34,7 @@ export class EditMetricDialogComponent {
   hasData: boolean;
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
-  displayedColumnsSource: string[] = ['agency', 'name', 'delete'];
+  displayedColumnsSource: string[] = ['agency', 'name','edit','delete'];
   hasInflation: boolean;
   hasPerCapita: boolean;
   sources: Source[];
@@ -55,7 +56,7 @@ export class EditMetricDialogComponent {
   showPublished: boolean;
   @ViewChild('linechart') linechart: BaseChartDirective;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public editDialog: MatDialog, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     this.metricForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -107,7 +108,7 @@ export class EditMetricDialogComponent {
         responsive: true,
       };
       this.chartType = 'line';
-      this.stagingColor = {
+      this.publishedColor = {
         backgroundColor: 'rgba(0,44,119,0.2)',
         borderColor: 'rgba(0,44,119,1)',
         pointBackgroundColor: 'rgba(0,44,119,1)',
@@ -123,7 +124,7 @@ export class EditMetricDialogComponent {
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: 'rgba(198,40,40, .8)'
       }
-      this.publishedColor = {
+      this.stagingColor = {
         backgroundColor: 'rgba(34,139,34, .1)',
         borderColor: 'rgb(34,139,34, 1)',
         pointBackgroundColor: 'rgb(34,139,34, 1)',
@@ -663,6 +664,73 @@ export class EditMetricDialogComponent {
         this.linechart.getChartBuilder(this.linechart.ctx);
       }, 10);
     } 
+  }
+
+  openEdit(s: Source) {
+    let d = this.editDialog.open(EditSourceDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        data: s,
+        width: '75%',
+        height: '75%',
+
+      });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        var body = JSON.stringify(result);
+        this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+          this.toastr.successToastr(result.name + ' edit complete', 'Success!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Edited Source: " + result.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Edited Source: " + result.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.nots < 10) {
+              this.nots++
+            }
+          }
+          s = result;
+          var i = this.sources.findIndex(src => src.key == s.key);
+          this.sources[i] = s;
+        }).catch(error => {
+          this.toastr.errorToastr('Edit Failed!', 'Oops!');
+          if (this.notifications.length != 10) {
+            var note = new Notification();
+            note.name = "Edit Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.nots++;
+          }
+          else {
+            var note = new Notification();
+            note.name = "Edit Source: " + result.name + " failed";
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.nots < 10) {
+              this.nots++
+            }
+          }
+        })
+
+      }
+      else {
+      }
+    });
   }
   
 }
