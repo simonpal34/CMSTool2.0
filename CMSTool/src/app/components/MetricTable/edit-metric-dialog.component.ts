@@ -2,7 +2,7 @@ import { Component, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ServiceMaster } from '../../services/serviceMaster';
-import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment } from '../../Models/Metric';
+import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment, Data } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source, AddModel } from '../../Models/Source';
@@ -10,6 +10,7 @@ import { AddSourceDialogComponent } from './add-source-dialog.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Notification } from '../../Models/ActivityLog';
+import { BaseChartDirective } from 'ng2-charts';
 
 
 
@@ -32,7 +33,7 @@ export class EditMetricDialogComponent {
   hasData: boolean;
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
-  displayedColumnsSource: string[] = ['agency', 'name', 'delete', 'deleteChildren'];
+  displayedColumnsSource: string[] = ['agency', 'name', 'delete'];
   hasInflation: boolean;
   hasPerCapita: boolean;
   sources: Source[];
@@ -43,6 +44,16 @@ export class EditMetricDialogComponent {
   published: Metric;
   notifications: Notification[];
   nots: number;
+  stagingChart: ChartData;
+  stagingColor: any;
+  scrapedChart: ChartData;
+  scrapedColor: any;
+  publishedChart: ChartData;
+  publishedColor: any;
+  showScraped: boolean;
+  showStaging: boolean;
+  showPublished: boolean;
+  @ViewChild('linechart') linechart: BaseChartDirective;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     this.metricForm = fb.group({
@@ -80,78 +91,75 @@ export class EditMetricDialogComponent {
       this.hasData = true;
       this.chartData = new Array();
       this.chartLabels = new Array();
-      var cd1 = new ChartData();
-      cd1.data = new Array();
+      this.stagingChart = new ChartData();
+      this.stagingChart.data = new Array();
       var j = 0;
         for (var i = 0; i < this.metric.data.length; i++) {
           if (this.metric.data[i].y != null) {
-            cd1.data[j] = this.metric.data[i].y;
+            this.stagingChart.data[j] = this.metric.data[i].y;
             this.chartLabels[j] = this.metric.data[i].x;
             j++;
           }
         }
 
-      cd1.label = "Staging";
+      this.stagingChart.label = "Staging";
       this.chartOptions = {
         responsive: true,
       };
       this.chartType = 'line';
-      this.chartColor = [
-        { // grey
-          backgroundColor: 'rgba(0,44,119,0.2)',
-          borderColor: 'rgba(0,44,119,1)',
-          pointBackgroundColor: 'rgba(0,44,119,1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(0,44,119,0.8)'
-        },
-        {
-          backgroundColor: 'rgba(198,40,40, .1)',
-          borderColor: 'rgb(198,40,40, 1)',
-          pointBackgroundColor: 'rgb(198,40,40, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(198,40,40, .8)'
-        },
-        {
-          backgroundColor: 'rgba(34,139,34, .1)',
-          borderColor: 'rgb(34,139,34, 1)',
-          pointBackgroundColor: 'rgb(34,139,34, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(34,139,34, .8)'
-        }
-      ];
-      this.chartData.push(cd1);
+      this.stagingColor = {
+        backgroundColor: 'rgba(0,44,119,0.2)',
+        borderColor: 'rgba(0,44,119,1)',
+        pointBackgroundColor: 'rgba(0,44,119,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(0,44,119,0.8)'
+      }
+      this.scrapedColor = {
+        backgroundColor: 'rgba(198,40,40, .1)',
+        borderColor: 'rgb(198,40,40, 1)',
+        pointBackgroundColor: 'rgb(198,40,40, 1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(198,40,40, .8)'
+      }
+      this.publishedColor = {
+        backgroundColor: 'rgba(34,139,34, .1)',
+        borderColor: 'rgb(34,139,34, 1)',
+        pointBackgroundColor: 'rgb(34,139,34, 1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(34,139,34, .8)'
+      }
+      this.chartColor = [this.stagingColor];
+      this.chartData.push(this.stagingChart);
+      this.showStaging = true;
       if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
-
-
-        var cd2 = new ChartData();
-        cd2.data = new Array();
+        this.scrapedChart = new ChartData();
+       this.scrapedChart.data = new Array();
         var j = 0;
         for (var i = 0; i < this.scraped.Data.length; i++) {
           if (this.scraped.Data[i].Value != null) {
-            cd2.data[j] = this.scraped.Data[i].Value;
+            this.scrapedChart.data[j] = this.scraped.Data[i].Value;
             j++;
           }
         }
-        cd2.label = "Scraped";
-
-        this.chartData.push(cd2);
+        this.scrapedChart.label = "Scraped";
+        this.showScraped = false;
       }
       if (this.published && this.published.data && this.published.data.length) {
-        var cd3 = new ChartData();
-        cd3.data = new Array();
+        this.publishedChart = new ChartData();
+        this.publishedChart.data = new Array();
         var j = 0;
         for (var i = 0; i < this.published.data.length; i++) {
           if (this.published.data[i].y != null) {
-            cd3.data[j] = this.published.data[i].y;
+            this.publishedChart.data[j] = this.published.data[i].y;
             j++;
           }
         }
-        cd3.label = "Published";
+        this.publishedChart.label = "Published";
 
-        this.chartData.push(cd3);
+        this.showPublished = false;
       }
 
     }
@@ -544,6 +552,117 @@ export class EditMetricDialogComponent {
         }
         
       })
+  }
+
+  toggleScraped() {
+    if (this.showScraped) {
+      var temp = Object.assign([], this.chartData);
+      if (temp.length == 1 ) {
+        var c = new ChartData();
+        c.data = [0];
+        c.label = ""
+        temp = [c];
+        this.chartColor = [];
+
+      }
+      else {
+        var i = temp.findIndex(c => c.label == 'Scraped');
+        temp = temp.filter(c => c.label != 'Scraped');
+        var colors = Object.assign([], this.chartColor);
+        colors.splice(i, 1);
+        this.chartColor = Object.assign([], colors);
+      }
+      
+      this.chartData = Object.assign([], temp);  
+      this.showScraped = false;
+    }
+    else {
+      this.chartColor.push(this.scrapedColor);
+      if (this.chartData[0].label == "") {
+        this.chartData = [this.scrapedChart];
+      }
+      else {
+        this.chartData.push(this.scrapedChart);
+      }
+      
+      this.showScraped = true;
+    }
+    this.updateChart()
+  }
+  toggleStaging() {
+    if (this.showStaging) {
+      var temp = Object.assign([], this.chartData)
+      if (temp.length == 1 ) {
+        var c = new ChartData();
+        c.data = [0];
+        c.label = ""
+        temp = [c];
+        this.chartColor = [];
+      }
+      else {
+        var i = temp.findIndex(c => c.label == 'Staging');
+        temp = temp.filter(c => c.label != 'Staging');
+        var colors = Object.assign([], this.chartColor);
+        colors.splice(i, 1);
+        this.chartColor = Object.assign([], colors);
+      }
+      
+      this.chartData = Object.assign([], temp);
+      this.showStaging = false;
+    }
+    else {
+      this.chartColor.push(this.stagingColor);
+      if (this.chartData[0].label == "") {
+        this.chartData = [this.stagingChart];
+      }
+      else {
+        this.chartData.push(this.stagingChart);
+      }  
+      
+      this.showStaging = true;
+    }
+    this.updateChart()
+  }
+  togglePublished() {
+    if (this.showPublished) {
+      var temp = Object.assign([], this.chartData)
+      if (temp.length == 1 ) {
+        var c = new ChartData();
+        c.data = [0];
+        c.label = ""
+        temp = [c];
+        this.chartColor = [];
+
+      }
+      else {
+        var i = temp.findIndex(c => c.label == 'Published');
+        temp = temp.filter(c => c.label != 'Published');
+        var colors = Object.assign([], this.chartColor);
+        colors.splice(i, 1);
+        this.chartColor = Object.assign([], colors);
+      }      
+      this.chartData = Object.assign([], temp);
+      this.showPublished= false;
+    }
+    else {
+      this.chartColor.push(this.publishedColor);
+      if (this.chartData[0].label == "") {
+        this.chartData = [this.publishedChart];
+      }
+      else {
+        this.chartData.push(this.publishedChart);
+      }  
+      
+      this.showPublished = true;
+    }
+    this.updateChart()
+  }
+  updateChart() {
+    if (this.linechart) {
+      setTimeout(() => {
+        this.linechart.getChartBuilder(this.linechart.ctx);
+      }, 10);
+    } 
   }
   
 }

@@ -109,18 +109,15 @@
         <ng-container matColumnDef="delete" style="padding-left:35px">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let source">
-            <button matTooltip="Delete {{source.name}}" type="button" mat-icon-button style="color:#C62828 " (click)="removeSource(source, 0)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="deleteChildren" style="padding-left:35px" >
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let source">
-            <button *ngIf="metric.hasChildren" matTooltip="Delete {{source.name}} from Children" type="button" mat-icon-button style="color:#C62828 " (click)="removeSource(source, 1)">
-              <mat-icon>delete_sweep</mat-icon>
-            </button>
-          </td>
+              <button mat-raised-button style=" font-size:10pt; height:35px; margin-left:10px; background-color:#C62828; color:white" [matMenuTriggerFor]="menu"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon>Delete</button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item >
+                  From Current Metric<mat-icon>delete</mat-icon>
+                </button>
+                <button mat-menu-item *ngIf="metric.hasChildren" >
+                  From Current Metric and Children<mat-icon>delete</mat-icon>
+                </button>
+              </mat-menu>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumnsSource"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumnsSource;"></tr>
@@ -151,7 +148,7 @@
     </mat-tab>
       <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:85%; overflow:visible ">
         <div style="display:block; height: 50%; width:65%; position: relative; float:left">
-        <canvas baseChart 
+        <canvas baseChart #linechart="base-chart"
                 [datasets]="chartData"
                 [labels]="chartLabels"
                 [options]="chartOptions"
@@ -161,9 +158,9 @@
           </div>
         <div style="height:80%; float:right; width:30%;">
           <form style="vertical-align:middle; padding-top:40%">
-            <mat-checkbox style="color:#002c77">Staging</mat-checkbox><br />
-            <mat-checkbox style="color:#C62828">Published</mat-checkbox><br />
-            <mat-checkbox style="color:#228B22">Scraped</mat-checkbox>
+            <mat-checkbox style="color:#002c77" color="primary" checked="true" (change)="toggleStaging()">Staging</mat-checkbox><br />
+            <mat-checkbox style="color:#228B22" color="primary" *ngIf="this.published && this.published.data && this.published.data.length" (change)="togglePublished()">Published</mat-checkbox><br />
+            <mat-checkbox *ngIf="scraped && scraped.Data && scraped.Data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
           </form>
         </div>
       </mat-tab>
