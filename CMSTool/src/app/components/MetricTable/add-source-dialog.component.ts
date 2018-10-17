@@ -62,7 +62,9 @@ export class AddSourceDialogComponent {
     let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
-        data: s,
+        data: {
+          s: s, unique: this.uniqueSources
+        },
         width: '75%',
         height: '75%',
 
@@ -134,7 +136,9 @@ export class AddSourceDialogComponent {
     let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
-        data: s,
+        data: {
+          s: s, unique: this.uniqueSources
+        },
         width: '75%',
         height: '75%',
 

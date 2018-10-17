@@ -21,3 +21,7 @@ export class AddModel {
   public key: string;
   notifications: Notification[];
 }
+export class SourceEditModel {
+  s: Source;
+  unique: string[];
+}

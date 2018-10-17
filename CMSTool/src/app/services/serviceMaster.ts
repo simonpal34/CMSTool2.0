@@ -568,7 +568,9 @@ export class ServiceMaster {
     let dialogRef = this.dialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
-        data: s,
+        data: {
+          s: s, unique: this.uniqueSources
+        },
         width: '75%',
         height: '75%',
 

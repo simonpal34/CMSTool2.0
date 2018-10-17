@@ -7,7 +7,12 @@
         <div style="width:100%">
           <mat-form-field [floatLabel]="sourceForm.value.floatLabel" style="width:65%">
             <mat-label>Agency Name</mat-label>
-            <input matInput name="agencyName" [(ngModel)]="source.AgencyName" value="{{source.AgencyName}}">
+            <mat-select matInput name="agency" [(ngModel)]="source.AgencyName" value="{{source.AgencyName}}">
+              <mat-option *ngFor="let s of agencyNames" [value]="s">
+                {{s}}
+              </mat-option>
+           </mat-select>
+
           </mat-form-field>
           <mat-form-field [floatLabel]="sourceForm.value.floatLabel" style="padding-left:15px;width:30%">
             <mat-label>ID</mat-label>

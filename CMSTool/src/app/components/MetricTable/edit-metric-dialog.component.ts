@@ -34,7 +34,8 @@ export class EditMetricDialogComponent {
   hasData: boolean;
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
-  displayedColumnsSource: string[] = ['agency', 'name','edit','delete'];
+  displayedColumnsSource: string[] = ['agency', 'name', 'edit', 'delete'];
+  displayColumnMeta: string[] = ['type', 'data', 'delete'];
   hasInflation: boolean;
   hasPerCapita: boolean;
   sources: Source[];
@@ -667,10 +668,16 @@ export class EditMetricDialogComponent {
   }
 
   openEdit(s: Source) {
+    var curr = this.allSources.map(d => d.AgencyName);
+    var uniqueSources = curr.filter(function (el, i, arr) {
+      return arr.indexOf(el) == i;
+    });
     let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
-        data: s,
+        data: {
+          s: s, unique: uniqueSources
+        },
         width: '75%',
         height: '75%',
 

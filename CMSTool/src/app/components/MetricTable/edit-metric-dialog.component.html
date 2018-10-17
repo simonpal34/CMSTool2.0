@@ -4,7 +4,7 @@
              type="ball-pulse"></ngx-spinner>
 <h1 mat-dialog-title>Edit: {{metric.name}}</h1>
 <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
-  <mat-tab-group style="width:100%; height:87%; overflow:visible  ">
+  <mat-tab-group style="width:100%; height:100%; overflow:visible ">
     <mat-tab label="Main" style="width:100%; height:100%;overflow:visible ">
       <br />
       <form style="width:100%; height:100%;overflow:visible ">
@@ -18,7 +18,6 @@
             <input matInput name="id" [(ngModel)]="metric.id" value="{{metric.id}}" readonly>
           </mat-form-field>
         </div>
-
         <div style="width:100%">
           <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:50%">
             <mat-label>X Axis</mat-label>
@@ -77,26 +76,33 @@
           <mat-checkbox name="is_featured" [(ngModel)]="metric.is_featured" value="{{metric.is_featured}}" style="width:50%; padding-left:15px" color="primary">Is Featured</mat-checkbox>
           <mat-checkbox name="is_visible" [(ngModel)]="metric.is_displayed" value="{{metric.is_displayed}}" style="width:50%; padding-left:15px" color="primary">Is Displayed</mat-checkbox>
         </div>
+        <div style="width:40%; margin-top:10px; bottom:10px">
+          <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
+          <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
+        </div>
       </form>
+
     </mat-tab>
     <mat-tab label="Meta Data" style="width:100%; height:100%; overflow:visible ">
       <br />
-      <div *ngFor="let m of metric.meta">
-        <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:100%; height:40%">
-          <mat-label>{{m.type}}</mat-label>
-          <textarea matInput name="{{m.type}}" rows="3" [(ngModel)]="m.data" value="{{m.data}}"></textarea>
-        </mat-form-field>
-        <div>
-          <button mat-flat-button style="background-color:#C62828" (click)="removeMeta(m)">Remove {{m.type}}</button>
+      <div style="height:100%">
+        <div *ngFor="let m of metric.meta">
+          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:100%; height:40%">
+            <mat-label>{{m.type}}</mat-label>
+            <textarea matInput name="{{m.type}}" rows="3" [(ngModel)]="m.data" value="{{m.data}}"></textarea>
+          </mat-form-field>
+        </div>
+        <div style="margin-top: 10px">
+          <button mat-flat-button *ngIf="!hasDef" style="background-color:#002c77; " (click)="addDef()">Add Definition</button>
+          <button mat-flat-button (click)="addFoot()" style="margin-left:15px; background-color:#002c77;">Add Footnote</button>
+        </div>
+        <div style="width:40%; margin-top:10px">
+          <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
+          <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
         </div>
       </div>
-      <div class="pull-left" style="margin-top: 10px">
-        <button mat-flat-button *ngIf="!hasDef" style="background-color:#002c77; " (click)="addDef()">Add Definition</button>
-        <button mat-flat-button (click)="addFoot()" style="margin-left:15px; background-color:#002c77;">Add Footnote</button>
-      </div>
-
     </mat-tab>
-    <mat-tab label="Sources "  style="width:100%; height:100%; overflow:visible ">
+    <mat-tab label="Sources " style="width:100%; height:100%; overflow:visible ">
       <table mat-table *ngIf="sources.length != 0" [dataSource]="sources" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
         <ng-container matColumnDef="agency" style="padding-left:35px">
           <th mat-header-cell *matHeaderCellDef> Agency Name </th>
@@ -109,7 +115,7 @@
         <ng-container matColumnDef="edit" style="padding-left:35px">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let source">
-            <button  (click)="openEdit(source)" matTooltip="Edit {{source.name}}" type="button" mat-icon-button style="color:#ffae42 ">
+            <button (click)="openEdit(source)" matTooltip="Edit {{source.name}}" type="button" mat-icon-button style="color:#ffae42 ">
               <mat-icon>edit</mat-icon>
             </button>
           </td>
@@ -130,10 +136,9 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumnsSource"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumnsSource;"></tr>
       </table>
-
-      <button  mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addSources()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Sources</button>
-
+      <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addSources()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Sources</button>
     </mat-tab>
+    <!-- 
     <mat-tab label="Adjustments" style="width:100%; height:100%; overflow:visible ">
       <table mat-table *ngIf="metric.available_adjustments.length != 0" [dataSource]="metric.available_adjustments" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
         <ng-container matColumnDef="name" style="padding-left:35px">
@@ -153,9 +158,14 @@
       </table>
       <button *ngIf="!hasInflation" mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addInflation()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Adjust For Inflation</button>
       <button *ngIf="!hasPerCapita" mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addPerCapita()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Adjust For Per Capita</button>
+      <div style="width:40%; margin-top:10px; bottom:0; margin-left:10px">
+        <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
+        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
+      </div>
     </mat-tab>
-      <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:85%; overflow:visible ">
-        <div style="display:block; height: 50%; width:65%; position: relative; float:left">
+    -->
+    <mat-tab label="Data Points" *ngIf="hasData" style="width:100%; height:85%; overflow:visible ">
+      <div style="display:block; height: 50%; width:65%; position: relative; float:left">
         <canvas baseChart #linechart="base-chart"
                 [datasets]="chartData"
                 [labels]="chartLabels"
@@ -163,23 +173,19 @@
                 [chartType]="chartType"
                 [colors]="chartColor"
                 [legend]="false"></canvas>
-          </div>
-        <div style="height:80%; float:right; width:30%;">
-          <form style="vertical-align:middle; padding-top:40%">
-            <mat-checkbox style="color:#228B22" color="primary" checked="true" (change)="toggleStaging()">Staging</mat-checkbox><br />
-            <mat-checkbox style="color:#002c77" color="primary" *ngIf="this.published && this.published.data && this.published.data.length" (change)="togglePublished()">Published</mat-checkbox><br />
-            <mat-checkbox *ngIf="scraped && scraped.Data && scraped.Data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
-          </form>
-        </div>
-      </mat-tab>
+      </div>
+      <div style="height:84%; float:right; width:30%;">
+        <form style="vertical-align:middle; padding-top:40%">
+          <mat-checkbox style="color:#228B22" color="primary" checked="true" (change)="toggleStaging()">Staging</mat-checkbox><br />
+          <mat-checkbox style="color:#002c77" color="primary" *ngIf="this.published && this.published.data && this.published.data.length" (change)="togglePublished()">Published</mat-checkbox><br />
+          <mat-checkbox *ngIf="scraped && scraped.Data && scraped.Data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
+        </form>
+      </div>
+      <div style="width:80%; margin-top:11px; bottom:0; float:right">
+        <button mat-flat-button style="background-color:#002c77; width:10% " (click)="save()">Save</button>
+        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:10%" (click)="cancel()">Cancel</button>
+      </div>
+    </mat-tab>
   </mat-tab-group>
-  <mat-dialog-actions style="overflow:visible">
-    <div>
-      <button mat-flat-button style="background-color:#002c77 " (click)="save()">Save</button>
-    </div>
-    <div style="padding-left:15px;">
-      <button mat-flat-button style="background-color:#C62828"(click)="cancel()">Cancel</button>
-    </div>
-  </mat-dialog-actions>
 </div>
 
