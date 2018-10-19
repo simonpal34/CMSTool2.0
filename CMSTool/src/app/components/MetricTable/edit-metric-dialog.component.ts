@@ -12,6 +12,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { Notification } from '../../Models/ActivityLog';
 import { BaseChartDirective } from 'ng2-charts';
 import { EditSourceDialogComponent } from '../SourceTable/edit-source-dialog.component';
+import { AddMetaDataDialogComponent } from './add-meta-data-dialog .component';
 
 
 
@@ -35,7 +36,7 @@ export class EditMetricDialogComponent {
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
   displayedColumnsSource: string[] = ['agency', 'name', 'edit', 'delete'];
-  displayColumnMeta: string[] = ['type', 'data', 'delete'];
+  displayedColumnsMeta: string[] = ['type', 'data', 'delete'];
   hasInflation: boolean;
   hasPerCapita: boolean;
   sources: Source[];
@@ -55,9 +56,10 @@ export class EditMetricDialogComponent {
   showScraped: boolean;
   showStaging: boolean;
   showPublished: boolean;
+  noMeta: Meta[];
   @ViewChild('linechart') linechart: BaseChartDirective;
   constructor(
-    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public editDialog: MatDialog, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
+    private fb: FormBuilder, public dialogRef: MatDialogRef<EditMetricDialogComponent>, public toastr: ToastrManager, public editDialog: MatDialog, public sourceDialog: MatDialog, public metaDialof: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: ModalData) {
     this.metricForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -107,6 +109,7 @@ export class EditMetricDialogComponent {
       this.stagingChart.label = "Staging";
       this.chartOptions = {
         responsive: true,
+        animation   : false
       };
       this.chartType = 'line';
       this.publishedColor = {
@@ -184,6 +187,7 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
+    this.noMeta = [{ type:"No Meta Data", Data: "" }];
     this.spinner.hide();
   }
   cancel() {
@@ -205,26 +209,14 @@ export class EditMetricDialogComponent {
       this.hasFootnotes = false;
     }
   }
-  addDef() {
-    var meta = { type: 'Definition', data: '' };
-    if (this.metric.meta)
-      this.metric.meta.push(meta);
-    else {
-      this.metric.meta = new Array();
-      this.metric.meta.push(meta);
-    }
-    this.hasDef = true;
-  }
-  addFoot() {
-    var meta = { type: 'Footnote', data: '' };
-    if (this.metric.meta)
-      this.metric.meta.push(meta);
-    else {
-      this.metric.meta = new Array();
-      this.metric.meta.push(meta);
-    }
+  addMeta() {
+    let d = this.sourceDialog.open(AddMetaDataDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        width: '60%',
+        height: '45%',
 
-    this.hasFootnotes = true;
+      });
   }
 
   RemoveAdjustment(a: Adjustment) {

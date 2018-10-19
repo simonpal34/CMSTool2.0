@@ -86,16 +86,62 @@
     <mat-tab label="Meta Data" style="width:100%; height:100%; overflow:visible ">
       <br />
       <div style="height:100%">
-        <div *ngFor="let m of metric.meta">
-          <mat-form-field [floatLabel]="metricForm.value.floatLabel" style="width:100%; height:40%">
-            <mat-label>{{m.type}}</mat-label>
-            <textarea matInput name="{{m.type}}" rows="3" [(ngModel)]="m.data" value="{{m.data}}"></textarea>
-          </mat-form-field>
-        </div>
-        <div style="margin-top: 10px">
-          <button mat-flat-button *ngIf="!hasDef" style="background-color:#002c77; " (click)="addDef()">Add Definition</button>
-          <button mat-flat-button (click)="addFoot()" style="margin-left:15px; background-color:#002c77;">Add Footnote</button>
-        </div>
+        <table *ngIf="metric.meta && metric.meta.length > 0" mat-table [dataSource]="metric.meta" class="mat-elevation-z8" style="width:70%; margin-top:10px; height:60%">
+          <ng-container matColumnDef="type" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let meta"> {{meta.type}} </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <button type="button" mat-icon-button style="color:#002c77" (click)="addMeta()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="data" style="margin-left:35px">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let meta"> {{meta.data}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="delete" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let meta">
+              <button  (click)="removeMeta(m)" matTooltip="Remove {{meta.type}}" type="button" mat-icon-button style="color:#C62828 ">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsMeta"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsMeta;"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumnsMeta"></tr>
+        </table>
+        <table *ngIf="!metric.meta || metric.meta.length == 0" mat-table [dataSource]="noMeta" class="mat-elevation-z8" style="width:70%; margin-top:10px; height:60%">
+          <ng-container matColumnDef="type" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let meta"> {{meta.type}} </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <button type="button" mat-icon-button style="color:#002c77" (click)="addMeta()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="data" style="margin-left:35px">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let meta"> {{meta.data}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="delete" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let meta">
+              <button *ngIf="meta.data != ''" (click)="removeMeta(m)" matTooltip="Remove {{meta.type}}" type="button" mat-icon-button style="color:#C62828 ">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsMeta"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsMeta;"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumnsMeta"></tr>
+        </table>
         <div style="width:40%; margin-top:10px">
           <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
           <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
@@ -181,9 +227,9 @@
           <mat-checkbox *ngIf="scraped && scraped.Data && scraped.Data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
         </form>
       </div>
-      <div style="width:80%; margin-top:11px; bottom:0; float:right">
-        <button mat-flat-button style="background-color:#002c77; width:10% " (click)="save()">Save</button>
-        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:10%" (click)="cancel()">Cancel</button>
+      <div style="width:100%; margin-top:17px; bottom:0; float:right">
+        <button mat-flat-button style="background-color:#002c77; width:7% " (click)="save()">Save</button>
+        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:7%" (click)="cancel()">Cancel</button>
       </div>
     </mat-tab>
   </mat-tab-group>

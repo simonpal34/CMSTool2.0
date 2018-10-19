@@ -29,6 +29,7 @@ import { SourceTableComponent } from './components/SourceTable/sourceTable.compo
 import { ChildrenTableComponent } from './components/MetricTable/childrenTable.component';
 import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-dialog.component';
 import { AddSourceDialogComponent } from './components/MetricTable/add-source-dialog.component';
+import { AddMetaDataDialogComponent } from './components/MetricTable/add-meta-data-dialog .component';
 import { EditSourceDialogComponent } from './components/SourceTable/edit-source-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -56,6 +57,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     EditSourceDialogComponent,
     UploadFileComponent,
     FileTableComponent,
+    AddMetaDataDialogComponent,
 
   ],
   imports: [
@@ -92,7 +94,8 @@ import { ToastrModule } from 'ng6-toastr-notifications';
   entryComponents: [
     EditMetricDialogComponent,
     AddSourceDialogComponent,
-    EditSourceDialogComponent
+    EditSourceDialogComponent,
+    AddMetaDataDialogComponent
   ],
   bootstrap: [AppComponent]
 })
