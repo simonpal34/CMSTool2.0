@@ -59,11 +59,13 @@ export class AddSourceDialogComponent {
     this.dialogRef.close({ source: null, num: null, notifications: this.notifications, notNum: this.nots });
   }
   edit(s: Source) {
+    var source = new Source();
+    source = Object.assign({}, s);
     let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: s, unique: this.uniqueSources
+          s: source, unique: this.uniqueSources
         },
         width: '75%',
         height: '75%',
@@ -96,9 +98,8 @@ export class AddSourceDialogComponent {
               this.nots++
             }
           }
-          s = result;
           var temp = Object.assign([], this.selectedSources);
-          var i = temp.findIndex(src => src.key == s.key);
+          var i = temp.findIndex(src => src.key == source.key);
           temp[i] = result;
           this.selectedSources = Object.assign([], temp);
         }).catch(error => {

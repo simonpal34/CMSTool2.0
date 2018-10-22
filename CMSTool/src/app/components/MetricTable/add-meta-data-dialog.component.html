@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Add Meta Data</h1>
+<div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
+  <mat-form-field [floatLabel]="metaDataForm.value.floatLabel" style="padding-left:15px; width:25%">
+    <mat-label>Type</mat-label>
+    <mat-select matInput name="type" [(ngModel)]="meta.type">
+      <mat-option *ngFor="let s of typeOptions" [value]="s">
+        {{s}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field [floatLabel]="metaDataForm.value.floatLabel" style="padding-left:15px; width:100%">
+    <mat-label>Data</mat-label>
+    <textarea matInput value="{{meta.data}}"  [(ngModel)]="meta.data" name="data"
+              cdkAutosizeMinRows="5"
+              cdkAutosizeMaxRows="10"></textarea>
+  </mat-form-field>
+  <mat-dialog-actions style="overflow:visible">
+    <div>
+      <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
+      <button mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Add</button>
+    </div>
+  </mat-dialog-actions>
+</div>

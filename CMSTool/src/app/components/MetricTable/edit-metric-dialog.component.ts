@@ -187,7 +187,7 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
-    this.noMeta = [{ type:"No Meta Data", Data: "" }];
+    this.noMeta = [{ type:"No Meta Data", data: "" }];
     this.spinner.hide();
   }
   cancel() {
@@ -199,15 +199,11 @@ export class EditMetricDialogComponent {
   }
 
   removeMeta(m: Meta) {
-    this.metric.meta.forEach((item, index) => {
-      if (item === m) this.metric.meta.splice(index, 1);
+    var temp = Object.assign([], this.metric.meta);
+    temp.forEach((item, index) => {
+      if (item === m) temp.splice(index, 1);
     });
-    if (m.type === 'Definition') {
-      this.hasDef = false;
-    }
-    if (m.type === 'Footnote') {
-      this.hasFootnotes = false;
-    }
+    this.metric.meta = Object.assign([], temp);
   }
   addMeta() {
     let d = this.sourceDialog.open(AddMetaDataDialogComponent,
@@ -217,6 +213,20 @@ export class EditMetricDialogComponent {
         height: '45%',
 
       });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+        if (!this.metric.meta) {
+          this.metric.meta = [];
+          this.metric.meta.push(result);
+        }
+        else {
+          var temp = Object.assign([], this.metric.meta);
+          temp.push(result);
+          this.metric.meta = Object.assign([], temp);
+        }
+       
+      }
+    });
   }
 
   RemoveAdjustment(a: Adjustment) {
@@ -664,11 +674,13 @@ export class EditMetricDialogComponent {
     var uniqueSources = curr.filter(function (el, i, arr) {
       return arr.indexOf(el) == i;
     });
+    var source = new Source();
+    source = Object.assign({}, s);
     let d = this.editDialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: s, unique: uniqueSources
+          s: source, unique: uniqueSources
         },
         width: '75%',
         height: '75%',
@@ -676,7 +688,6 @@ export class EditMetricDialogComponent {
       });
     d.afterClosed().subscribe(result => {
       if (result != null) {
-
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         var body = JSON.stringify(result);
         this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
@@ -700,9 +711,10 @@ export class EditMetricDialogComponent {
               this.nots++
             }
           }
-          s = result;
-          var i = this.sources.findIndex(src => src.key == s.key);
-          this.sources[i] = s;
+          var i = this.sources.findIndex(src => src.key == result.key);
+          var temp = Object.assign([], this.sources);
+          temp[i] = result;
+          this.sources = Object.assign([], temp);
         }).catch(error => {
           this.toastr.errorToastr('Edit Failed!', 'Oops!');
           if (this.notifications.length != 10) {

@@ -564,12 +564,13 @@ export class ServiceMaster {
   }
 
   openSourceEdit(s: Source, add: boolean) {
-    
+    var source = new Source();
+    source = Object.assign({}, s);
     let dialogRef = this.dialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: s, unique: this.uniqueSources
+          s: source, unique: this.uniqueSources
         },
         width: '75%',
         height: '75%',
@@ -578,7 +579,7 @@ export class ServiceMaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        
+        s = Object.assign({}, result);
         this.sourceService.UpdateSource(result, add).then(async s => {
           if (s.id != -1) {
             await this.getAllSources();
