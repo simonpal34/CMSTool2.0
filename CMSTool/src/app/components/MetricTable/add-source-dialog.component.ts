@@ -65,7 +65,7 @@ export class AddSourceDialogComponent {
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: source, unique: this.uniqueSources
+          s: source, unique: this.uniqueSources, add:false
         },
         width: '75%',
         height: '75%',
@@ -138,7 +138,7 @@ export class AddSourceDialogComponent {
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: s, unique: this.uniqueSources
+          s: s, unique: this.uniqueSources, add: true
         },
         width: '75%',
         height: '75%',
@@ -173,9 +173,9 @@ export class AddSourceDialogComponent {
           temp.push(response);
           this.allSources = Object.assign([], temp);
             var curr = this.allSources.map(d => d.AgencyName);
-            this.uniqueSources = curr.filter(function (el, i, arr) {
+            this.uniqueSources = Object.assign([],curr.filter(function (el, i, arr) {
               return arr.indexOf(el) == i;
-            });
+            }));
             this.selectedSource = '';
             this.selectedSources = [];
         }).catch(error => {

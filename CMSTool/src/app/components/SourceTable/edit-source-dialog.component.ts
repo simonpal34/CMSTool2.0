@@ -18,6 +18,10 @@ export class EditSourceDialogComponent {
   sourceForm: FormGroup;
   source: Source;
   agencyNames: string[];
+  add: boolean;
+  existingAgency: string = "";
+  newAgency: string = "";
+  selectedAgency: number = 1;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditSourceDialogComponent>, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: SourceEditModel) {
     this.sourceForm = fb.group({
@@ -26,8 +30,18 @@ export class EditSourceDialogComponent {
     });
     this.source = this.data.s;
     this.agencyNames = this.data.unique;
+    this.add = this.data.add;
   }
-  save(){
+  save() {
+    if (this.add) {
+      if (this.selectedAgency == 1) {
+        this.source.AgencyName = this.existingAgency
+      }
+      if (this.selectedAgency == 2) {
+        this.source.AgencyName = this.newAgency;
+      }
+    }
+    
     this.dialogRef.close(this.source);
   }
   cancel() {

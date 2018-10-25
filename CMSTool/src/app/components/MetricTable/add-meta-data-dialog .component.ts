@@ -20,14 +20,12 @@ export class AddMetaDataDialogComponent {
   typeOptions: string[] = ["Definition", "Footnote"];
   meta: Meta;
   constructor(
-    private fb: FormBuilder, public toastr: ToastrManager, public dialogRef: MatDialogRef<AddMetaDataDialogComponent>, public addDialog: MatDialog) {
+    private fb: FormBuilder, public toastr: ToastrManager, public dialogRef: MatDialogRef<AddMetaDataDialogComponent>, public addDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: Meta) {
     this.metaDataForm = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
-    this.meta = new Meta();
-    this.meta.type = "";
-    this.meta.data = "";
+    this.meta = _data;
   }
   cancel() {
     this.dialogRef.close(null);

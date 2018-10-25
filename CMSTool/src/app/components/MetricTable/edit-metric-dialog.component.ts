@@ -36,7 +36,7 @@ export class EditMetricDialogComponent {
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
   displayedColumnsSource: string[] = ['agency', 'name', 'edit', 'delete'];
-  displayedColumnsMeta: string[] = ['type', 'data', 'delete'];
+  displayedColumnsMeta: string[] = ['type', 'data','edit', 'delete'];
   hasInflation: boolean;
   hasPerCapita: boolean;
   sources: Source[];
@@ -187,7 +187,7 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
-    this.noMeta = [{ type:"No Meta Data", data: "" }];
+    this.noMeta = [{ type:"No Meta Data", data: "", id: 0 }];
     this.spinner.hide();
   }
   cancel() {
@@ -206,11 +206,15 @@ export class EditMetricDialogComponent {
     this.metric.meta = Object.assign([], temp);
   }
   addMeta() {
+    var m = new Meta();
+    m.data = "";
+    m.type = "";
     let d = this.sourceDialog.open(AddMetaDataDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         width: '60%',
         height: '45%',
+        data: new Meta()
 
       });
     d.afterClosed().subscribe(result => {
@@ -225,6 +229,25 @@ export class EditMetricDialogComponent {
           this.metric.meta = Object.assign([], temp);
         }
        
+      }
+    });
+  }
+  editMeta(m: Meta) {
+    var temp = Object.assign([], this.metric.meta);
+    var i = temp.findIndex(met => met.data == m.data);
+    let d = this.sourceDialog.open(AddMetaDataDialogComponent,
+      {
+        panelClass: 'mat-dialog-lg',
+        width: '60%',
+        height: '45%',
+        data: m
+
+      });
+    d.afterClosed().subscribe(result => {
+      if (result != null) {
+        temp[i] = result;
+        this.metric.meta = Object.assign([], temp);
+
       }
     });
   }
@@ -680,7 +703,7 @@ export class EditMetricDialogComponent {
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: source, unique: uniqueSources
+          s: source, unique: uniqueSources, add: false
         },
         width: '75%',
         height: '75%',

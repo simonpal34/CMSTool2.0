@@ -563,14 +563,14 @@ export class ServiceMaster {
     });
   }
 
-  openSourceEdit(s: Source, add: boolean) {
+  openSourceEdit(s: Source, isAdd: boolean) {
     var source = new Source();
     source = Object.assign({}, s);
     let dialogRef = this.dialog.open(EditSourceDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
         data: {
-          s: source, unique: this.uniqueSources
+          s: source, unique: this.uniqueSources, add: isAdd
         },
         width: '75%',
         height: '75%',
@@ -580,10 +580,10 @@ export class ServiceMaster {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         s = Object.assign({}, result);
-        this.sourceService.UpdateSource(result, add).then(async s => {
+        this.sourceService.UpdateSource(result, isAdd).then(async s => {
           if (s.id != -1) {
             await this.getAllSources();
-            if (!add) {
+            if (!isAdd) {
 
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
@@ -634,7 +634,7 @@ export class ServiceMaster {
             this.sourcesTabSelectedSources = this.allSources.filter(s => s.AgencyName == this.sourcesTabSelectedSource);
           }
           else {
-            if (!add) {
+            if (!isAdd) {
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
                 this.notificationNum++;

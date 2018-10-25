@@ -97,7 +97,7 @@ export class MetricService {
       document.body.appendChild(a);
       a.setAttribute('style', 'display: none');
       a.href = url;
-      a.download = m.id + "_" + m.name + ".xls";
+      a.download = m.id + "_" + m.name + ".xlsx";
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove(); 

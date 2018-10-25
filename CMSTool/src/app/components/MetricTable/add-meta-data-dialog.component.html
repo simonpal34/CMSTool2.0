@@ -1,4 +1,5 @@
-<h1 mat-dialog-title>Add Meta Data</h1>
+<h1 mat-dialog-title *ngIf="meta.data ==''">Add Meta Data</h1>
+<h1 mat-dialog-title *ngIf="meta.data != ''">Edit {{meta.type}}</h1>
 <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
   <mat-form-field [floatLabel]="metaDataForm.value.floatLabel" style="padding-left:15px; width:25%">
     <mat-label>Type</mat-label>

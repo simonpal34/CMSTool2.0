@@ -43,6 +43,7 @@ export class Adjustment {
 export class Meta {
   public type: string;
   public data: string;
+  public id: number;
 
   public constructor(
     fields?: {

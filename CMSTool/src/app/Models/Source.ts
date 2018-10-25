@@ -24,4 +24,5 @@ export class AddModel {
 export class SourceEditModel {
   s: Source;
   unique: string[];
+  add: boolean;
 }

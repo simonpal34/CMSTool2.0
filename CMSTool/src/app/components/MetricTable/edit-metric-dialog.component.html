@@ -101,10 +101,19 @@
             <td mat-cell *matCellDef="let meta"> {{meta.data}} </td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
+          <ng-container matColumnDef="edit" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let meta">
+              <button (click)="editMeta(meta)" matTooltip="Edit {{meta.type}}" type="button" mat-icon-button style="color:#ffae42  ">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
           <ng-container matColumnDef="delete" style="padding-left:35px">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let meta">
-              <button  (click)="removeMeta(meta)" matTooltip="Remove {{meta.type}}" type="button" mat-icon-button style="color:#C62828 ">
+              <button (click)="removeMeta(meta)" matTooltip="Remove {{meta.type}}" type="button" mat-icon-button style="color:#C62828 ">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
@@ -127,6 +136,15 @@
           <ng-container matColumnDef="data" style="margin-left:35px">
             <th mat-header-cell *matHeaderCellDef>Data</th>
             <td mat-cell *matCellDef="let meta"> {{meta.data}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="edit" style="padding-left:35px">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let meta">
+              <button (click)="editMeta(meta)" *ngIf="meta.data != ''" matTooltip="Edit {{meta.type}}" type="button" mat-icon-button style="color:#ffae42  ">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
           <ng-container matColumnDef="delete" style="padding-left:35px">
@@ -183,6 +201,9 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumnsSource;"></tr>
       </table>
       <button mat-raised-button style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; margin-top:14px; color:white;" (click)="addSources()"><mat-icon style=" font-size:10pt; margin-top:10px">add</mat-icon>Add Sources</button>
+      <div>
+        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:10%" (click)="cancel()">Close</button>
+      </div>
     </mat-tab>
     <!-- 
     <mat-tab label="Adjustments" style="width:100%; height:100%; overflow:visible ">
