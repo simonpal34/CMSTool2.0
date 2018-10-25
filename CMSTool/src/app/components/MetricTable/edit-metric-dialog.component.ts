@@ -142,11 +142,13 @@ export class EditMetricDialogComponent {
       if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
         this.scrapedChart = new ChartData();
        this.scrapedChart.data = new Array();
-        var j = 0;
         for (var i = 0; i < this.scraped.Data.length; i++) {
           if (this.scraped.Data[i].Value != null) {
-            this.scrapedChart.data[j] = this.scraped.Data[i].Value;
-            j++;
+            for (var j = 0; j < this.chartLabels.length; j++) {
+              if (this.chartLabels[j] == this.scraped.Data[i].Key) {
+                this.scrapedChart.data[j] = this.scraped.Data[i].Value;
+              }
+            }
           }
         }
         this.scrapedChart.label = "Scraped";
@@ -155,11 +157,13 @@ export class EditMetricDialogComponent {
       if (this.published && this.published.data && this.published.data.length) {
         this.publishedChart = new ChartData();
         this.publishedChart.data = new Array();
-        var j = 0;
         for (var i = 0; i < this.published.data.length; i++) {
           if (this.published.data[i].y != null) {
-            this.publishedChart.data[j] = this.published.data[i].y;
-            j++;
+            for (var j = 0; j < this.chartLabels.length; j++) {
+              if (this.chartLabels[j] == this.published.data[i].x) {
+                this.publishedChart.data[j] = this.published.data[i].y;
+              }
+            }
           }
         }
         this.publishedChart.label = "Published";
@@ -234,7 +238,7 @@ export class EditMetricDialogComponent {
   }
   editMeta(m: Meta) {
     var temp = Object.assign([], this.metric.meta);
-    var i = temp.findIndex(met => met.data == m.data);
+    var i = temp.findIndex(met => met.data == m.data && met.type == m.type);
     let d = this.sourceDialog.open(AddMetaDataDialogComponent,
       {
         panelClass: 'mat-dialog-lg',
