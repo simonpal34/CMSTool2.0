@@ -223,13 +223,23 @@ export class EditMetricDialogComponent {
       });
     d.afterClosed().subscribe(result => {
       if (result != null) {
+        /**
+         *call can go here
+         * var Include Children = result.c;
+         * var newMeta = result.m
+         * put the body in the call
+         * 
+         * this.http.put<(Return type)>(url , { headers: header }).subscribe(r => {
+              *****The code below should be formatted to go in here so you can set the meta id before you put it in the table cause the dialog result won't have an id but r from the call will*****
+           })
+         * **/
         if (!this.metric.meta) {
           this.metric.meta = [];
-          this.metric.meta.push(result);
+          this.metric.meta.push(result.m);
         }
         else {
           var temp = Object.assign([], this.metric.meta);
-          temp.push(result);
+          temp.push(result.m);
           this.metric.meta = Object.assign([], temp);
         }
        
@@ -251,6 +261,13 @@ export class EditMetricDialogComponent {
       if (result != null) {
         temp[i] = result;
         this.metric.meta = Object.assign([], temp);
+        /**
+         *call can go here
+         * var newMeta = result
+         * this.http.put<(Return type)>(url , { headers: header }).subscribe(r => {
+         * wont have to set the meta cause the id is already on these
+           })
+         * **/
 
       }
     });

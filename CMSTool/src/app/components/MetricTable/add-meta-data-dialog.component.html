@@ -18,8 +18,16 @@
   <mat-dialog-actions style="overflow:visible">
     <div>
       <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
-      <button *ngIf="adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Add</button>
-      <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Save</button>
+      <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color:white" [matMenuTriggerFor]="menu"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="add(false)">
+          To This Metric Only
+        </button>
+        <button mat-menu-item (click)="add(true)" style="padding-right:0">
+          To This Metric and its Descendants
+        </button>
+      </mat-menu>
+      <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="save()">Save</button>
     </div>
   </mat-dialog-actions>
 </div>

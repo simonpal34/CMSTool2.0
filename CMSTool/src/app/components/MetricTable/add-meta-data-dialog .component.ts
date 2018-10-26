@@ -37,8 +37,13 @@ export class AddMetaDataDialogComponent {
   cancel() {
     this.dialogRef.close(null);
   }
-  add() {
+  save() {
     this.dialogRef.close(this.meta);
+  }
+  add(children: boolean) {
+    {
+      this.dialogRef.close({m: this.meta, c: children})
+    }
   }
  
 }
