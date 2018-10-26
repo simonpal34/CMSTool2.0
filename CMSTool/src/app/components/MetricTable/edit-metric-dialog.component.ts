@@ -218,7 +218,7 @@ export class EditMetricDialogComponent {
         panelClass: 'mat-dialog-lg',
         width: '60%',
         height: '45%',
-        data: new Meta()
+        data: m
 
       });
     d.afterClosed().subscribe(result => {

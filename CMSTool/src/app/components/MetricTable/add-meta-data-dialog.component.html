@@ -1,5 +1,5 @@
-<h1 mat-dialog-title *ngIf="meta.data ==''">Add Meta Data</h1>
-<h1 mat-dialog-title *ngIf="meta.data != ''">Edit {{meta.type}}</h1>
+<h1 mat-dialog-title *ngIf="adding">Add Meta Data</h1>
+<h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
 <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
   <mat-form-field [floatLabel]="metaDataForm.value.floatLabel" style="padding-left:15px; width:25%">
     <mat-label>Type</mat-label>
@@ -18,7 +18,8 @@
   <mat-dialog-actions style="overflow:visible">
     <div>
       <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
-      <button mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Add</button>
+      <button *ngIf="adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Add</button>
+      <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="add()">Save</button>
     </div>
   </mat-dialog-actions>
 </div>

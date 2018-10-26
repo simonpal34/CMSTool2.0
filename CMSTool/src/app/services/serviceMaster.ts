@@ -96,7 +96,7 @@ export class ServiceMaster {
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl);
     this.metricService = new MetricService(this.http, this.authCode, this.stagingUrl, this.toastr);
     this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl, this.toastr);
-    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr);
+    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr, this);
     this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl);
     //this.getMissions();
     //this.getAllSources();

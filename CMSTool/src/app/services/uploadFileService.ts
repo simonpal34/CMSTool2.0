@@ -1,15 +1,17 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
+import { Router } from '@angular/router';
+import { ServiceMaster } from './serviceMaster';
 
 @Injectable()
 export class UploadFileService {
 
-
-  constructor(protected http: HttpClient, private key: string, private url: string, public toastr: ToastrManager) {
+  router: Router;
+  constructor(protected http: HttpClient, private key: string, private url: string, public toastr: ToastrManager, public svc: ServiceMaster) {
   }
   getSpreadSheets(): Promise<SpreadSheet[]> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
@@ -48,13 +50,24 @@ export class UploadFileService {
     return await this.http.post<boolean>(this.url + '/upload/uploadSpreadsheet/' + sheet, formData, { headers: header }).toPromise().then(
       response => {
         return Promise.resolve(true);
-      })
-      .catch(error => {
-        var e = new Error();
-        e = error;
-        var r =  false;  //how to handle the error
-        this.toastr.errorToastr('An Error: ' + e.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
-        return Promise.resolve(r);
+      }).catch((error: HttpErrorResponse) => {
+        if (error.status == 401) {
+          this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
+          var r = false;
+          this.svc.logout().then(d => {
+            if (!d) {
+              this.router.navigate(['login']);
+            }
+          });
+
+          return Promise.resolve(r);
+        }
+        else {
+          var r = false;  //how to handle the error
+          this.toastr.errorToastr('An Error: ' + error.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
+          return Promise.resolve(r);
+        }
+
       });
   }
   
