@@ -208,6 +208,11 @@ export class EditMetricDialogComponent {
       if (item === m) temp.splice(index, 1);
     });
     this.metric.meta = Object.assign([], temp);
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    //Make post to remove the metadata 
+    this.http.post<Meta>(this.url + '/metrics/' + this.metric.id + '/RemoveMetadata?metadataId=' + m.id, '', { headers: header }).subscribe(r => {
+      this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was removed!", "Success!");
+    })
   }
   addMeta() {
     var m = new Meta();
@@ -223,16 +228,16 @@ export class EditMetricDialogComponent {
       });
     d.afterClosed().subscribe(result => {
       if (result != null) {
-        /**
-         *call can go here
-         * var Include Children = result.c;
-         * var newMeta = result.m
-         * put the body in the call
-         * 
-         * this.http.put<(Return type)>(url , { headers: header }).subscribe(r => {
-              *****The code below should be formatted to go in here so you can set the meta id before you put it in the table cause the dialog result won't have an id but r from the call will*****
+         var includeChildren = result.c;
+         var newMeta = result.m
+         //put the body in the call
+        var body = JSON.stringify(newMeta);
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        //Make post to add the new metadata 
+        this.http.post<Meta>(this.url + "/metrics/" + this.metric.id + "/Metadata?IncludeChildren=" + includeChildren , body, { headers: header }).subscribe(r => {
+            //  ***** The code below should be formatted to go in here so you can set the meta id before you put it in the table cause the dialog result won't have an id but r from the call will*****
+           this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was added!", "Success!");
            })
-         * **/
         if (!this.metric.meta) {
           this.metric.meta = [];
           this.metric.meta.push(result.m);
@@ -261,14 +266,13 @@ export class EditMetricDialogComponent {
       if (result != null) {
         temp[i] = result;
         this.metric.meta = Object.assign([], temp);
-        /**
-         *call can go here
-         * var newMeta = result
-         * this.http.put<(Return type)>(url , { headers: header }).subscribe(r => {
-         * wont have to set the meta cause the id is already on these
+        var newMeta = result
+        var body = JSON.stringify(newMeta);
+        let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+        this.http.put<Meta>(this.url + "/metrics/" + this.metric.id + "/Metadata",body, { headers: header }).subscribe(r => {
+         //wont have to set the meta cause the id is already on these
+           this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was updated!", "Success!");
            })
-         * **/
-
       }
     });
   }
@@ -344,7 +348,7 @@ export class EditMetricDialogComponent {
     d.afterClosed().subscribe(result => {
 
       let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-      this.http.get<Source[]>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", { headers: header }).subscribe(r => {
+      this.http.get<Source[]>(this.url + "/sources", { headers: header }).subscribe(r => {
         this.allSources = r
       })
       if (result.notNum != 0) {
@@ -734,7 +738,7 @@ export class EditMetricDialogComponent {
       if (result != null) {
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         var body = JSON.stringify(result);
-        this.http.put<Source>('https://usafacts-api-staging.azurewebsites.net/api/v2' + "/sources", body, { headers: header }).toPromise().then(response => {
+        this.http.put<Source>(this.url + "/sources", body, { headers: header }).toPromise().then(response => {
           this.toastr.successToastr(result.name + ' edit complete', 'Success!');
           if (this.notifications.length != 10) {
             var note = new Notification();
