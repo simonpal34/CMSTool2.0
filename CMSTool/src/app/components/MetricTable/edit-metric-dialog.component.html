@@ -161,12 +161,11 @@
           <tr mat-footer-row *matFooterRowDef="displayedColumnsMeta"></tr>
         </table>
         <div style="width:40%; margin-top:10px">
-          <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
-          <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
+          <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Close</button>
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Sources " style="width:100%; height:100%; overflow:visible ">
+    <mat-tab label="Sources " style="width:100%;  overflow:visible ">
       <table mat-table *ngIf="sources.length != 0" [dataSource]="sources" class="mat-elevation-z8" style="width:60%; margin-top:10px; height:60%">
         <ng-container matColumnDef="agency" style="padding-left:35px">
           <th mat-header-cell *matHeaderCellDef> Agency Name </th>
