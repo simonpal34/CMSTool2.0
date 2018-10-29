@@ -20,34 +20,47 @@ export class AddMetaDataDialogComponent {
   typeOptions: string[] = ["Definition", "Footnote"];
   meta: Meta;
   adding: boolean;
-  metaDataFormControl: FormControl;
+  get type() {
+    return this.metaDataForm.get('type');
+  }
   constructor(
     private fb: FormBuilder, public toastr: ToastrManager, public dialogRef: MatDialogRef<AddMetaDataDialogComponent>, public addDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public _data: Meta) {
-    this.metaDataFormControl = new FormControl(this.meta.type, [
-      Validators.required,
-    ]);
-    this.metaDataForm = fb.group({
-      hideRequired: false,
-      floatLabel: 'auto',
-    });
+    
+    
     this.meta = _data;
     if (this.meta.data == "") {
       this.adding = true;
+      this.metaDataForm = fb.group({
+        type: ['', Validators.required],
+        data: this.meta.data,
+      });
     }
     else {
       this.adding = false;
+      this.metaDataForm = fb.group({
+        hideRequired: false,
+        floatLabel: 'auto',
+        type: [this.meta.type, Validators.required],
+        data: this.meta.data,
+      });
     }
+    
   }
   cancel() {
     this.dialogRef.close(null);
   }
   save() {
+    this.meta.type = this.metaDataForm.value.type;
+    this.meta.data = this.metaDataForm.value.data;
     this.dialogRef.close(this.meta);
   }
   add(children: boolean) {
-    {
+    this.meta.type = this.metaDataForm.value.type;
+    this.meta.data = this.metaDataForm.value.data;
       this.dialogRef.close({m: this.meta, c: children})
-    }
+
   }
+
+  
  
 }

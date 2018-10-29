@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler, ChangeDetectorRef  } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { FormsModule, FormBuilder } from "@angular/forms";
+import { FormsModule, FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -63,6 +63,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
     MaterialModule,
