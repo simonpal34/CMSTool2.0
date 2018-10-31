@@ -1,9 +1,8 @@
 <h1 mat-dialog-title *ngIf="adding">Add Meta Data</h1>
 <h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
 <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
-  <form [formGroup]="metaDataForm">
-    <mat-form-field style="padding-left:15px; width:25%">
-      <mat-select matInput formControlName="type" placeholder="Type">
+    <mat-form-field style="padding-left:15px; width:25%; border-left:none" >
+      <mat-select matInput [formControl]="typeControl"  style="border-left:none" placeholder="Type" >
         <mat-option>
           --
         </mat-option>
@@ -11,17 +10,16 @@
           {{s}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="type.hasError('required')">
+      <mat-error *ngIf="typeControl.hasError('required')">
         Type is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <mat-form-field  style="padding-left:15px; width:100%">
+    <mat-form-field  style="padding-left:15px; width:100%" [formGroup]="metaDataForm">
       <mat-label>Data</mat-label>
       <textarea matInput value="{{meta.data}}" formControlName="data"
                 cdkAutosizeMinRows="5"
                 cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
-  </form>
   <mat-dialog-actions style="overflow:visible">
     <div>
       <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
