@@ -33,14 +33,14 @@ export class EditSourceDialogComponent {
     this.add = this.data.add;
   }
   save() {
-    /*if (this.add) {
+    if (this.add) {
       if (this.selectedAgency == 1) {
         this.source.AgencyName = this.existingAgency
       }
       if (this.selectedAgency == 2) {
         this.source.AgencyName = this.newAgency;
       }
-    }*/
+    }
     
     this.dialogRef.close(this.source);
   }

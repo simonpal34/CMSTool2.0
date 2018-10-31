@@ -20,4 +20,8 @@ export class FileTableComponent {
     
   }
 
+  download(file: FileUpload) {
+
+  }
+
 }

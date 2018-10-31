@@ -1,7 +1,7 @@
 
 <h1 mat-dialog-title *ngIf="!add">Edit: {{source.AgencyName}}</h1>
 <h1 mat-dialog-title *ngIf="add">Add Source</h1>
-<div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
+<div mat-dialog-content *ngIf="!add" style="width:100%; height:90%; overflow:visible ">
   <br />
   <form style="width:100%; height:75%;overflow:visible ">
     <div style="width:100%">
@@ -75,8 +75,6 @@
     </div>
   </mat-dialog-actions>
 </div>
-<!--
-
 
 <div *ngIf="add" mat-dialog-content style="width:100%; height:90%; overflow:visible ">
   <br />
@@ -168,4 +166,4 @@
     </mat-step>
   </mat-horizontal-stepper>
 </div>
-    -->
+

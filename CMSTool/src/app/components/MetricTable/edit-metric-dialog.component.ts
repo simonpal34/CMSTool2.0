@@ -95,21 +95,22 @@ export class EditMetricDialogComponent {
       this.hasData = true;
       this.chartData = new Array();
       this.chartLabels = new Array();
+      var temp = Object.assign([], this.chartLabels);
       this.stagingChart = new ChartData();
       this.stagingChart.data = new Array();
       var j = 0;
-        for (var i = 0; i < this.metric.data.length; i++) {
-          if (this.metric.data[i].y != null) {
-            this.stagingChart.data[j] = this.metric.data[i].y;
-            this.chartLabels[j] = this.metric.data[i].x;
-            j++;
-          }
+      for (var i = 0; i < this.metric.data.length; i++) {
+        if (this.metric.data[i].y != null) {
+
+          temp[j] = this.metric.data[i].x;
+          j++;
         }
+      }
 
       this.stagingChart.label = "Staging";
       this.chartOptions = {
         responsive: true,
-        animation   : false
+        animation: false
       };
       this.chartType = 'line';
       this.publishedColor = {
@@ -141,15 +142,10 @@ export class EditMetricDialogComponent {
       this.showStaging = true;
       if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
         this.scrapedChart = new ChartData();
-       this.scrapedChart.data = new Array();
+        this.scrapedChart.data = new Array();
+
         for (var i = 0; i < this.scraped.Data.length; i++) {
-          if (this.scraped.Data[i].Value != null) {
-            for (var j = 0; j < this.chartLabels.length; j++) {
-              if (this.chartLabels[j] == this.scraped.Data[i].Key) {
-                this.scrapedChart.data[j] = this.scraped.Data[i].Value;
-              }
-            }
-          }
+          temp.push(this.scraped.Data[i].Key);
         }
         this.scrapedChart.label = "Scraped";
         this.showScraped = false;
@@ -157,6 +153,27 @@ export class EditMetricDialogComponent {
       if (this.published && this.published.data && this.published.data.length) {
         this.publishedChart = new ChartData();
         this.publishedChart.data = new Array();
+        for (var i = 0; i < this.published.data.length; i++) {
+          temp.push(this.published.data[i].x);
+        }
+        this.publishedChart.label = "Published";
+
+        this.showPublished = false;
+      }
+      temp = temp.filter((el, i, a) => i === a.indexOf(el));
+      this.chartLabels = temp.sort();
+      for (var i = 0; i < this.metric.data.length; i++) {
+        if (this.metric.data[i].y != null) {
+          for (var j = 0; j < this.chartLabels.length; j++) {
+            if (this.chartLabels[j] == this.metric.data[i].x) {
+
+              this.stagingChart.data[j] = this.metric.data[i].y;
+            }
+          }
+        }
+      }
+
+      if (this.published && this.published.data && this.published.data.length) {
         for (var i = 0; i < this.published.data.length; i++) {
           if (this.published.data[i].y != null) {
             for (var j = 0; j < this.chartLabels.length; j++) {
@@ -166,11 +183,18 @@ export class EditMetricDialogComponent {
             }
           }
         }
-        this.publishedChart.label = "Published";
-
-        this.showPublished = false;
       }
-
+      if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
+        for (var i = 0; i < this.scraped.Data.length; i++) {
+          if (this.scraped.Data[i].Value != null) {
+            for (var j = 0; j < this.chartLabels.length; j++) {
+              if (this.chartLabels[j] == this.scraped.Data[i].Key) {
+                this.scrapedChart.data[j] = this.scraped.Data[i].Value;
+              }
+            }
+          }
+        }
+      }
     }
 
     else {
@@ -202,7 +226,7 @@ export class EditMetricDialogComponent {
     this.dialogRef.close({ metric: this.metric, notifications: this.notifications, num: this.nots });
   }
 
-  removeMeta(m: Meta) {
+  removeMeta(m: Meta, children: boolean) {
     var temp = Object.assign([], this.metric.meta);
     temp.forEach((item, index) => {
       if (item === m) temp.splice(index, 1);
@@ -210,7 +234,7 @@ export class EditMetricDialogComponent {
     this.metric.meta = Object.assign([], temp);
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     //Make post to remove the metadata 
-    this.http.post<Meta>(this.url + '/metrics/' + this.metric.id + '/RemoveMetadata?metadataId=' + m.id, '', { headers: header }).subscribe(r => {
+    this.http.post<Meta>(this.url + '/metrics/' + this.metric.id + '/RemoveMetadata?metadataId=' + m.id+ '&IncludeChildren=' + children,'', { headers: header }).subscribe(r => {
       this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was removed!", "Success!");
     })
   }
