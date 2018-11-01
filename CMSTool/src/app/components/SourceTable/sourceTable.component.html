@@ -1,10 +1,10 @@
 <div style="padding-left:35px">
   <caption style="padding-left:35px"><b>Sources</b></caption>
   <div class="mat-elevation-z8" style="overflow-y:auto; width:100%; height: 100%">
-    <table mat-table [dataSource]="svc.sourcesTabSelectedSources"  style="width:100%">
+    <table mat-table [dataSource]="svc.sourcesTabSelectedSources" style="width:100%">
       <ng-container matColumnDef="name" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let source"> {{source.name}} </td>
+        <td mat-cell *matCellDef="let source" style="width:20%;"> {{source.name}} </td>
       </ng-container>
       <ng-container matColumnDef="tableOrFile" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Table or File Name </th>
@@ -12,19 +12,25 @@
       </ng-container>
       <ng-container matColumnDef="url" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Url </th>
-        <td mat-cell *matCellDef="let source" style="word-wrap:break-word; padding:5px;"> {{source.Url }} </td>
+        <td mat-cell *matCellDef="let source" style="padding-left:20px">
+          <a *ngIf="source.Url != null && source.Url.indexOf('?') != -1" style="cursor:pointer" href="{{source.Url}}" target="_blank">{{source.Url.substring(0,source.Url.indexOf("?"))}}</a>
+          <a *ngIf="source.Url != null && source.Url.indexOf('?') == -1" style="cursor:pointer" href="{{source.Url}}" target="_blank">{{source.Url}}</a>
+        </td>
       </ng-container>
       <ng-container matColumnDef="urlDownload" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Url Download </th>
-        <td mat-cell *matCellDef="let source" style="word-wrap:break-word; padding:5px;"> {{source.UrlDownload  }} </td>
+        <td mat-cell *matCellDef="let source" style="padding-left:20px">
+          <a *ngIf="source.UrlDownload != null &&source.UrlDownload.indexOf('?') != -1" style="cursor:pointer" href="{{source.UrlDownload}}" target="_blank">{{source.UrlDownload.substring(0,source.UrlDownload.indexOf("?"))}}</a>
+          <a *ngIf="source.UrlDownload != null &&source.UrlDownload.indexOf('?') == -1" style="cursor:pointer" href="{{source.UrlDownload}}" target="_blank">{{source.UrlDownload}}</a>
+        </td>
       </ng-container>
       <ng-container matColumnDef="lastUpdated" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Last Updated </th>
-        <td mat-cell *matCellDef="let source"> {{source.LastUpdated  }} </td>
+        <td mat-cell *matCellDef="let source" style="width:20%;padding-left:20px"> {{source.LastUpdated}} </td>
       </ng-container>
       <ng-container matColumnDef="metrics" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Metrics </th>
-        <td mat-cell *matCellDef="let source"> {{ source.Metrics?.length  }} </td>
+        <td mat-cell *matCellDef="let source"> {{ source.Metrics?.length}} </td>
       </ng-container>
       <ng-container matColumnDef="edit" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef></th>
