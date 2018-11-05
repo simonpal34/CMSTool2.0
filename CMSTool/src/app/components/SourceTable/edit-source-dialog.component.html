@@ -1,6 +1,14 @@
 
 <h1 mat-dialog-title *ngIf="!add">Edit: {{source.AgencyName}}</h1>
-<h1 mat-dialog-title *ngIf="add">Add Source</h1>
+<div mat-dialog-title *ngIf="add">
+  <button mat-icon-button style="color:#C62828;float:right" (click)="cancel()"><mat-icon>clear</mat-icon></button>
+  <div style="width:75%">
+    <h1>Add Source </h1>
+  </div>
+
+</div>
+
+
 <div mat-dialog-content *ngIf="!add" style="width:100%; height:90%; overflow:visible ">
   <br />
   <form style="width:100%; height:75%;overflow:visible ">
@@ -82,7 +90,7 @@
     <mat-step>
       <form style="width:100%; height:75%; overflow:visible">
         <mat-radio-group style="display:inline-flex; flex-direction:column; width:65%" [(ngModel)]="selectedAgency" name="select">
-          <mat-radio-button value="1">
+          <mat-radio-button value="1" checked="true">
             Existing Agency
           </mat-radio-button>
             <mat-form-field [floatLabel]="sourceForm.value.floatLabel" style="width:65%">
@@ -105,10 +113,10 @@
         </mat-radio-group>
       </form>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext style="background-color:#002c77; color:white " [disabled]="(existingAgency == '' && selectedAgency == 1) || (newAgency =='' && selectedAgency == 2) || selectedAgency ==0">Next</button>
       </div>
     </mat-step>
-    <mat-step>
+    <mat-step >
       <form style="width:100%; height:75%;overflow:visible ">
         <div style="width:100%">
           <mat-form-field [floatLabel]="sourceForm.value.floatLabel" style="width:65%">
@@ -157,11 +165,8 @@
 
       </form>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-      </div>
-      <div>
-        <button mat-flat-button style="background-color:#002c77 " (click)="save()">Save</button>
-        <button mat-flat-button style="background-color:#C62828; margin-left:15px" (click)="cancel()">Cancel</button>
+        <button mat-button matStepperPrevious style="background-color:#C62828; color: white">Back</button>
+        <button mat-flat-button style="background-color:#002c77; margin-left:15px " (click)="save()">Save</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

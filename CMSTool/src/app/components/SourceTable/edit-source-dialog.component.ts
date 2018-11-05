@@ -21,7 +21,7 @@ export class EditSourceDialogComponent {
   add: boolean;
   existingAgency: string = "";
   newAgency: string = "";
-  selectedAgency: number = 1;
+  selectedAgency: number = 0;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<EditSourceDialogComponent>, public sourceDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: SourceEditModel) {
     this.sourceForm = fb.group({
