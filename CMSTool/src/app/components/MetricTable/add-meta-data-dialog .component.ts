@@ -34,7 +34,7 @@ export class AddMetaDataDialogComponent {
       this.metaDataForm = fb.group({
         data: this.meta.data,
       });
-      this.typeControl = new FormControl(this.meta.type, [Validators.required]);
+      this.typeControl = new FormControl('', [Validators.required]);
     }
     else {
       this.adding = false;
@@ -43,7 +43,7 @@ export class AddMetaDataDialogComponent {
         floatLabel: 'auto',
         data: this.meta.data,
       });
-      this.typeControl = new FormControl('', [Validators.required]);
+      this.typeControl = new FormControl(this.meta.type, [Validators.required]);
     }
     
   }

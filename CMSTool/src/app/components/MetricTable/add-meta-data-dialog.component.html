@@ -4,7 +4,7 @@
   <h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
   <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
     <mat-form-field style="padding-left:15px; width:25%; border-left:none">
-      <mat-select  [(ngModel)]="type"  style="border-left:none" name="select" placeholder="type" required>
+      <mat-select   style="border-left:none" [formControl]="typeControl" placeholder="type" required>
         <mat-option *ngFor="let s of typeOptions" [value]="s">
           {{s}}
         </mat-option>
@@ -22,7 +22,7 @@
     <mat-dialog-actions style="overflow:visible">
       <div>
         <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
-        <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color:white" [matMenuTriggerFor]="menu" [disabled]="metadataForm.invalid"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
+        <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color: white" [matMenuTriggerFor]="menu" [disabled]="typeControl.hasError('required')"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="add(false)">
             To This Metric Only
@@ -31,7 +31,7 @@
             To This Metric and its Descendants
           </button>
         </mat-menu>
-        <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" [disabled]="metadataForm.invalid" (click)="save()">Save</button>
+        <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" [disabled]="typeControl.hasError('required')" (click)="save()">Save</button>
       </div>
     </mat-dialog-actions>
   </div>
