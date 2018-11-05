@@ -260,17 +260,18 @@ export class EditMetricDialogComponent {
         //Make post to add the new metadata 
         this.http.post<Meta>(this.url + "/metrics/" + this.metric.id + "/Metadata?IncludeChildren=" + includeChildren , body, { headers: header }).subscribe(r => {
             //  ***** The code below should be formatted to go in here so you can set the meta id before you put it in the table cause the dialog result won't have an id but r from the call will*****
-           this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was added!", "Success!");
+          this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was added!", "Success!");
+          if (!this.metric.meta) {
+            this.metric.meta = [];
+            this.metric.meta.push(r);
+          }
+          else {
+            var temp = Object.assign([], this.metric.meta);
+            temp.push(r);
+            this.metric.meta = Object.assign([], temp);
+          }
            })
-        if (!this.metric.meta) {
-          this.metric.meta = [];
-          this.metric.meta.push(result.m);
-        }
-        else {
-          var temp = Object.assign([], this.metric.meta);
-          temp.push(result.m);
-          this.metric.meta = Object.assign([], temp);
-        }
+        
        
       }
     });
