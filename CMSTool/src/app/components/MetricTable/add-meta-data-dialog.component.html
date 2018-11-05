@@ -1,11 +1,10 @@
-<h1 mat-dialog-title *ngIf="adding">Add Meta Data</h1>
-<h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
-<div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
-    <mat-form-field style="padding-left:15px; width:25%; border-left:none" >
-      <mat-select matInput [formControl]="typeControl"  style="border-left:none" placeholder="Type" >
-        <mat-option>
-          --
-        </mat-option>
+
+<form #metadataForm="ngForm">
+  <h1 mat-dialog-title *ngIf="adding">Add Meta Data</h1>
+  <h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
+  <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
+    <mat-form-field style="padding-left:15px; width:25%; border-left:none">
+      <mat-select  [(ngModel)]="type"  style="border-left:none" name="select" placeholder="type" required>
         <mat-option *ngFor="let s of typeOptions" [value]="s">
           {{s}}
         </mat-option>
@@ -14,25 +13,26 @@
         Type is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <mat-form-field  style="padding-left:15px; width:100%" [formGroup]="metaDataForm">
+    <mat-form-field style="padding-left:15px; width:100%" [formGroup]="metaDataForm">
       <mat-label>Data</mat-label>
       <textarea matInput value="{{meta.data}}" formControlName="data"
                 cdkAutosizeMinRows="5"
                 cdkAutosizeMaxRows="10"></textarea>
     </mat-form-field>
-  <mat-dialog-actions style="overflow:visible">
-    <div>
-      <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
-      <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color:white" [matMenuTriggerFor]="menu"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="add(false)">
-          To This Metric Only
-        </button>
-        <button mat-menu-item (click)="add(true)" style="padding-right:0">
-          To This Metric and its Descendants
-        </button>
-      </mat-menu>
-      <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" (click)="save()">Save</button>
-    </div>
-  </mat-dialog-actions>
-</div>
+    <mat-dialog-actions style="overflow:visible">
+      <div>
+        <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
+        <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color:white" [matMenuTriggerFor]="menu" [disabled]="metadataForm.invalid"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="add(false)">
+            To This Metric Only
+          </button>
+          <button mat-menu-item (click)="add(true)" style="padding-right:0">
+            To This Metric and its Descendants
+          </button>
+        </mat-menu>
+        <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" [disabled]="metadataForm.invalid" (click)="save()">Save</button>
+      </div>
+    </mat-dialog-actions>
+  </div>
+  </form>
