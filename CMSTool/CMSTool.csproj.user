@@ -3,6 +3,6 @@
   <PropertyGroup>
     <ToolsVersionPromptShown>0.0</ToolsVersionPromptShown>
     <ShowAllFiles>false</ShowAllFiles>
-    <NameOfLastUsedPublishProfile>usafacts-dataview-staging - Web Deploy</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>usafacts-dataview - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
