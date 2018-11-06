@@ -79,7 +79,7 @@ export class ScrapedData {
 
 export class ModalData {
   public metric: Metric;
-  public scraped: ScrapedMetric;
+  public scraped: Metric;
   public spinner: NgxSpinnerService;
   public sources: Source[];
   public allSources: Source[];

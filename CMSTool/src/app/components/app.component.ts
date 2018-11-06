@@ -15,7 +15,7 @@ export class AppComponent {
     
   }
 
-  profile() {
+  goToProfile() {
     this.router.navigate(['/profile']);
   }
 
@@ -26,7 +26,7 @@ export class AppComponent {
       }
     })
   }
-  getNot() {
+  viewNotifications() {
     this.svc.notificationNum = 0;
     this.svc.hasNotification = false;
   }

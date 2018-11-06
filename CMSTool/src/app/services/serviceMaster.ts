@@ -25,6 +25,7 @@ import { EditSourceDialogComponent } from '../components/SourceTable/edit-source
 import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { ActivityLog, Notification } from '../Models/ActivityLog';
+import { TimeOutDialogComponent } from '../components/TimeOut/time-out-dialog.component';
 
 
 @Injectable()
@@ -46,7 +47,7 @@ export class ServiceMaster {
   metricService: MetricService;
   kpiService: KPIService;
   metricEdit: Metric;
-  scrapedMetric: ScrapedMetric;
+  scrapedMetric: Metric;
   data: ModalData;
   stagingChildren: Metric[];
   topicBreadCrumb: Topic;
@@ -64,6 +65,8 @@ export class ServiceMaster {
   notifications: Notification[];
   hasNotification: boolean;
   notificationNum: number;
+  timeLeft: number = 300;
+  interval;
 
   constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
     this.loginService = new LoginService(http, this.toastr);
@@ -100,10 +103,26 @@ export class ServiceMaster {
     this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl);
     //this.getMissions();
     //this.getAllSources();
+    this.startTimer();
     
 
   }
+  startTimer() {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.interval);
+        let dialogRef = this.dialog.open(TimeOutDialogComponent,
+          {
+            panelClass: 'mat-dialog-lg',
+            width: '25%',
+            height: '25%',
 
+          });
+      }
+    }, 1000)
+  }
   getMissions() {
     var r = new ReportingUnit();
     r.id = -1;
@@ -779,54 +798,57 @@ export class ServiceMaster {
   uploadSheet(sheet: File, type: SpreadSheet) {
     this.toastr.infoToastr("The upload is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
     this.uploadFileService.UploadFile(sheet, type).then(async response => {
-      if (response) {
-        await this.getUploaded();
-        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
-        if (this.notifications.length != 10) {
-          this.hasNotification = true;
-          this.notificationNum++;
-          var note = new Notification();
-          note.name = "Uploaded sheet: " + sheet.name;
-          note.date = new Date();
-          note.success = true;
-          this.notifications.push(note);
-        }
-        else {
-          this.hasNotification = true;
-          var note = new Notification();
-          note.name = "Uploaded sheet: " + sheet.name;
-          note.date = new Date();
-          note.success = true;
-          this.notifications.push(note);
-          this.notifications.shift();
-          if (this.notificationNum < 10) {
+      var r = new FileUpload();
+      r = response;
+      await this.getUploaded();
+      if (r.name != 'fail' && r.ErrorDetails == '') {
+          this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
             this.notificationNum++;
+            var note = new Notification();
+            note.name = "Uploaded sheet: " + sheet.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Uploaded sheet: " + sheet.name;
+            note.date = new Date();
+            note.success = true;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
           }
         }
-      }
-      else {
-        if (this.notifications.length != 10) {
-          this.hasNotification = true;
-          this.notificationNum++;
-          var note = new Notification();
-          note.name = "Uploading sheet: " + sheet.name + " failed";
-          note.date = new Date();
-          note.success = false;
-          this.notifications.push(note);
-        }
-        else {
-          this.hasNotification = true;
-          var note = new Notification();
-          note.name = "Uploading sheet: " + sheet.name + " failed";
-          note.date = new Date();
-          note.success = false;
-          this.notifications.push(note);
-          this.notifications.shift();
-          if (this.notificationNum < 10) {
+      else if (r.name != 'fail') {
+        this.toastr.errorToastr('An Error: ' + r.ErrorDetails + ' has occured while processing ' + sheet.name + ' !', 'Oops!', { toastTimeout: 10000 });
+          if (this.notifications.length != 10) {
+            this.hasNotification = true;
             this.notificationNum++;
+            var note = new Notification();
+            note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+          }
+          else {
+            this.hasNotification = true;
+            var note = new Notification();
+            note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
+            note.date = new Date();
+            note.success = false;
+            this.notifications.push(note);
+            this.notifications.shift();
+            if (this.notificationNum < 10) {
+              this.notificationNum++;
+            }
           }
         }
-      }
     })
   }
 

@@ -42,18 +42,20 @@ export class UploadFileService {
       });
   }
 
-  public async UploadFile(file: File, type: SpreadSheet): Promise<boolean> {
+  public async UploadFile(file: File, type: SpreadSheet): Promise<FileUpload> {
     let header = new HttpHeaders({ 'Authorization': this.key });
     var formData = new FormData();
     formData.append('uploadFile', file, file.name);
     var sheet = type.SheetName.replace('.', '_');
-    return await this.http.post<boolean>(this.url + '/upload/uploadSpreadsheet/' + sheet, formData, { headers: header }).toPromise().then(
+    return await this.http.post<FileUpload>('https://usafacts-api-staging.azurewebsites.net/api/v3/upload/uploadSpreadsheet/' + sheet, formData, { headers: header }).toPromise().then(
       response => {
-        return Promise.resolve(true);
+        return Promise.resolve(response);
       }).catch((error: HttpErrorResponse) => {
+        var r = new FileUpload();
+        r.name = 'fail';
         if (error.status == 401) {
           this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
-          var r = false;
+          
           this.svc.logout().then(d => {
             if (!d) {
               this.router.navigate(['login']);
@@ -63,7 +65,7 @@ export class UploadFileService {
           return Promise.resolve(r);
         }
         else {
-          var r = false;  //how to handle the error
+          
           this.toastr.errorToastr('An Error: ' + error.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
           return Promise.resolve(r);
         }
