@@ -9,7 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './metricTable.component.html',
 })
 export class MetricTableComponent {
-  displayedColumns: string[] = ['child', 'name', 'last_modified','last_published', 'edit', 'download', 'publish'];
+  displayedColumns: string[] = ['child', 'name', 'last_modified', 'last_published', 'edit', 'download', 'staging_link', 'production_link', 'publish'];
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService) {
 
   }
@@ -51,4 +51,11 @@ export class MetricTableComponent {
     this.svc.metricService.exportMetric(m, this.spinner);
   }
 
+  clickStaging(m: Metric) {
+    window.open("https://usafacts.org/metrics/" + m.id + "?api=staging", "_blank");
+  }
+
+  clickProduction(m: Metric) {
+    window.open("https://usafacts.org/metrics/" + m.id, "_blank");
+  }
 }
