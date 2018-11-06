@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceMaster } from '../../services/serviceMaster'
 import { Metric } from '../../Models/Metric';
+import { ActivatedRoute } from '@angular/router';
+
 
 
 @Component({
@@ -11,14 +13,21 @@ import { Metric } from '../../Models/Metric';
 export class StagingComponent {
   search: FormGroup;
   SearchID: string
-  constructor(fb: FormBuilder, private svc: ServiceMaster ) {
+  constructor(fb: FormBuilder, private svc: ServiceMaster, private route: ActivatedRoute ) {
     this.search = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
-    this.SearchID = "";
-    this.svc.getMissions();
-    this.svc.getAllSources();
+    this.SearchID = this.route.snapshot.paramMap.get('MetricID');
+
+    if (this.SearchID != null) {
+      this.getSearch();
+    }
+    else {
+      this.SearchID = "";
+      this.svc.getMissions();
+      this.svc.getAllSources();
+    }
   }
 
   clear() {

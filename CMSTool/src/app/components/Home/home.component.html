@@ -11,7 +11,7 @@
     <table mat-table [dataSource]="svc.kpi_modified" class="mat-elevation-z8" style="width:100%; overflow:scroll;">
       <ng-container matColumnDef="name" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let metric"> {{metric.name}} </td>
+        <td mat-cell *matCellDef="let metric"><a [routerLink]="['/staging', {MetricID:metric.id}]"> {{metric.name}} </a></td>
       </ng-container>
       <ng-container matColumnDef="last_modified" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Staging Updated </th>
@@ -39,7 +39,7 @@
       </ng-container>
       <ng-container matColumnDef="name" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let metric"> {{metric.name}} </td>
+        <td mat-cell *matCellDef="let metric"><a [routerLink]="['/staging', {MetricID:metric.id}]"> {{metric.name}} </a></td>
       </ng-container>
       <ng-container matColumnDef="last_modified" style="padding-left:35px">
         <th mat-header-cell *matHeaderCellDef> Staging Updated </th>
