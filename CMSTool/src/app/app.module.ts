@@ -31,6 +31,7 @@ import { EditMetricDialogComponent } from './components/MetricTable/edit-metric-
 import { AddSourceDialogComponent } from './components/MetricTable/add-source-dialog.component';
 import { AddMetaDataDialogComponent } from './components/MetricTable/add-meta-data-dialog .component';
 import { EditSourceDialogComponent } from './components/SourceTable/edit-source-dialog.component';
+import { TimeOutDialogComponent } from './components/TimeOut/time-out-dialog.component';
 import { MAT_DIALOG_DATA } from "@angular/material";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ng6-toastr-notifications';
@@ -58,6 +59,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     UploadFileComponent,
     FileTableComponent,
     AddMetaDataDialogComponent,
+    TimeOutDialogComponent,
 
   ],
   imports: [
@@ -96,7 +98,8 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     EditMetricDialogComponent,
     AddSourceDialogComponent,
     EditSourceDialogComponent,
-    AddMetaDataDialogComponent
+    AddMetaDataDialogComponent,
+    TimeOutDialogComponent
   ],
   bootstrap: [AppComponent]
 })
