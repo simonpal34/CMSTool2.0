@@ -39,10 +39,10 @@ export class MetricService {
 
     return this.http.get<Metric[]>(this.url + '/metrics/verbose?ids=' + id, { headers: header }).toPromise();
   }
-  getScraped(m: Metric): Promise<ScrapedMetric> {
+  getScraped(m: Metric): Promise<Metric> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-    return this.http.get<ScrapedMetric>('https://pwbmscrapeddata1.azurewebsites.net/api/values/Usafactsmetric' + m.id, { headers: header }).toPromise().catch(error => {
-      var m = new ScrapedMetric();
+    return this.http.get<Metric>('https://usafacts-api-staging.azurewebsites.net/api/v2/metrics/' + m.id + '/pwbm', { headers: header }).toPromise().catch(error => {
+      var m = new Metric();
       return Promise.resolve(m);
     });
   }

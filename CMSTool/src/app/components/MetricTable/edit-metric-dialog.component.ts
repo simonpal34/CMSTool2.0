@@ -31,7 +31,7 @@ export class EditMetricDialogComponent {
   chartOptions: any;
   chartColor: any[];
   chartType: string;
-  scraped: ScrapedMetric;
+  scraped:Metric;
   hasData: boolean;
   spinner: NgxSpinnerService;
   displayedColumnsAdj: string[] = ['name', 'delete'];
@@ -140,12 +140,12 @@ export class EditMetricDialogComponent {
       this.chartColor = [this.stagingColor];
       this.chartData.push(this.stagingChart);
       this.showStaging = true;
-      if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
+      if (this.scraped && this.scraped.data && this.scraped.data.length != 0) {
         this.scrapedChart = new ChartData();
         this.scrapedChart.data = new Array();
 
-        for (var i = 0; i < this.scraped.Data.length; i++) {
-          temp.push(this.scraped.Data[i].Key);
+        for (var i = 0; i < this.scraped.data.length; i++) {
+          temp.push(this.scraped.data[i].x);
         }
         this.scrapedChart.label = "Scraped";
         this.showScraped = false;
@@ -184,12 +184,12 @@ export class EditMetricDialogComponent {
           }
         }
       }
-      if (this.scraped && this.scraped.Data && this.scraped.Data.length != 0) {
-        for (var i = 0; i < this.scraped.Data.length; i++) {
-          if (this.scraped.Data[i].Value != null) {
+      if (this.scraped && this.scraped.data && this.scraped.data.length != 0) {
+        for (var i = 0; i < this.scraped.data.length; i++) {
+          if (this.scraped.data[i].y != null) {
             for (var j = 0; j < this.chartLabels.length; j++) {
-              if (this.chartLabels[j] == this.scraped.Data[i].Key) {
-                this.scrapedChart.data[j] = this.scraped.Data[i].Value;
+              if (this.chartLabels[j] == this.scraped.data[i].x) {
+                this.scrapedChart.data[j] = this.scraped.data[i].y;
               }
             }
           }

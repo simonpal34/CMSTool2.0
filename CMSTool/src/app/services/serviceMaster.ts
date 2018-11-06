@@ -46,7 +46,7 @@ export class ServiceMaster {
   metricService: MetricService;
   kpiService: KPIService;
   metricEdit: Metric;
-  scrapedMetric: ScrapedMetric;
+  scrapedMetric: Metric;
   data: ModalData;
   stagingChildren: Metric[];
   topicBreadCrumb: Topic;

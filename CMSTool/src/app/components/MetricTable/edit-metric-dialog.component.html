@@ -250,7 +250,7 @@
         <form style="vertical-align:middle; padding-top:40%">
           <mat-checkbox style="color:#228B22" color="primary" checked="true" (change)="toggleStaging()">Staging</mat-checkbox><br />
           <mat-checkbox style="color:#002c77" color="primary" *ngIf="this.published && this.published.data && this.published.data.length" (change)="togglePublished()">Published</mat-checkbox><br />
-          <mat-checkbox *ngIf="scraped && scraped.Data && scraped.Data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
+          <mat-checkbox *ngIf="scraped && scraped.data && scraped.data.length != 0" style="color:#C62828" color="primary" (change)="toggleScraped()">Scraped</mat-checkbox>
         </form>
       </div>
       <div style="width:100%; margin-top:17px; bottom:0; float:right">
