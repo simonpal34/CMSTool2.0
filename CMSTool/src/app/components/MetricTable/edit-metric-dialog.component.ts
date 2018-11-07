@@ -2,7 +2,7 @@ import { Component, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ServiceMaster } from '../../services/serviceMaster';
-import { Metric, Meta, ModalData, ChartData, ScrapedMetric, Adjustment, Data } from '../../Models/Metric';
+import { Metric, Meta, ModalData, ChartData, Adjustment, Data } from '../../Models/Metric';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Source, AddModel } from '../../Models/Source';
@@ -215,7 +215,7 @@ export class EditMetricDialogComponent {
     if (this.metric.available_adjustments == null) {
       this.metric.available_adjustments = new Array<Adjustment>();
     }
-    this.noMeta = [{ type:"No Meta Data", data: "", id: 0 }];
+    this.noMeta = [{ type:"No Meta Data", data: "", id: "0" }];
     this.spinner.hide();
   }
   cancel() {

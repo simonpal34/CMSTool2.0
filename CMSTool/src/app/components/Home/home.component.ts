@@ -24,15 +24,15 @@ export class HomeComponent {
       floatLabel: 'auto',
     });
 
-    this.svc.kpiService.getModified().then(response => {
+    this.svc.kpiService.listAll("v2", "/kpi/lastmodified").then(response => {
       this.svc.kpi_modified = response;
     });
 
-    this.svc.kpiService.getPublished().then(response => {
+    this.svc.kpiService.listAll("v2","/kpi/lastpublished").then(response => {
       this.svc.kpi_published = response;
     });
 
-    this.svc.kpiService.getActivityLog().then(response => {
+    this.svc.activityLogService.listAll("v2","/kpi/ActivityLog").then(response => {
       this.svc.kpi_activity_log = response;
     });
   }

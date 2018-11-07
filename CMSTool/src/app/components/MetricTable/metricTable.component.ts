@@ -19,17 +19,17 @@ export class MetricTableComponent {
   }
 
   trendToChildren(m: Metric) {
-    if (this.svc.stagingTopics[0].id != -1) {
+    if (this.svc.stagingTopics[0].id != "-1") {
       this.svc.topicBreadCrumb = this.svc.stagingTopics[0];
       var t = new Topic();
-      t.id = -1;
+      t.id = "-1";
       this.svc.stagingTopics = [t];
     }
-    if (this.svc.missionBreadCrumb.id == -1) {
-      this.svc.missionService.getStagingMissionBreadcrumb(m.ancestry.mission.toString()).then(result => {
+    if (this.svc.missionBreadCrumb.id == "-1") {
+      this.svc.missionService.read(m.ancestry.mission.toString(), "v2", "missions").then(result => {
         this.svc.missionBreadCrumb = result;
-        this.svc.reportingUnitBreadCrumb = this.svc.missionBreadCrumb.reporting_units.find(r => r.id == m.ancestry.reporting_unit);
-        this.svc.topicBreadCrumb = this.svc.reportingUnitBreadCrumb.topics.find(t => t.id == m.ancestry.topic)
+        this.svc.reportingUnitBreadCrumb = this.svc.missionBreadCrumb.reporting_units.find(r => r.id == m.ancestry.reporting_unit.toString());
+        this.svc.topicBreadCrumb = this.svc.reportingUnitBreadCrumb.topics.find(t => t.id == m.ancestry.topic.toString())
       })
     }
 
@@ -48,7 +48,7 @@ export class MetricTableComponent {
 
   export(m: Metric) {
     this.spinner.show();
-    this.svc.metricService.exportMetric(m, this.spinner);
+    this.svc.stagingMetricService.exportMetric(m, this.spinner);
   }
 
   clickStaging(m: Metric) {

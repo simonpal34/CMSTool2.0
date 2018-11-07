@@ -4,9 +4,9 @@ import { AddSourceDialogComponent } from '../components/MetricTable/add-source-d
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { Notification } from './ActivityLog';
+import { Base } from './Base';
 
-export class Metric {
-  public id: number;
+export class Metric extends Base {
   public name: string;
   public lexicon_name: string;
   public is_featured: boolean;
@@ -35,23 +35,14 @@ export class Metric {
   public LastPushedIntoProduction: Date;
   public application_type: number;
 }
-export class Adjustment {
-  public id: string;
+export class Adjustment extends Base {
   public name: string
 }
 
-export class Meta {
+export class Meta extends Base{
   public type: string;
   public data: string;
-  public id: number;
 
-  public constructor(
-    fields?: {
-      type?: string,
-      data?: string
-    }) {
-    if (fields) Object.assign(this, fields);
-  }
 }
 export class Data
 {
@@ -64,17 +55,6 @@ export class Ancestry {
   mission: number;
   reporting_unit: number;
   topic: number;
-}
-
-export class ScrapedMetric {
-  public Data: ScrapedData[];
-  public UnitPower: number;
-  public Name: string;
-
-}
-export class ScrapedData {
-  public Key: string;
-  public Value: number;
 }
 
 export class ModalData {

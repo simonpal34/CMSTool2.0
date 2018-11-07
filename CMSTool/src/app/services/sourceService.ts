@@ -52,7 +52,7 @@ export class SourceService {
         }
       }
       var s = new Source();
-      s.id = -1;
+      s.id = "-1";
       return Promise.resolve(new Source());
     });
   }

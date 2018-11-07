@@ -33,7 +33,7 @@ export class ChildrenTableComponent {
 
   export(m: Metric) {
     this.spinner.show();
-    this.svc.metricService.exportMetric(m, this.spinner);
+    this.svc.stagingMetricService.exportMetric(m, this.spinner);
   }
 
   clickStaging(m: Metric) {

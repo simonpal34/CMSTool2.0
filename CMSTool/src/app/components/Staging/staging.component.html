@@ -11,29 +11,29 @@
     </mat-form-field>
 
     <button mat-raised-button type="submit" style="background-color:#002c77; font-size:10pt; height:35px; margin-left:10px; color:white;"><mat-icon style=" font-size:10pt; margin-top:10px">search</mat-icon> Search</button>
-    <button mat-raised-button type="button" *ngIf="svc.stagingReportingUnits[0].id != -1 || svc.stagingTopics[0].id != -1 || svc.stagingMetrics[0].id != -1" style="color:white; background-color:#C62828; font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> Clear</button>
+    <button mat-raised-button type="button" *ngIf="svc.stagingReportingUnits[0].id != '-1' || svc.stagingTopics[0].id != '-1' || svc.stagingMetrics[0].id != '-1'" style="color:white; background-color:#C62828; font-size:10pt; height:35px; width:25px; margin-left:15px;" (click)="clear()"><mat-icon style=" font-size:10pt; margin-top:10px">backspace</mat-icon> Clear</button>
   </form>
 </div>
 <ul>
-  <li *ngIf="svc.missionBreadCrumb.id != -1" style="display:inline">
+  <li *ngIf="svc.missionBreadCrumb.id != '-1'" style="display:inline">
     <a (click)="goToMission()" style="cursor:pointer">{{svc.missionBreadCrumb.name}}</a>
   </li>
-  <li *ngIf="svc.reportingUnitBreadCrumb.id != -1" style="display:inline">
+  <li *ngIf="svc.reportingUnitBreadCrumb.id != '-1'" style="display:inline">
     /<a (click)="goToReportingUnit()" style="cursor:pointer">{{svc.reportingUnitBreadCrumb.name}}</a>
   </li>
-  <li *ngIf="svc.topicBreadCrumb.id != -1" style="display:inline">
+  <li *ngIf="svc.topicBreadCrumb.id != '-1'" style="display:inline">
     /<a (click)="goToTopic()" style="cursor:pointer">{{svc.topicBreadCrumb.name}}</a>
   </li>
   <li  *ngFor="let metric of svc.metricsBreadCrumbs" style="display:inline">
-    <p style="display:inline;" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= -1">/</p><a style="cursor:pointer" (click)="goToMetric(metric)" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= -1">{{metric.name}}</a>
-    <p style="display:inline;" *ngIf="metric.id == svc.stagingMetrics[0].id && metric.id!= -1">/{{metric.name}}</p>
+    <p style="display:inline;" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= '-1'">/</p><a style="cursor:pointer" (click)="goToMetric(metric)" *ngIf="metric.id != svc.stagingMetrics[0].id && metric.id!= '-1'">{{metric.name}}</a>
+    <p style="display:inline;" *ngIf="metric.id == svc.stagingMetrics[0].id && metric.id!= '-1'">/{{metric.name}}</p>
   </li>
 </ul>
 <mission-table *ngIf="svc.stagingMissions[0].id != -1"></mission-table>
-<reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != -1"></reporting-unit-table>
-<topic-table *ngIf="svc.stagingTopics[0].id != -1"></topic-table>
-<metric-table *ngIf="svc.stagingMetrics[0].id != -1"></metric-table>
-<children-table *ngIf="svc.stagingChildren[0].id != -1"></children-table>
+<reporting-unit-table *ngIf="svc.stagingReportingUnits[0].id != '-1'"></reporting-unit-table>
+<topic-table *ngIf="svc.stagingTopics[0].id != '-1'"></topic-table>
+<metric-table *ngIf="svc.stagingMetrics[0].id != '-1'"></metric-table>
+<children-table *ngIf="svc.stagingChildren[0].id != '-1'"></children-table>
 <br />
 <br />
 
