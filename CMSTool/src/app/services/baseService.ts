@@ -1,33 +1,59 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Base } from '../Models/Base';
-import { Serializer } from './Serializer';
 import { ServiceMaster } from './serviceMaster';
+import { Toastr, ToastrManager } from 'ng6-toastr-notifications';
+import { Router } from '@angular/router';
 
 
 export class BaseService<T extends Base> {
-  serializer: Serializer
+  toastr: ToastrManager;
+  router: Router;
   constructor(
     private httpClient: HttpClient,
     private url: string,
     private key: string,
     private svc: ServiceMaster) {
-    this.serializer = null;
   } 
 
-  public create(item: T, endpoint: string): Promise<T> {
-    return this.httpClient
-      .post<T>(`${this.url}/${endpoint}`, this.serializer.toJson(item))
-      .toPromise().then(data => this.serializer.fromJson(data) as T);
+  public updateWithOptions(item: T, queryOptions: string, version: string, endpoint: string): Promise<T> {
+    this.svc.timeLeft = 600;
+    var body = '';
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    return this.httpClient.post<T>(`${this.url}/${version}/${endpoint}?${queryOptions} `, body, { headers: header }).toPromise().catch(error => {
+      var m: T;
+      m.id = "-1";
+      return Promise.resolve(m);
+    });;
   }
 
-  public update(item: T, endpoint: string): Promise<T> {
-    return this.httpClient
-      .put<T>(`${this.url}/${endpoint}/${item.id}`,item)
-      .toPromise();
+  public update(item: T,version: string, endpoint: string): Promise<T> {
+    this.svc.timeLeft = 600;
+    var body = JSON.stringify(item);
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    return this.httpClient.put<T>(`${this.url}/${version}/${endpoint}`, body, { headers: header }).toPromise().catch((error: HttpErrorResponse) => {
+      if (error.status == 401) {
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
+        var m :T;
+        m.id = "-5";
+        this.svc.logout().then(d => {
+          if (!d) {
+            this.router.navigate(['login']);
+          }
+        });
+        return Promise.resolve(m);
+        
+      }
+      else {
+        var m: T;
+        m.id = "-1";
+        return Promise.resolve(m);
+      }
+
+    });
   }
 
   read(id: string, version: String, endpoint: string): Promise<T> {
-    this.svc.timeLeft = 300;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T>(`${this.url}/${version}/${endpoint}/${id}`, { headers: header }).toPromise().catch(error => {
@@ -37,31 +63,48 @@ export class BaseService<T extends Base> {
   }
 
   readVerbose(id: string, version: String, endpoint: string): Promise<T> {
-    this.svc.timeLeft = 300;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T>(`${this.url}/${version}/${endpoint}/${id}/verbose`, { headers: header }).toPromise();
   }
 
   listAll(version: string, endpoint: string): Promise<T[]> {
-    this.svc.timeLeft = 300;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T[]>(`${this.url}/${version}/${endpoint}`, { headers: header }).toPromise();
   }
 
-  list(queryOptions: T, endpoint: string): Promise<T[]> {
-    return this.httpClient
-      .get(`${this.url}/${endpoint}`)
-      .toPromise().then((data: any) => this.convertData(data.items));
+  search(queryOptions: string, version: string, endpoint: string): Promise<T[]> {
+    this.svc.timeLeft = 600;
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    return this.httpClient.get<T[]>(`${this.url}/${version}/${endpoint}?${queryOptions}`, { headers: header }).toPromise();
   }
 
-  delete(id: number, endpoint: string) {
-    return this.httpClient
-      .delete(`${this.url}/${endpoint}/${id}`);
+  delete(version: string, endpoint: string): Promise<boolean> {
+    this.svc.timeLeft = 600;
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    return this.httpClient.put<T>(`${this.url}/${version}/${endpoint}`, '', { headers: header }).toPromise().then(data => {
+      return Promise.resolve(true);
+    }) .catch((error: HttpErrorResponse) => {
+      if (error.status == 401) {
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
+        this.svc.logout().then(d => {
+          if (!d) {
+            this.router.navigate(['login']);
+          }
+        });
+        return Promise.resolve(false);
+
+      }
+      else {
+        var m: T;
+        m.id = "-1";
+        return Promise.resolve(false);
+      }
+
+    });
   }
 
-  private convertData(data: any): T[] {
-    return data.map(item => this.serializer.fromJson(item));
-  }
 }

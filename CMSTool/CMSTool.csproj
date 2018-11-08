@@ -45,7 +45,7 @@
     <None Remove="src\app\services\missionService.ts" />
     <None Remove="src\app\services\populationService.ts" />
     <None Remove="src\app\services\publishedMetricService.ts" />
-    <None Remove="src\app\services\Serializer.ts" />
+    <None Remove="src\app\services\scrapedMetricService.ts" />
     <None Remove="src\app\services\serviceMaster.ts" />
     <None Remove="src\app\services\sourceService.ts" />
     <None Remove="src\app\services\stagingMetricService.ts" />
@@ -91,6 +91,7 @@
     <TypeScriptCompile Include="src\app\services\activityLogService.ts" />
     <TypeScriptCompile Include="src\app\services\baseService.ts" />
     <TypeScriptCompile Include="src\app\services\exportService.ts" />
+    <TypeScriptCompile Include="src\app\services\scrapedMetricService.ts" />
     <TypeScriptCompile Include="src\app\services\kpiService.ts" />
     <TypeScriptCompile Include="src\app\services\publishedMetricService.ts" />
     <TypeScriptCompile Include="src\app\services\stagingMetricService.ts" />
@@ -98,7 +99,6 @@
     <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />
     <TypeScriptCompile Include="src\app\services\LoginService.ts" />
     <TypeScriptCompile Include="src\app\services\populationService.ts" />
-    <TypeScriptCompile Include="src\app\services\Serializer.ts" />
     <TypeScriptCompile Include="src\app\services\serviceMaster.ts" />
     <TypeScriptCompile Include="src\app\services\sourceService.ts" />
     <TypeScriptCompile Include="src\app\services\uploadFileService.ts" />

@@ -21,7 +21,7 @@
     </mat-form-field>
     <mat-dialog-actions style="overflow:visible">
       <div>
-        <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
+
         <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; margin-left:10px; background-color:#002c77; color: white" [matMenuTriggerFor]="menu" [disabled]="typeControl.hasError('required')"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="add(false)">
@@ -32,6 +32,7 @@
           </button>
         </mat-menu>
         <button *ngIf="!adding" mat-flat-button style="background-color:#002c77; margin-left:15px" [disabled]="typeControl.hasError('required')" (click)="save()">Save</button>
+        <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
       </div>
     </mat-dialog-actions>
   </div>

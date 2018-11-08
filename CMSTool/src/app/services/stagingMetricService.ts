@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Metric} from '../Models/Metric';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,49 +20,7 @@ export class StagingMetricService extends BaseService<Metric>{
       service);
   }
 
-  getStagingMetricSearch(id: string): Promise<Metric[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.auth });
 
-    return this.http.get<Metric[]>('https://usafacts-api-staging.azurewebsites.net/api/v2' + '/metrics/verbose?ids=' + id, { headers: header }).toPromise();
-  }
-  getScraped(m: Metric): Promise<Metric> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.auth });
-    if (m.LastUpdatedFromScraper) {
-      return this.http.get<Metric>('https://usafacts-api-staging.azurewebsites.net/api/v2/metrics/' + m.id + '/pwbm', { headers: header }).toPromise().catch(error => {
-        var m = new Metric();
-        return Promise.resolve(m);
-      });
-    }
-    else {
-      var m = new Metric();
-      return Promise.resolve(m);
-    }
-    
-  }
-
-  stagingPost(m: Metric): Promise<Metric> {
-    m.lexicon_name = m.name;
-    var body = JSON.stringify(m);
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.auth });
-
-    return this.http.put<Metric>('https://usafacts-api-staging.azurewebsites.net/api/v2' + '/metrics/update/verbose', body, { headers: header }).toPromise().then(response => {
-      return Promise.resolve(response);
-    }).catch((error: HttpErrorResponse) => {
-      if (error.status == 404) {
-        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
-        var m = new Metric();
-        m.id = "-5";
-        return Promise.resolve(m);
-      }
-      else {
-        this.toastr.errorToastr('Edit Failed with error: ' + error.message, 'Oops!', { toastTimeout: 10000 });
-        var m = new Metric();
-        m.id = "-1";
-        return Promise.resolve(m);
-      }
-      
-    });
-  }
 
   async publishMetric(m: Metric, includeChildren: boolean): Promise<Metric> {
     var body = '';
@@ -80,7 +38,7 @@ export class StagingMetricService extends BaseService<Metric>{
 
   async exportMetric(m: Metric, spinner: NgxSpinnerService) {
     let header = new HttpHeaders({ 'Content-Type': 'application/octet-stream', 'Authorization': this.auth });
-
+    this.service.timeLeft = 600;
 
     return this.http.get('https://usafacts-api-staging.azurewebsites.net/api/v2' + '/metrics/' + m.id + '/export', { headers: header, responseType: 'blob' }).subscribe(response => {
       this.toastr.successToastr(m.name + ' exported. Download in progress', 'Success', { toastTimeout: 10000 });

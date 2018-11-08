@@ -29,6 +29,7 @@ import { TimeOutDialogComponent } from '../components/TimeOut/time-out-dialog.co
 import { PopulationService } from './populationService';
 import { ActivityLogService } from './activityLogService';
 import { PublishedMetricService } from './publishedMetricService';
+import { ScrapedMetricService } from './scrapedMetricService';
 
 
 @Injectable()
@@ -43,6 +44,7 @@ export class ServiceMaster {
   stagingUrl = 'https://usafacts-api-staging.azurewebsites.net/api/v2';
   stagUrl1 = 'https://usafacts-api-staging.azurewebsites.net/api';
   publishedUrl = 'https://usafacts-api.azurewebsites.net/api';
+  scrapedUrl = 'https://usafacts-api-staging.azurewebsites.net/api';
   stagingMissions: Mission[];
   stagingReportingUnits: ReportingUnit[];
   stagingTopics: Topic[];
@@ -52,6 +54,7 @@ export class ServiceMaster {
   exports: Export[];
   stagingMetricService: StagingMetricService;
   publishedMetricService: PublishedMetricService;
+  scrapedMetricService: ScrapedMetricService;
   kpiService: KPIService;
   activityLogService: ActivityLogService
   metricEdit: Metric;
@@ -73,7 +76,7 @@ export class ServiceMaster {
   notifications: Notification[];
   hasNotification: boolean;
   notificationNum: number;
-  timeLeft: number = 300;
+  timeLeft: number = 600;
   interval;
 
   constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
@@ -107,8 +110,9 @@ export class ServiceMaster {
     this.missionService = new MissionService(this.http, this.authCode, this.stagUrl1, this);
     this.populationService = new PopulationService(this.http, this.authCode, this.stagUrl1, this);
     this.publishedMetricService = new PublishedMetricService(this.http, this.authCode, this.publishedUrl, this);
+    this.scrapedMetricService = new ScrapedMetricService(this.http, this.authCode, this.scrapedUrl, this);
     this.stagingMetricService = new StagingMetricService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
-    this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl, this.toastr);
+    this.sourceService = new SourceService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
     this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr, this);
     this.kpiService = new KPIService(this.http, this.authCode, this.stagUrl1, this);
     this.activityLogService = new ActivityLogService(this.http, this.authCode, this.stagUrl1, this);
@@ -236,7 +240,7 @@ export class ServiceMaster {
     for (var i = 0; i < this.stagingTopics[0].metrics.length; i++) {
       ids = ids + this.stagingTopics[0].metrics[i].id.toString() + ",";
     }
-    this.stagingMetricService.getStagingMetricSearch(ids).then(response => {
+    this.stagingMetricService.search("ids=" + ids, "v2","metrics/verbose").then(response => {
       this.stagingMetrics = response;
       for (var i = 0; i < this.stagingMetrics.length; i++) {
         if (this.stagingMetrics[i].children && this.stagingMetrics[i].children.length != 0) {
@@ -253,7 +257,7 @@ export class ServiceMaster {
   getParentMetricEdit(metric: Metric, spinner: NgxSpinnerService) {
     this.stagingMetricService.readVerbose(metric.id.toString(), "v2","metrics").then(response => {
       this.metricEdit = response;
-      this.stagingMetricService.getScraped(response).then(async r => {
+      this.scrapedMetricService.read(metric.id + "/pwbm", "v2", "metrics").then(async r => {
         this.scrapedMetric = r;
         
         this.publishedMetricService.read(metric.id, "v2", "metrics").then(p => {
@@ -289,8 +293,8 @@ export class ServiceMaster {
               this.notifications = result.notifications;
             }
             if (result.metric != null) {
-                
-            this.stagingMetricService.stagingPost(result.metric).then(m => {
+              result.metric.lexicon_name = result.metric.name;
+              this.stagingMetricService.update(result.metric, "v2","metrics/update/verbose").then(m => {
               if (m.id != "-1" && m.id != "-5") {
                 
                 this.toastr.successToastr(m.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
@@ -326,14 +330,8 @@ export class ServiceMaster {
               temp[i] = m;
                 this.stagingMetrics = Object.assign([], temp)
               }
-              if (m.id == "-5") {
-                this.logout().then(response => {
-                  if (response == false) {
-                    this.router.navigate(['/login']);
-                  }
-                })
-              }
-              if (m.id == "-1") {
+                if (m.id == "-1") {
+                  this.toastr.errorToastr(m.name + ' edit Failed', 'Oops!', { toastTimeout: 10000 });
                 if (this.notifications.length != 10) {
                   this.hasNotification = true;
                   this.notificationNum++;
@@ -387,7 +385,7 @@ export class ServiceMaster {
   getChildMetricEdit(metric: Metric, spinner: NgxSpinnerService ) {
     this.stagingMetricService.readVerbose(metric.id.toString(), "v2", "metrics").then(response => {
       this.metricEdit = response;
-      this.stagingMetricService.getScraped(response).then( r => {
+      this.scrapedMetricService.read(metric.id + "/pwbm", "v2", "metrics").then( r => {
         this.scrapedMetric = r;
         this.publishedMetricService.read(metric.id, "v2", "metrics").then( p => {
           this.publishedMetric = p;
@@ -418,8 +416,8 @@ export class ServiceMaster {
             }
             this.getAllSources();
             if (result.metric != null) {
-              
-            this.stagingMetricService.stagingPost(result.metric).then(m => {
+              result.metric.lexicon_name = result.metric.name;
+              this.stagingMetricService.update(result.metric, "v2", "metrics/update/verbose").then(m => {
               if (m.id != "-1" && m.id != "-5") {
                 
                 if (this.notifications.length != 10) {
@@ -454,14 +452,9 @@ export class ServiceMaster {
                 temp[i] = m;
                 this.stagingChildren = Object.assign([], temp)
               }
-              if (m.id == "-5") {
-                this.logout().then(response => {
-                  if (response == false) {
-                    this.router.navigate(['/login']);
-                  }
-                })
-              }
-              if (m.id == "-1") {
+
+                if (m.id == "-1") {
+                  this.toastr.errorToastr(m.name + ' edit Failed', 'Oops!', { toastTimeout: 10000 });
                 if (this.notifications.length != 10) {
                   this.hasNotification = true;
                   this.notificationNum++;
@@ -513,7 +506,7 @@ export class ServiceMaster {
     this.missionBreadCrumb = m;
     this.reportingUnitBreadCrumb = r;
 
-    this.stagingMetricService.getStagingMetricSearch(id).then(response => {
+    this.stagingMetricService.search("ids=" + id, "v2", "metrics/verbose").then(response => {
       if (response.length == 0) {
         var m = new Metric();
         m.id = "-2";
@@ -537,7 +530,7 @@ export class ServiceMaster {
             this.topicBreadCrumb = this.reportingUnitBreadCrumb.topics.find(t => t.id == this.stagingMetrics[0].ancestry.topic.toString());
           });
           if (this.stagingMetrics[0].ancestry.ancestor_metrics) {
-            this.stagingMetricService.getStagingMetricSearch(this.stagingMetrics[0].ancestry.ancestor_metrics.toString()).then(r => {
+            this.stagingMetricService.search("ids=" + this.stagingMetrics[0].ancestry.ancestor_metrics.toString(), "v2", "metrics/verbose").then(r => {
               this.metricsBreadCrumbs = r.concat(response[0]);
             });
           }
@@ -545,7 +538,7 @@ export class ServiceMaster {
             this.metricsBreadCrumbs = [response[0]];
           }
           if (this.stagingMetrics[0].hasChildren) {
-            this.stagingMetricService.getStagingMetricSearch(this.stagingMetrics[0].children.toString()).then(response => {
+            this.stagingMetricService.search("ids=" + this.stagingMetrics[0].children.toString(), "v2", "metrics/verbose").then(response => {
               this.stagingChildren = response;
               for (var i = 0; i < response.length; i++) {
                 if (this.stagingChildren[i].children && this.stagingChildren[i].children.length != 0) {
@@ -569,7 +562,7 @@ export class ServiceMaster {
 
   trendToChildren(m: Metric) {
     this.metricsBreadCrumbs.push(m);
-    this.stagingMetricService.getStagingMetricSearch(m.children.toString()).then(response => {
+    this.stagingMetricService.search("ids=" + m.children.toString(), "v2" , " metrics/verbose").then(response => {
       this.stagingChildren = response;
       for (var i = 0; i < response.length; i++) {
         if (this.stagingChildren[i].children && this.stagingChildren[i].children.length != 0) {
@@ -583,7 +576,7 @@ export class ServiceMaster {
   }
 
   async getAllSources() {
-    await this.sourceService.GetAllStagingSources().then(async response => {
+    await this.sourceService.listAll("v2","sources").then(async response => {
       this.allSources = await response
       var curr = this.allSources.map(d => d.AgencyName);
       this.uniqueSources = curr.filter(function (el, i, arr) {
@@ -609,11 +602,11 @@ export class ServiceMaster {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         s = Object.assign({}, result);
-        this.sourceService.UpdateSource(result, isAdd).then(async s => {
+        this.sourceService.update(result,"v2","sources").then(async s => {
           if (s.id != "-1") {
             await this.getAllSources();
             if (!isAdd) {
-
+              this.toastr.successToastr(source.name + ' edit complete', 'Success!', { toastTimeout: 10000 });
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
                 this.notificationNum++;
@@ -637,6 +630,7 @@ export class ServiceMaster {
               }
             }
             else {
+              this.toastr.successToastr(source.name + ' was added', 'Success!', { toastTimeout: 10000 });
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
                 this.notificationNum++;
@@ -664,6 +658,7 @@ export class ServiceMaster {
           }
           else {
             if (!isAdd) {
+              this.toastr.errorToastr(s.name + ' edit Failed', 'Oops!', { toastTimeout: 10000 });
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
                 this.notificationNum++;
@@ -687,6 +682,7 @@ export class ServiceMaster {
               }
             }
             else {
+              this.toastr.errorToastr('Source add Failed', 'Oops!', { toastTimeout: 10000 });
               if (this.notifications.length != 10) {
                 this.hasNotification = true;
                 this.notificationNum++;
@@ -720,6 +716,7 @@ export class ServiceMaster {
   deleteSource(s: Source) {
     this.sourceService.DeleteSource(s).then(async b => {
       if (b) {
+        this.toastr.successToastr(s.name + ' was deleted', 'Success!', { toastTimeout: 10000 });
         if (this.notifications.length != 10) {
           this.hasNotification = true;
           this.notificationNum++;
@@ -745,7 +742,7 @@ export class ServiceMaster {
         this.sourcesTabSelectedSources = this.allSources.filter(src => src.AgencyName == this.sourcesTabSelectedSource);
       }
       else {
-
+        this.toastr.errorToastr('Source delete Failed', 'Oops!', { toastTimeout: 10000 });
         if (this.notifications.length != 10) {
           this.hasNotification = true;
           this.notificationNum++;
@@ -864,9 +861,11 @@ export class ServiceMaster {
 
   async publishMetric(m: Metric, b: boolean) {
     this.toastr.infoToastr("Publishing metric" + m.name + " is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
-    await this.stagingMetricService.publishMetric(m, b).then(async response => {
-      if (response) {
+    await this.stagingMetricService.updateWithOptions(m, 'includeChildren =' + b, "v2", 'metrics/publish/' + m.id).then(async response => {
+      if (response.id != "-1") {
+        this.toastr.successToastr(m.name + ' is published', 'Success', { toastTimeout: 10000 });
         if (b) {
+          
           if (this.notifications.length != 10) {
             this.hasNotification = true;
             this.notificationNum++;
@@ -890,6 +889,7 @@ export class ServiceMaster {
           }
         }
         else {
+          
           if (this.notifications.length != 10) {
             this.hasNotification = true;
             this.notificationNum++;
@@ -935,6 +935,7 @@ export class ServiceMaster {
         }
       }
       else {
+        this.toastr.errorToastr('Publish Failed!', 'Oops!', { toastTimeout: 10000 });
         if (b) {
           if (this.notifications.length != 10) {
             this.hasNotification = true;
