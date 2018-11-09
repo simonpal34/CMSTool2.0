@@ -20,7 +20,7 @@ export class UploadFileComponent {
       floatLabel: 'auto',
     });
     this.selectedType = new SpreadSheet();
-    this.selectedType.id = -1;
+    this.selectedType.id = "-1";
     this.svc.getSpreadSheets();
   }
   onSelect(newSheet: SpreadSheet) {
@@ -30,7 +30,7 @@ export class UploadFileComponent {
     this.selectedSheet = newFile.path[0].files[0];
   }
   upload() {
-    if (this.selectedType.id != -1) {
+    if (this.selectedType.id != "-1") {
       this.svc.upload(this.selectedSheet, this.selectedType);
     }
     else {

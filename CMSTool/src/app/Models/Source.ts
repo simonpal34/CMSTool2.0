@@ -1,6 +1,7 @@
 import { Notification } from "./ActivityLog";
+import { Base } from "./Base";
 
-export class Source {
+export class Source extends Base{
     AgencyName: string;
     TableOrFileName: string;
     Url: string;
@@ -8,7 +9,6 @@ export class Source {
     LastUpdated: string;
     UpdateSchedule: string;
     YearType: string;
-    id: number;
     key: string;
     name: string;
     description: string;

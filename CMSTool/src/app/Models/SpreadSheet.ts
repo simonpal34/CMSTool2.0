@@ -1,8 +1,9 @@
-export class SpreadSheet {
+import { Base } from "./Base";
+
+export class SpreadSheet extends Base{
   public SheetName: string;
-  public id: number;
 }
-export class FileUpload {
+export class FileUpload extends Base{
   public FileType: string;
   public UploadedBy: string;
   public UploadedTime: Date;

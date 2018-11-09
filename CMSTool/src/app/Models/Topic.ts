@@ -1,6 +1,6 @@
 import { Metric } from './Metric';
-export class Topic {
+import { Base } from './Base';
+export class Topic extends Base{
   name: string;
-  id: number;
   metrics: Metric[];
 }

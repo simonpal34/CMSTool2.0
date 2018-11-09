@@ -1,32 +1,19 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Metric, ScrapedMetric } from '../Models/Metric';
-import { ActivityLog } from '../Models/ActivityLog';
+import { Injectable } from '@angular/core';
+import { HttpClient} from '@angular/common/http';
+import { Metric } from '../Models/Metric';
+import { BaseService } from './baseService';
+import { ServiceMaster } from './serviceMaster';
 
 @Injectable()
-export class KPIService {
+export class KPIService extends BaseService<Metric> {
 
 
-  constructor(protected http: HttpClient, private key: string, private url : string) {
+  constructor(protected http: HttpClient, private auth: string, private BaseUrl: string, private service: ServiceMaster) {
+    super(
+      http,
+      BaseUrl,
+      auth,
+      service);
   }
 
-  getModified(): Promise<Metric[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-
-    return this.http.get<Metric[]>(this.url + '/kpi/lastmodified', { headers: header }).toPromise();
-  }
-
-  getPublished(): Promise<Metric[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-
-    return this.http.get<Metric[]>(this.url + '/kpi/lastpublished', { headers: header }).toPromise();
-  }
-
-  getActivityLog(): Promise<ActivityLog[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-
-    return this.http.get<ActivityLog[]>(this.url + '/kpi/ActivityLog', { headers: header }).toPromise();
-  }
 }

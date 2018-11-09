@@ -1,11 +1,12 @@
-export class Profile {
+import { Base } from "./Base";
+
+export class Profile  extends Base{
     public FirstName: string;
     public LastName: string;
     public Email: string;
     public Password: string;
     public SessionId: string;
     public Role: string;
-    public id: string;
     public key: string;
 
 }

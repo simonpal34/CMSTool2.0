@@ -1,12 +1,11 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Mission } from '../Models/Mission';
-import { BaseService } from './baseService';
+import { Metric} from '../Models/Metric';
 import { ServiceMaster } from './serviceMaster';
+import { BaseService } from './baseService';
 
 @Injectable()
-export class MissionService extends BaseService<Mission>{
-
+export class PublishedMetricService extends BaseService<Metric>{
 
   constructor(protected http: HttpClient, private auth: string, private BaseUrl: string, private service: ServiceMaster) {
     super(

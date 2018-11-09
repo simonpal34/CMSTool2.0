@@ -1,8 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/common/http';
-import { ActivatedRoute, Router, NavigationExtras  } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { Profile } from '../Models/Profile';
 import { ToastrManager } from 'ng6-toastr-notifications';
 

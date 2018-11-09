@@ -28,6 +28,7 @@
     <None Remove="src\app\components\ExportTable\exportTable.component.ts" />
     <None Remove="src\app\components\UploadFile\uploadFile.component.ts" />
     <None Remove="src\app\Models\ActivityLog.ts" />
+    <None Remove="src\app\Models\Base.ts" />
     <None Remove="src\app\Models\Export.ts" />
     <None Remove="src\app\Models\Metric.ts" />
     <None Remove="src\app\Models\Mission.ts" />
@@ -35,14 +36,19 @@
     <None Remove="src\app\Models\ReportingUnit.ts" />
     <None Remove="src\app\Models\SpreadSheet.ts" />
     <None Remove="src\app\Models\Topic.ts" />
+    <None Remove="src\app\services\activityLogService.ts" />
+    <None Remove="src\app\services\baseService.ts" />
     <None Remove="src\app\services\exportService.ts" />
     <None Remove="src\app\services\kpiService.ts" />
     <None Remove="src\app\services\login-guard.service.ts" />
     <None Remove="src\app\services\LoginService.ts" />
-    <None Remove="src\app\services\metricService.ts" />
     <None Remove="src\app\services\missionService.ts" />
+    <None Remove="src\app\services\populationService.ts" />
+    <None Remove="src\app\services\publishedMetricService.ts" />
+    <None Remove="src\app\services\scrapedMetricService.ts" />
     <None Remove="src\app\services\serviceMaster.ts" />
     <None Remove="src\app\services\sourceService.ts" />
+    <None Remove="src\app\services\stagingMetricService.ts" />
     <None Remove="src\app\services\uploadFileService.ts" />
   </ItemGroup>
 
@@ -73,6 +79,7 @@
     <TypeScriptCompile Include="src\app\components\Staging\staging.component.ts" />
     <TypeScriptCompile Include="src\app\components\TopicTable\topicTable.component.ts" />
     <TypeScriptCompile Include="src\app\components\ExportTable\exportTable.component.ts" />
+    <TypeScriptCompile Include="src\app\Models\Base.ts" />
     <TypeScriptCompile Include="src\app\Models\Export.ts" />
     <TypeScriptCompile Include="src\app\Models\Metric.ts" />
     <TypeScriptCompile Include="src\app\Models\Mission.ts" />
@@ -81,12 +88,17 @@
     <TypeScriptCompile Include="src\app\Models\SpreadSheet.ts" />
     <TypeScriptCompile Include="src\app\Models\Topic.ts" />
     <TypeScriptCompile Include="src\app\Models\ActivityLog.ts" />
+    <TypeScriptCompile Include="src\app\services\activityLogService.ts" />
+    <TypeScriptCompile Include="src\app\services\baseService.ts" />
     <TypeScriptCompile Include="src\app\services\exportService.ts" />
+    <TypeScriptCompile Include="src\app\services\scrapedMetricService.ts" />
     <TypeScriptCompile Include="src\app\services\kpiService.ts" />
-    <TypeScriptCompile Include="src\app\services\metricService.ts" />
+    <TypeScriptCompile Include="src\app\services\publishedMetricService.ts" />
+    <TypeScriptCompile Include="src\app\services\stagingMetricService.ts" />
     <TypeScriptCompile Include="src\app\services\missionService.ts" />
     <TypeScriptCompile Include="src\app\services\login-guard.service.ts" />
     <TypeScriptCompile Include="src\app\services\LoginService.ts" />
+    <TypeScriptCompile Include="src\app\services\populationService.ts" />
     <TypeScriptCompile Include="src\app\services\serviceMaster.ts" />
     <TypeScriptCompile Include="src\app\services\sourceService.ts" />
     <TypeScriptCompile Include="src\app\services\uploadFileService.ts" />
