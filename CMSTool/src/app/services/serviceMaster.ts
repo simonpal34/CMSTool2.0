@@ -113,7 +113,7 @@ export class ServiceMaster {
     this.scrapedMetricService = new ScrapedMetricService(this.http, this.authCode, this.scrapedUrl, this);
     this.stagingMetricService = new StagingMetricService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
     this.sourceService = new SourceService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
-    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this.toastr, this);
+    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
     this.kpiService = new KPIService(this.http, this.authCode, this.stagUrl1, this);
     this.activityLogService = new ActivityLogService(this.http, this.authCode, this.stagUrl1, this);
     this.startTimer();
@@ -776,7 +776,7 @@ export class ServiceMaster {
     });
   }
   getUploaded() {
-    this.uploadFileService.getUploaded().then(f => {
+    this.uploadFileService.listAll("v2","upload").then(f => {
       this.uploaded = f;
     });
   }
@@ -804,11 +804,14 @@ export class ServiceMaster {
 
   uploadSheet(sheet: File, type: SpreadSheet) {
     this.toastr.infoToastr("The upload is in progress and can take a few minutes.  You may continue using the application and you will be notified when it is complete ", "Info", { toastTimeout: 10000 });
-    this.uploadFileService.UploadFile(sheet, type).then(async response => {
+    var s = type.SheetName.replace('.', '_');
+    var formData = new FormData();
+    formData.append('uploadFile', sheet, sheet.name);
+    this.uploadFileService.upload(formData, "v3","upload/uploadSpreadsheet/" + s).then(async response => {
       var r = new FileUpload();
       r = response;
       await this.getUploaded();
-      if (r.name != 'fail' && r.ErrorDetails == '') {
+      if (r.id != "-1" && r.id != "-5" && r.ErrorDetails == '') {
           this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
           if (this.notifications.length != 10) {
             this.hasNotification = true;
@@ -832,7 +835,7 @@ export class ServiceMaster {
             }
           }
         }
-      else if (r.name != 'fail') {
+      else if (r.id != "-1" && r.id != "-5") {
         this.toastr.errorToastr('An Error: ' + r.ErrorDetails + ' has occured while processing ' + sheet.name + ' !', 'Oops!', { toastTimeout: 10000 });
           if (this.notifications.length != 10) {
             this.hasNotification = true;

@@ -4,30 +4,30 @@ import { SpreadSheet, FileUpload } from '../Models/SpreadSheet';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
 import { ServiceMaster } from './serviceMaster';
+import { BaseService } from './baseService';
 
 @Injectable()
-export class UploadFileService {
+export class UploadFileService extends BaseService<FileUpload> {
 
   router: Router;
-  constructor(protected http: HttpClient, private key: string, private url: string, public toastr: ToastrManager, public svc: ServiceMaster) {
+  constructor(protected http: HttpClient, private auth: string, private BaseUrl: string, private service: ServiceMaster, public toastr: ToastrManager) {
+    super(
+      http,
+      BaseUrl,
+      auth,
+      service);
   }
   getSpreadSheets(): Promise<SpreadSheet[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
+    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.auth });
 
-    return this.http.get<SpreadSheet[]>(this.url + '/spreadsheets', { headers: header }).toPromise();
-  }
-
-  getUploaded(): Promise<FileUpload[]> {
-    let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-
-    return this.http.get<FileUpload[]>(this.url + '/upload', { headers: header }).toPromise();
+    return this.http.get<SpreadSheet[]>('https://usafacts-api-staging.azurewebsites.net/api/v2' + '/spreadsheets', { headers: header }).toPromise();
   }
 
   public async DoesFileUploadMetricExist(file: File): Promise<boolean> {
-    let header = new HttpHeaders({ 'Authorization': this.key });
+    let header = new HttpHeaders({ 'Authorization': this.auth });
     var formData = new FormData();
     formData.append('uploadFile', file, file.name);
-    return await this.http.post<boolean>(this.url + '/upload/DoesExist/Template', formData, { headers: header }).toPromise().then(
+    return await this.http.post<boolean>('https://usafacts-api-staging.azurewebsites.net/api/v2' + '/upload/DoesExist/Template', formData, { headers: header }).toPromise().then(
       response => {
         return Promise.resolve(response);
       })
@@ -41,7 +41,7 @@ export class UploadFileService {
   }
 
   public async UploadFile(file: File, type: SpreadSheet): Promise<FileUpload> {
-    let header = new HttpHeaders({ 'Authorization': this.key });
+    let header = new HttpHeaders({ 'Authorization': this.auth });
     var formData = new FormData();
     formData.append('uploadFile', file, file.name);
     var sheet = type.SheetName.replace('.', '_');
@@ -53,8 +53,8 @@ export class UploadFileService {
         r.name = 'fail';
         if (error.status == 401) {
           this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
-          
-          this.svc.logout().then(d => {
+
+          this.service.logout().then(d => {
             if (!d) {
               this.router.navigate(['login']);
             }

@@ -25,6 +25,30 @@ export class BaseService<T extends Base> {
       return Promise.resolve(m);
     });;
   }
+  public upload(item: any, version: string, endpoint: string): Promise<T> {
+    this.svc.timeLeft = 600;
+    let header = new HttpHeaders({'Authorization': this.key });
+    return this.httpClient.post<T>(`${this.url}/${version}/${endpoint}`, item, { headers: header }).toPromise().catch((error: HttpErrorResponse) => {
+      if (error.status == 401) {
+        this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
+        var m: T;
+        m.id = "-5";
+        this.svc.logout().then(d => {
+          if (!d) {
+            this.router.navigate(['login']);
+          }
+        });
+        return Promise.resolve(m);
+
+      }
+      else {
+        var m: T;
+        m.id = "-1";
+        return Promise.resolve(m);
+      }
+
+    });
+  }
 
   public update(item: T,version: string, endpoint: string): Promise<T> {
     this.svc.timeLeft = 600;
