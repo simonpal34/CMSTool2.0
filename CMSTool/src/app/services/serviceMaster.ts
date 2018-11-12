@@ -41,8 +41,7 @@ export class ServiceMaster {
   uploadFileService: UploadFileService;
   uploaded: FileUpload[];
   authCode: string;
-  stagingUrl = 'https://usafacts-api-staging.azurewebsites.net/api/v2';
-  stagUrl1 = 'https://usafacts-api-staging.azurewebsites.net/api';
+  stagingUrl = 'https://usafacts-api-staging.azurewebsites.net/api';
   publishedUrl = 'https://usafacts-api.azurewebsites.net/api';
   scrapedUrl = 'https://usafacts-api-staging.azurewebsites.net/api';
   stagingMissions: Mission[];
@@ -107,15 +106,15 @@ export class ServiceMaster {
 
   getAuthCode() {
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
-    this.missionService = new MissionService(this.http, this.authCode, this.stagUrl1, this);
-    this.populationService = new PopulationService(this.http, this.authCode, this.stagUrl1, this);
+    this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl, this);
+    this.populationService = new PopulationService(this.http, this.authCode, this.stagingUrl, this);
     this.publishedMetricService = new PublishedMetricService(this.http, this.authCode, this.publishedUrl, this);
     this.scrapedMetricService = new ScrapedMetricService(this.http, this.authCode, this.scrapedUrl, this);
-    this.stagingMetricService = new StagingMetricService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
-    this.sourceService = new SourceService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
-    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagUrl1, this, this.toastr);
-    this.kpiService = new KPIService(this.http, this.authCode, this.stagUrl1, this);
-    this.activityLogService = new ActivityLogService(this.http, this.authCode, this.stagUrl1, this);
+    this.stagingMetricService = new StagingMetricService(this.http, this.authCode, this.stagingUrl, this, this.toastr);
+    this.sourceService = new SourceService(this.http, this.authCode, this.stagingUrl, this, this.toastr);
+    this.uploadFileService = new UploadFileService(this.http, this.authCode, this.stagingUrl, this, this.toastr);
+    this.kpiService = new KPIService(this.http, this.authCode, this.stagingUrl, this);
+    this.activityLogService = new ActivityLogService(this.http, this.authCode, this.stagingUrl, this);
     this.startTimer();
     
 
@@ -167,6 +166,7 @@ export class ServiceMaster {
   }
 
   getReportingUnits() {
+    this.timeLeft = 600;
     var t = new Topic();
     t.id = "-1";
     this.stagingTopics = [t];
@@ -200,6 +200,7 @@ export class ServiceMaster {
   }
 
   getTopics() {
+    this.timeLeft = 600;
     var miss = new Mission();
     miss.id = "-1";
     var met = new Metric;
@@ -562,7 +563,7 @@ export class ServiceMaster {
 
   trendToChildren(m: Metric) {
     this.metricsBreadCrumbs.push(m);
-    this.stagingMetricService.search("ids=" + m.children.toString(), "v2" , " metrics/verbose").then(response => {
+    this.stagingMetricService.search("ids=" + m.children.toString(), "v2" , "metrics/verbose").then(response => {
       this.stagingChildren = response;
       for (var i = 0; i < response.length; i++) {
         if (this.stagingChildren[i].children && this.stagingChildren[i].children.length != 0) {
@@ -586,6 +587,7 @@ export class ServiceMaster {
   }
 
   openSourceEdit(s: Source, isAdd: boolean) {
+    this.timeLeft = 600;
     var source = new Source();
     source = Object.assign({}, s);
     let dialogRef = this.dialog.open(EditSourceDialogComponent,
@@ -812,53 +814,77 @@ export class ServiceMaster {
       r = response;
       await this.getUploaded();
       if (r.id != "-1" && r.id != "-5" && r.ErrorDetails == '') {
-          this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
-          if (this.notifications.length != 10) {
-            this.hasNotification = true;
+        this.toastr.successToastr(sheet.name + ' was uploaded', 'Success', { toastTimeout: 10000 });
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Uploaded sheet: " + sheet.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Uploaded sheet: " + sheet.name;
+          note.date = new Date();
+          note.success = true;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
             this.notificationNum++;
-            var note = new Notification();
-            note.name = "Uploaded sheet: " + sheet.name;
-            note.date = new Date();
-            note.success = true;
-            this.notifications.push(note);
-          }
-          else {
-            this.hasNotification = true;
-            var note = new Notification();
-            note.name = "Uploaded sheet: " + sheet.name;
-            note.date = new Date();
-            note.success = true;
-            this.notifications.push(note);
-            this.notifications.shift();
-            if (this.notificationNum < 10) {
-              this.notificationNum++;
-            }
           }
         }
+      }
       else if (r.id != "-1" && r.id != "-5") {
         this.toastr.errorToastr('An Error: ' + r.ErrorDetails + ' has occured while processing ' + sheet.name + ' !', 'Oops!', { toastTimeout: 10000 });
-          if (this.notifications.length != 10) {
-            this.hasNotification = true;
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
             this.notificationNum++;
-            var note = new Notification();
-            note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
-            note.date = new Date();
-            note.success = false;
-            this.notifications.push(note);
-          }
-          else {
-            this.hasNotification = true;
-            var note = new Notification();
-            note.name = "Uploading sheet: " + sheet.name + " failed with error: " + r.ErrorDetails;
-            note.date = new Date();
-            note.success = false;
-            this.notifications.push(note);
-            this.notifications.shift();
-            if (this.notificationNum < 10) {
-              this.notificationNum++;
-            }
           }
         }
+      }
+      else {
+        this.toastr.errorToastr('An Error has occured while processing ' + sheet.name + ' !', 'Oops!', { toastTimeout: 10000 });
+        if (this.notifications.length != 10) {
+          this.hasNotification = true;
+          this.notificationNum++;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+        }
+        else {
+          this.hasNotification = true;
+          var note = new Notification();
+          note.name = "Uploading sheet: " + sheet.name + " failed";
+          note.date = new Date();
+          note.success = false;
+          this.notifications.push(note);
+          this.notifications.shift();
+          if (this.notificationNum < 10) {
+            this.notificationNum++;
+          }
+        }
+      }
     })
   }
 

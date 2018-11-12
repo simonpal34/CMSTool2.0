@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material';
 export class SourceTableComponent {
   displayedColumns: string[] = ['name', 'tableOrFile','url','urlDownload', 'lastUpdated', 'metrics', 'edit', 'delete'];
   constructor(private svc: ServiceMaster, private spinner: NgxSpinnerService, public snackBar: MatSnackBar) {
-    console.log(this.svc.sourcesTabSelectedSources[0].Url.indexOf("?"));
+    //console.log(this.svc.sourcesTabSelectedSources[0].Url.indexOf("?"));
   }
   edit(s: Source) {
     this.svc.openSourceEdit(s, false);

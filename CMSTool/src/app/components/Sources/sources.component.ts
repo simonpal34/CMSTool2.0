@@ -13,9 +13,13 @@ export class SourcesComponent {
   sourceSelectForm: FormGroup;
   selected: boolean;
   constructor(fb: FormBuilder, private svc: ServiceMaster) {
+    
 
     if (this.svc.uniqueSources == null) {
       this.svc.getAllSources();
+    }
+    else {
+      this.svc.timeLeft = 600;
     }
     this.selected = false;
     this.svc.sourcesTabSelectedSource = "";
@@ -25,6 +29,7 @@ export class SourcesComponent {
     });
   }
   selectSource() {
+    this.svc.timeLeft = 600;
     this.svc.sourcesTabSelectedSources = this.svc.allSources.filter(s => s.AgencyName == this.svc.sourcesTabSelectedSource);
     this.selected = true;
   }

@@ -40,36 +40,6 @@ export class UploadFileService extends BaseService<FileUpload> {
       });
   }
 
-  public async UploadFile(file: File, type: SpreadSheet): Promise<FileUpload> {
-    let header = new HttpHeaders({ 'Authorization': this.auth });
-    var formData = new FormData();
-    formData.append('uploadFile', file, file.name);
-    var sheet = type.SheetName.replace('.', '_');
-    return await this.http.post<FileUpload>('https://usafacts-api-staging.azurewebsites.net/api/v3/upload/uploadSpreadsheet/' + sheet, formData, { headers: header }).toPromise().then(
-      response => {
-        return Promise.resolve(response);
-      }).catch((error: HttpErrorResponse) => {
-        var r = new FileUpload();
-        r.name = 'fail';
-        if (error.status == 401) {
-          this.toastr.errorToastr('Your session has expired! We had to log you out', 'Oops!', { toastTimeout: 10000 });
-
-          this.service.logout().then(d => {
-            if (!d) {
-              this.router.navigate(['login']);
-            }
-          });
-
-          return Promise.resolve(r);
-        }
-        else {
-          
-          this.toastr.errorToastr('An Error: ' + error.message + ' has occured while processing ' + file.name + ' !', 'Oops!', { toastTimeout: 10000 });
-          return Promise.resolve(r);
-        }
-
-      });
-  }
   
 
 }
