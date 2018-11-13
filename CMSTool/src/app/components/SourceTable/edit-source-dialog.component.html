@@ -11,7 +11,7 @@
 
 <div mat-dialog-content *ngIf="!add" style="width:100%; height:90%; overflow:visible ">
   <br />
-  <form style="width:100%; height:75%;overflow:visible ">
+  <form style="width:100%; height:75%; overflow:visible; ">
     <div style="width:100%">
       <mat-form-field [floatLabel]="sourceForm.value.floatLabel" style="width:65%">
         <mat-label>Agency Name</mat-label>
@@ -71,17 +71,13 @@
         <textarea matInput name="urlDownload" rows="2" [(ngModel)]="source.UrlDownload" value="{{source.UrlDownload}}"></textarea>
       </mat-form-field>
     </div>
-
+    <mat-dialog-actions style="overflow:visible">
+      <div style="width:40%; margin-top:10px; bottom:10px">
+        <button mat-flat-button style="background-color:#002c77; width:20% " (click)="save()">Save</button>
+        <button mat-flat-button style="background-color:#C62828; margin-left:15px; width:20%" (click)="cancel()">Cancel</button>
+      </div>
+    </mat-dialog-actions>
   </form>
-
-  <mat-dialog-actions style="overflow:visible">
-    <div>
-      <button mat-flat-button style="background-color:#002c77 " (click)="save()">Save</button>
-    </div>
-    <div style="padding-left:15px;">
-      <button mat-flat-button style="background-color:#C62828" (click)="cancel()">Cancel</button>
-    </div>
-  </mat-dialog-actions>
 </div>
 
 <div *ngIf="add" mat-dialog-content style="width:100%; height:80%; overflow:visible ">
