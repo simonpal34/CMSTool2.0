@@ -20,7 +20,8 @@ export class AddMetaDataDialogComponent {
   typeOptions: string[] = ["Definition", "Footnote"];
   meta: Meta;
   adding: boolean;
-  typeControl : FormControl
+  typeControl: FormControl;
+  dataControl: FormControl;
   get type() {
     return this.metaDataForm.get('type');
   }
@@ -35,6 +36,7 @@ export class AddMetaDataDialogComponent {
         data: this.meta.data,
       });
       this.typeControl = new FormControl('', [Validators.required]);
+      this.dataControl = new FormControl('', [Validators.required]);
     }
     else {
       this.adding = false;
@@ -44,6 +46,7 @@ export class AddMetaDataDialogComponent {
         data: this.meta.data,
       });
       this.typeControl = new FormControl(this.meta.type, [Validators.required]);
+      this.dataControl = new FormControl(this.meta.data, [Validators.required]);
     }
     
   }
@@ -52,12 +55,12 @@ export class AddMetaDataDialogComponent {
   }
   save() {
     this.meta.type = this.typeControl.value;
-    this.meta.data = this.metaDataForm.value.data;
+    this.meta.data = this.dataControl.value;
     this.dialogRef.close(this.meta);
   }
   add(children: boolean) {
     this.meta.type = this.typeControl.value;
-    this.meta.data = this.metaDataForm.value.data;
+    this.meta.data = this.dataControl.value;
       this.dialogRef.close({m: this.meta, c: children})
 
   }

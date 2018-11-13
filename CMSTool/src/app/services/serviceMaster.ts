@@ -75,7 +75,7 @@ export class ServiceMaster {
   notifications: Notification[];
   hasNotification: boolean;
   notificationNum: number;
-  timeLeft: number = 600;
+  timeLeft: number;
   interval;
 
   constructor(protected http: HttpClient, public router: Router, public dialog: MatDialog, public toastr: ToastrManager) {
@@ -105,6 +105,7 @@ export class ServiceMaster {
   }
 
   getAuthCode() {
+    this.timeLeft = 60;
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl, this);
     this.populationService = new PopulationService(this.http, this.authCode, this.stagingUrl, this);
@@ -133,6 +134,16 @@ export class ServiceMaster {
             height: '25%',
 
           });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.timeLeft = 60;
+            this.startTimer();
+          }
+          else {
+            this.logout();
+            this.router.navigate(['/login']);
+          }
+        })
       }
     }, 1000)
   }
@@ -369,8 +380,9 @@ export class ServiceMaster {
   logout(): Promise<boolean> {
     let header = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post(this.stagingUrl + '/authentication/LogOut', { headers: header }).toPromise()
+    return this.http.post(this.stagingUrl + '/v2/authentication/LogOut', { headers: header }).toPromise()
       .then(response => {
+        clearInterval(this.interval)
         this.loginService.isLoggedIn = false;
         this.toastr.successToastr('Logged Out!', 'Success!', { toastTimeout: 10000 });
         return Promise.resolve(this.loginService.isLoggedIn);

@@ -4,7 +4,7 @@
   <h1 mat-dialog-title *ngIf="!adding">Edit {{meta.type}}</h1>
   <div mat-dialog-content style="width:100%; height:90%; overflow:visible ">
     <mat-form-field style="padding-left:15px; width:25%; border-left:none">
-      <mat-select   style="border-left:none" [formControl]="typeControl" placeholder="type" required>
+      <mat-select style="border-left:none" [formControl]="typeControl" placeholder="Type" required>
         <mat-option *ngFor="let s of typeOptions" [value]="s">
           {{s}}
         </mat-option>
@@ -13,16 +13,20 @@
         Type is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <mat-form-field style="padding-left:15px; width:100%" [formGroup]="metaDataForm">
+    <mat-form-field style="padding-left:15px; width:100%;border-left:none">
       <mat-label>Data</mat-label>
-      <textarea matInput value="{{meta.data}}" formControlName="data"
+      <textarea matInput style="border-left:none" [formControl]="dataControl" required
                 cdkAutosizeMinRows="5"
                 cdkAutosizeMaxRows="10"></textarea>
+      <mat-error *ngIf="dataControl.hasError('required')">
+        Data is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
+    
     <mat-dialog-actions style="overflow:visible">
       <div>
 
-        <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; background-color:#002c77; color: white" [matMenuTriggerFor]="menu" [disabled]="typeControl.hasError('required')"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
+        <button mat-raised-button *ngIf="adding" style=" font-size:10pt; height:35px; background-color:#002c77; color: white" [matMenuTriggerFor]="menu" [disabled]="typeControl.hasError('required') || dataControl.hasError('required')"><mat-icon style=" font-size:10pt; margin-top:10px">keyboard_arrow_down</mat-icon> Add</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="add(false)">
             To This Metric Only
@@ -31,7 +35,7 @@
             To This Metric and its Descendants
           </button>
         </mat-menu>
-        <button *ngIf="!adding" mat-flat-button style="background-color:#002c77" [disabled]="typeControl.hasError('required')" (click)="save()">Save</button>
+        <button *ngIf="!adding" mat-flat-button style="background-color:#002c77" [disabled]="typeControl.hasError('required') || dataControl.hasError('required')" (click)="save()">Save</button>
         <button mat-flat-button style="background-color:#C62828; margin-left:15px;" (click)="cancel()">Cancel</button>
       </div>
     </mat-dialog-actions>

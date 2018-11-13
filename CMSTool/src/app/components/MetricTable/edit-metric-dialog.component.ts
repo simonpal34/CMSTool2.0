@@ -234,7 +234,7 @@ export class EditMetricDialogComponent {
     this.metric.meta = Object.assign([], temp);
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     //Make post to remove the metadata 
-    this.http.post<Meta>(this.url + '/metrics/' + this.metric.id + '/RemoveMetadata?metadataId=' + m.id+ '&IncludeChildren=' + children,'', { headers: header }).subscribe(r => {
+    this.http.post<Meta>(this.url + '/v2/metrics/' + this.metric.id + '/RemoveMetadata?metadataId=' + m.id+ '&IncludeChildren=' + children,'', { headers: header }).subscribe(r => {
       this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was removed!", "Success!");
       if (this.notifications.length != 10) {
         var note = new Notification();
@@ -277,7 +277,7 @@ export class EditMetricDialogComponent {
         var body = JSON.stringify(newMeta);
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
         //Make post to add the new metadata 
-        this.http.post<Meta>(this.url + "/metrics/" + this.metric.id + "/Metadata?IncludeChildren=" + includeChildren , body, { headers: header }).subscribe(r => {
+        this.http.post<Meta>(this.url + "/v2/metrics/" + this.metric.id + "/Metadata?IncludeChildren=" + includeChildren , body, { headers: header }).subscribe(r => {
             //  ***** The code below should be formatted to go in here so you can set the meta id before you put it in the table cause the dialog result won't have an id but r from the call will*****
           this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was added!", "Success!");
           if (this.notifications.length != 10) {
@@ -332,7 +332,7 @@ export class EditMetricDialogComponent {
         var newMeta = result
         var body = JSON.stringify(newMeta);
         let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-        this.http.put<Meta>(this.url + "/metrics/" + this.metric.id + "/Metadata",body, { headers: header }).subscribe(r => {
+        this.http.put<Meta>(this.url + "/v2/metrics/" + this.metric.id + "/Metadata",body, { headers: header }).subscribe(r => {
          //wont have to set the meta cause the id is already on these
           this.toastr.successToastr("Metatdata for \'" + this.metric.name + "\' was updated!", "Success!");
           if (this.notifications.length != 10) {
@@ -430,7 +430,7 @@ export class EditMetricDialogComponent {
     d.afterClosed().subscribe(result => {
 
       let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-      this.http.get<Source[]>(this.url + "/sources", { headers: header }).subscribe(r => {
+      this.http.get<Source[]>(this.url + "/v2/sources", { headers: header }).subscribe(r => {
         this.allSources = r
       })
       if (result.notNum != 0) {
@@ -446,7 +446,7 @@ export class EditMetricDialogComponent {
           var includeChildren = true;
         }
         this.spinner.show();
-        this.http.put(this.url + "/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
+        this.http.put(this.url + "/v2/metrics/" + this.metric.id + "/AddSource/" + result.source.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
           if (includeChildren == false) {
             this.toastr.successToastr("Source " + result.source.name + " was added to " + this.metric.name + "!", "Success!");
             if (this.notifications.length != 10) {
@@ -583,7 +583,7 @@ export class EditMetricDialogComponent {
     }
     this.spinner.show();
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
-    await this.http.put(this.url + "/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
+    await this.http.put(this.url + "/v2/metrics/" + this.metric.id + "/RemoveSource/" + s.key + "?IncludeChildren=" + includeChildren, '', { headers: header }).subscribe(data => {
       if (includeChildren == false) {
         this.toastr.successToastr("Source \'" + s.name + "\' was deleted from " + this.metric.name + "!", "Success!");
         if (this.notifications.length != 10) {

@@ -15,14 +15,28 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: 'time-out-dialog.component.html',
 })
 export class TimeOutDialogComponent {
-  
+  timeLeft2: number;
+  interval2: any;
   constructor(
     private fb: FormBuilder, public dialogRef: MatDialogRef<TimeOutDialogComponent>) {
-    
+    this.timeLeft2 = 120;
+    this.startTimer2();
   }
   close() {
-    
-    this.dialogRef.close(null);
+    clearInterval(this.interval2);
+    this.dialogRef.close(true);
+  }
+  startTimer2() {
+    this.interval2 = setInterval(() => {
+      if (this.timeLeft2 > 0) {
+        this.timeLeft2--;
+        console.log(this.timeLeft2);
+      } else {
+        clearInterval(this.interval2);
+        this.dialogRef.close(false);
+        
+      }
+    }, 1000)
   }
 
 

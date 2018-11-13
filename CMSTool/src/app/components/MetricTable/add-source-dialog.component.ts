@@ -175,7 +175,7 @@ export class AddSourceDialogComponent {
             var curr = this.allSources.map(d => d.AgencyName);
             this.uniqueSources = Object.assign([],curr.filter(function (el, i, arr) {
               return arr.indexOf(el) == i;
-            }));
+            }).sort());
             this.selectedSource = '';
             this.selectedSources = [];
         }).catch(error => {
