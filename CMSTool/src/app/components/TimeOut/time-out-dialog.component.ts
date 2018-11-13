@@ -30,7 +30,6 @@ export class TimeOutDialogComponent {
     this.interval2 = setInterval(() => {
       if (this.timeLeft2 > 0) {
         this.timeLeft2--;
-        console.log(this.timeLeft2);
       } else {
         clearInterval(this.interval2);
         this.dialogRef.close(false);

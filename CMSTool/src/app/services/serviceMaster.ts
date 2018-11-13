@@ -105,7 +105,7 @@ export class ServiceMaster {
   }
 
   getAuthCode() {
-    this.timeLeft = 60;
+    this.timeLeft = 600;
     this.authCode = 'Basic ' + this.loginService.profile.SessionId;
     this.missionService = new MissionService(this.http, this.authCode, this.stagingUrl, this);
     this.populationService = new PopulationService(this.http, this.authCode, this.stagingUrl, this);
@@ -124,7 +124,6 @@ export class ServiceMaster {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
-        console.log(this.timeLeft);
       } else {
         clearInterval(this.interval);
         let dialogRef = this.dialog.open(TimeOutDialogComponent,
@@ -136,7 +135,7 @@ export class ServiceMaster {
           });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.timeLeft = 60;
+            this.timeLeft = 600;
             this.startTimer();
           }
           else {

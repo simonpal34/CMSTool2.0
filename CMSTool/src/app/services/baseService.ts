@@ -51,7 +51,7 @@ export class BaseService<T extends Base> {
   }
 
   public update(item: T,version: string, endpoint: string): Promise<T> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     var body = JSON.stringify(item);
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     return this.httpClient.put<T>(`${this.url}/${version}/${endpoint}`, body, { headers: header }).toPromise().catch((error: HttpErrorResponse) => {
@@ -77,7 +77,7 @@ export class BaseService<T extends Base> {
   }
 
   read(id: string, version: String, endpoint: string): Promise<T> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T>(`${this.url}/${version}/${endpoint}/${id}`, { headers: header }).toPromise().catch(error => {
@@ -87,27 +87,27 @@ export class BaseService<T extends Base> {
   }
 
   readVerbose(id: string, version: String, endpoint: string): Promise<T> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T>(`${this.url}/${version}/${endpoint}/${id}/verbose`, { headers: header }).toPromise();
   }
 
   listAll(version: string, endpoint: string): Promise<T[]> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
 
     return this.httpClient.get<T[]>(`${this.url}/${version}/${endpoint}`, { headers: header }).toPromise();
   }
 
   search(queryOptions: string, version: string, endpoint: string): Promise<T[]> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     return this.httpClient.get<T[]>(`${this.url}/${version}/${endpoint}?${queryOptions}`, { headers: header }).toPromise();
   }
 
   delete(version: string, endpoint: string): Promise<boolean> {
-    this.svc.timeLeft = 60;
+    this.svc.timeLeft = 600;
     let header = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.key });
     return this.httpClient.put<T>(`${this.url}/${version}/${endpoint}`, '', { headers: header }).toPromise().then(data => {
       return Promise.resolve(true);
